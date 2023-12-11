@@ -26,27 +26,27 @@ public abstract class Card {
     }
 
     static void playerABetterElement(List<Card> playerACards, List<Card> playerBCards, int x, int y) {
-        Card playerADamage = playerACards.get(x);
-        Card playerBDamage = playerBCards.get(y);
+        Card playerACard = playerACards.get(x);
+        Card playerBCard = playerBCards.get(y);
 
-        playerADamage.setTmpElementsDamage(playerADamage.getDamage() * 2);
-        playerBDamage.setTmpElementsDamage(playerBDamage.getDamage() / 2);
+        playerACard.setTmpElementsDamage(playerACard.getDamage() * 2);
+        playerBCard.setTmpElementsDamage(playerBCard.getDamage() / 2);
     }
 
     static void playerBBetterElement(List<Card> playerACards, List<Card> playerBCards, int x, int y) {
-        Card playerADamage = playerACards.get(x);
-        Card playerBDamage = playerBCards.get(y);
+        Card playerACard = playerACards.get(x);
+        Card playerBCard = playerBCards.get(y);
 
-        playerBDamage.setTmpElementsDamage(playerBDamage.getDamage() * 2);
-        playerADamage.setTmpElementsDamage(playerADamage.getDamage() / 2);
+        playerBCard.setTmpElementsDamage(playerBCard.getDamage() * 2);
+        playerACard.setTmpElementsDamage(playerACard.getDamage() / 2);
     }
 
     static void notEffectedFight(List<Card> playerACards, List<Card> playerBCards, int x, int y) {
-        Card playerADamage = playerACards.get(x);
-        Card playerBDamage = playerBCards.get(y);
+        Card playerACard = playerACards.get(x);
+        Card playerBCard = playerBCards.get(y);
 
-        playerBDamage.setTmpElementsDamage(playerBDamage.getDamage());
-        playerADamage.setTmpElementsDamage(playerADamage.getDamage());
+        playerBCard.setTmpElementsDamage(playerBCard.getDamage());
+        playerACard.setTmpElementsDamage(playerACard.getDamage());
     }
 
 
