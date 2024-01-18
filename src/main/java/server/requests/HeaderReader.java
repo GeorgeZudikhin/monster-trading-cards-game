@@ -6,7 +6,7 @@ import java.util.Map;
 public class HeaderReader {
     public static final String CONTENT_LENGTH_HEADER = "Content-Length";
     public static final String HEADER_NAME_VALUE_SEPARATOR = ":";
-    private Map<String, String> headers = new HashMap<>();
+    private Map<String, String> headers = new HashMap<>();  // store header names and their corresponding values
 
     public void ingest(String headerLine) {
         final String[] split = headerLine.split(HEADER_NAME_VALUE_SEPARATOR, 2);

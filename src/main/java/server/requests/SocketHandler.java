@@ -9,6 +9,7 @@ import server.models.CardModel;
 import server.models.UserModel;
 import server.response.ResponseHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import server.response.ResponseModel;
 
 
 import java.io.BufferedReader;
@@ -57,16 +58,24 @@ public class SocketHandler implements Runnable {
                 char[] charBuffer = new char[headerReader.getContentLength()];
                 bufferedReader.read(charBuffer, 0, headerReader.getContentLength());
                 final UserModel userModel = objectMapper.readValue(new String(charBuffer), UserModel.class);
-                String response = userController.regUser(userModel.getUsername(), userModel.getPassword());
-                responseHandler.reply(response);
+                ResponseModel responseModel = userController.regUser(userModel.getUsername(), userModel.getPassword());
+                if (responseModel.getStatusCode() == 201) {
+                    responseHandler.replyCreated(responseModel);
+                } else if (responseModel.getStatusCode() == 409) {
+                    responseHandler.replyConflict(responseModel);
+                }
 
             } else if (httpMethodWithPath.equals("POST /sessions HTTP/1.1")) {
                 char[] charBuffer = new char[headerReader.getContentLength()];
                 bufferedReader.read(charBuffer, 0, headerReader.getContentLength());
 
                 final UserModel userModel = objectMapper.readValue(new String(charBuffer), UserModel.class);
-                String response = userController.logUser(userModel.getUsername(), userModel.getPassword());
-                responseHandler.reply(response);
+                ResponseModel responseModel = userController.logUser(userModel.getUsername(), userModel.getPassword());
+                if (responseModel.getStatusCode() == 200) {
+                    responseHandler.replySuccessfulLogin(responseModel); // Successful login
+                } else if (responseModel.getStatusCode() == 401) {
+                    responseHandler.replyUnauthorized(responseModel); // Invalid credentials
+                }
 
             } else if (httpMethodWithPath.equals("POST /packages HTTP/1.1")) {
                 char[] charBuffer = new char[headerReader.getContentLength()];
