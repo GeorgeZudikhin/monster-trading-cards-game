@@ -2,6 +2,7 @@ package server.controller;
 
 import mtcg.*;
 import database.DataBase;
+import server.response.ResponseModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,24 +10,30 @@ import java.util.List;
 public class UserController {
     DataBase myData = new DataBase();
 
-    public String regUser(String username, String password) {
+    public ResponseModel regUser(String username, String password) {
         int userExists;
         userExists = myData.createUser(username, password);
 
         if (userExists == 1)
-            return "Successfully registered";
+            return new ResponseModel("Successfully registered", 201); // User created
         else
-            return "User already exists";
+            return new ResponseModel("User already exists", 409); // User conflict
     }
 
-    public String logUser(String username, String password) {
+    public ResponseModel logUser(String username, String password) {
         boolean authorised = myData.loginUser(username, password);
         if (authorised) {
             System.out.println("login success for user: " + username);
-            return "Successfully loged in";
+            String token = myData.getToken(username); // Retrieve the token after login
+            if (token != null) {
+                return new ResponseModel(token, 200); // User logged in, return token
+            } else {
+                // In case the token is null, handle the error appropriately
+                return new ResponseModel("Error retrieving token", 500); // Internal Server Error
+            }
         } else {
             System.out.println("login failed for user: " + username);
-            return "wrong password or username";
+            return new ResponseModel("Invalid username or password", 401); // Unauthorized
         }
     }
 

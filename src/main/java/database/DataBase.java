@@ -9,7 +9,7 @@ public class DataBase {
     public boolean checkUserExists(String username) {
         boolean userExists = false;
         String compareUsername = "";
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres"); PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT "Username" From "User"
                 WHERE "Username" = ?;
                 """)
@@ -31,7 +31,7 @@ public class DataBase {
     public int createUser(String username, String password) {
         if (checkUserExists(username))
             return 0;
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres"); PreparedStatement statement = _ctx.prepareStatement("""
                 INSERT INTO "User"
                 ("Username", "Password")
                 VALUES(?,?);
@@ -48,7 +48,7 @@ public class DataBase {
 
     public int returnUserIDFromToken(String authorizationToken) {
         int UserID = 0;
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres"); PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT "UserID" From "User"
                 WHERE "Token" = ?;
                 """)
@@ -66,16 +66,16 @@ public class DataBase {
 
     public String returnUsernameFromToken(String authorizationToken) {
         String username = "";
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT "Username" From "User"
                 WHERE "Token" = ?;
-                """)
-        ) {
+                """))
+        {
             statement.setString(1, authorizationToken);
             ResultSet rs = statement.executeQuery();
             if (rs.next())
                 username = rs.getString("Username");
-
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,7 +89,8 @@ public class DataBase {
         String elementType;
 
         List<String> playerCards = new ArrayList<>();
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT * From "Cards"
                 WHERE "UserID" = ?
                 AND "InDeck" = 1;
@@ -129,7 +130,8 @@ public class DataBase {
         String elementType;
 
         List<String> playerCards = new ArrayList<>();
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT * From "Cards"
                 WHERE "UserID" = ?;
                 """)
@@ -158,7 +160,8 @@ public class DataBase {
     }
 
     public void generateCards(String cardID, String cardName, int cardDamage, String cardElement, int packageID) {
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 INSERT INTO "Cards"
                 ("CardID", "Name", "Damage", "ElementType", "PackageID")
                 VALUES(?,?,?,?,?);
@@ -178,7 +181,8 @@ public class DataBase {
     public void givePackageToUser(String token, int packageID) {
         int userID = returnUserIDFromToken(token);
 
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 UPDATE "Cards"
                 SET "UserID" = ?
                 WHERE "PackageID" = ? AND "UserID" IS NULL;
@@ -196,7 +200,8 @@ public class DataBase {
 
     public void updateCoins(int userID) {
         String username = returnUsernameFromID(userID);
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 UPDATE "User"
                 SET "Coins" = ?
                 WHERE "UserID" = ?;
@@ -212,7 +217,8 @@ public class DataBase {
 
     public String returnUsernameFromID(int userID) {
         String username = "";
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT "Username" From "User"
                 WHERE "UserID" = ?;
                 """)
@@ -231,7 +237,8 @@ public class DataBase {
 
     public void configureDeck(int userID, String ID) {
 
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 UPDATE "Cards"
                 SET "InDeck" = 1
                 WHERE "UserID" = ? AND "CardID" = ?;
@@ -248,7 +255,8 @@ public class DataBase {
 
     public int returnUserID(String username) {
         int UserID = 0;
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT "UserID" From "User"
                 WHERE "Username" = ?;
                 """)
@@ -266,7 +274,8 @@ public class DataBase {
 
     public int returnElo(String username) {
         int currentElo = 0;
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT "Elo" From "User"
                 WHERE "Username" = ?;
                 """)
@@ -288,7 +297,8 @@ public class DataBase {
         int counter = 1;
 
         List<String> scoreboard = new ArrayList<>();
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT * From "User"
                 ORDER BY "Elo" DESC;
                 """)
@@ -314,7 +324,8 @@ public class DataBase {
     }
 
     public void updateElo(String username, int elo) {
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 UPDATE "User"
                 SET "Elo" = ?
                 WHERE "Username" = ?;
@@ -331,7 +342,8 @@ public class DataBase {
     public boolean loginUser(String username, String password) {
         String passwordToCheck = null;
         boolean authorised = false;
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT "Password" From "User"
                 WHERE "Username" = ?;
                 """)
@@ -341,8 +353,7 @@ public class DataBase {
             if (rs.next())
                 passwordToCheck = rs.getString("password");
 
-            assert passwordToCheck != null;
-            if (passwordToCheck.equals(password)) {
+            if (passwordToCheck != null && passwordToCheck.equals(password)) {
                 authorised = true;
                 setToken(username);
             }
@@ -354,14 +365,15 @@ public class DataBase {
     }
 
     public void setToken(String username) {
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 UPDATE "User"
                 SET "Token" = ?
                 WHERE "Username" = ?;
-                """)
-        ) {
+                """))
+        {
             statement.setString(2, username);
-            statement.setString(1, "Basic " + username + "-mtcgToken");
+            statement.setString(1, "Bearer " + username + "-mtcgToken");
 
             statement.execute();
         } catch (SQLException e) {
@@ -369,10 +381,29 @@ public class DataBase {
         }
     }
 
+    public String getToken(String username) {
+        String token = null;
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
+                SELECT "Token" FROM "User" WHERE "Username" = ?;
+                """)) {
+            statement.setString(1, username);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                token = rs.getString("Token");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return token;
+    }
+
+
     public boolean validateToken(String username, String token) {
         String savedToken = "";
         boolean tokenValidation = false;
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT "Token" From "User"
                 WHERE "Username" = ?;
                 """)
@@ -394,11 +425,12 @@ public class DataBase {
 
     public int returnWins(String username) {
         int wins = 0;
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT "Wins" From "User"
                 WHERE "Username" = ?;
-                """)
-        ) {
+                """))
+        {
             statement.setString(1, username);
             ResultSet rs = statement.executeQuery();
             if (rs.next())
@@ -412,7 +444,8 @@ public class DataBase {
 
     public int returnLosses(String username) {
         int losses = 0;
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT "Losses" From "User"
                 WHERE "Username" = ?;
                 """)
@@ -431,7 +464,7 @@ public class DataBase {
 
     public int returnCoins(String username) {
         int coins = 0;
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres"); PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT "Coins" From "User"
                 WHERE "Username" = ?;
                 """)
@@ -448,7 +481,7 @@ public class DataBase {
     }
 
     public void countWins(String username, float newWinScore) {
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres"); PreparedStatement statement = _ctx.prepareStatement("""
                 UPDATE "User"
                 SET "Wins" = ?
                 WHERE "Username" = ?;
@@ -464,7 +497,7 @@ public class DataBase {
     }
 
     public void countLosses(String username, float newLosScore) {
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres"); PreparedStatement statement = _ctx.prepareStatement("""
                 UPDATE "User"
                 SET "Losses" = ?
                 WHERE "Username" = ?;
@@ -481,7 +514,7 @@ public class DataBase {
 
     public void updateUserData(int userID, String newUsername, String newBio, String newImage) {
 
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres"); PreparedStatement statement = _ctx.prepareStatement("""
                 UPDATE "User"
                 SET "Username" = ?, "Bio" = ?, "Image" = ?
                 WHERE "UserID" = ?;
@@ -501,7 +534,7 @@ public class DataBase {
     public void readyToPlay(String token, int ready) {
         int userID = returnUserIDFromToken(token);
 
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres"); PreparedStatement statement = _ctx.prepareStatement("""
                 UPDATE "User"
                 SET "Ready" = ?
                 WHERE "UserID" = ?;
@@ -517,7 +550,7 @@ public class DataBase {
 
     public int returnPlayerReady(String username) {
         int readyPlayer = 0;
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres"); PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT SUM("Ready") AS "Ready_player"
                 FROM "User"
                 WHERE "Ready" = ?;               
@@ -539,7 +572,7 @@ public class DataBase {
         String username = "";
         String token = "";
         List<String> readyPlayers = new ArrayList<>();
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "swe1user", "swe1pw"); PreparedStatement statement = _ctx.prepareStatement("""
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres"); PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT "Username", "Token" From "User"
                 WHERE "Ready" = ?;             
                 """)
