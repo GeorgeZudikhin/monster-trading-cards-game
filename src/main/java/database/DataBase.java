@@ -1,5 +1,7 @@
 package database;
 
+import mtcg.*;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -178,8 +180,9 @@ public class DataBase {
         }
     }
 
-    public void givePackageToUser(String token, int packageID) {
+    public List<Card> givePackageToUser(String token, int packageID) {
         int userID = returnUserIDFromToken(token);
+        List<Card> cards = null;
 
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
              PreparedStatement statement = _ctx.prepareStatement("""
@@ -193,10 +196,42 @@ public class DataBase {
             statement.execute();
 
             updateCoins(userID);
+            cards = getCardsByPackageID(packageID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return cards;
     }
+
+    public List<Card> getCardsByPackageID(int packageID) {
+        List<Card> cards = new ArrayList<>();
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
+            SELECT "CardID", "Name", "Damage", "ElementType", "CardType" FROM "Cards"
+            WHERE "PackageID" = ? AND "UserID" IS NOT NULL;
+            """)) {
+            statement.setInt(1, packageID);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String cardType = rs.getString("Name"); // This is an assumed column
+                CardName name = CardName.valueOf(rs.getString("Name"));
+                int damage = rs.getInt("Damage");
+                Element elementType = Element.valueOf(rs.getString("ElementType"));
+
+                Card card;
+                if ("Spell".equals(cardType)) {
+                    card = new SpellCard(name, damage, elementType);
+                } else {
+                    card = new MonsterCard(name, damage, elementType);
+                }
+                cards.add(card);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cards;
+    }
+
 
     public void updateCoins(int userID) {
         String username = returnUsernameFromID(userID);
@@ -214,6 +249,26 @@ public class DataBase {
             e.printStackTrace();
         }
     }
+
+    public int getNextAvailablePackageID() {
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
+            SELECT "PackageID" FROM "Cards"
+            WHERE "UserID" IS NULL
+            GROUP BY "PackageID"
+            ORDER BY "PackageID"
+            LIMIT 1;
+            """)) {
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("PackageID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
 
     public String returnUsernameFromID(int userID) {
         String username = "";

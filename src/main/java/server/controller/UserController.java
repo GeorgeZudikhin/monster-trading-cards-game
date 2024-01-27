@@ -15,7 +15,7 @@ public class UserController {
         userExists = myData.createUser(username, password);
 
         if (userExists == 1)
-            return new ResponseModel("Successfully registered", 201); // User created
+            return new ResponseModel("User successfully registered", 201); // User created
         else
             return new ResponseModel("User already exists", 409); // User conflict
     }
@@ -94,7 +94,6 @@ public class UserController {
         List<String> deck;
 
         int userID = myData.returnUserIDFromToken(token);
-
 
         deck = myData.returnAllPlayerCards(userID);
 

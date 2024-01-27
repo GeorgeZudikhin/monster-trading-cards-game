@@ -19,7 +19,7 @@ public class ResponseHandler {
         try {
             final String output = objectMapper.writeValueAsString(object);
             bufferedWriter.write("HTTP/1.1 200 OK" + LINE_END);
-            bufferedWriter.write("SERVER.Server: Java Server example" + LINE_END);
+            bufferedWriter.write("SERVER.Server: Java Server" + LINE_END);
             bufferedWriter.write("Content-Type: application/json" + LINE_END);
             bufferedWriter.write("Connection: close" + LINE_END);
             bufferedWriter.write("Content-Length: " + output.length() + LINE_END);
@@ -43,7 +43,7 @@ public class ResponseHandler {
         try {
             final String output = objectMapper.writeValueAsString(object);
             bufferedWriter.write("HTTP/1.1 " + statusCode + " " + statusMessage + LINE_END);
-            bufferedWriter.write("SERVER.Server: Java Server example" + LINE_END);
+            bufferedWriter.write("SERVER.Server: Java Server" + LINE_END);
             bufferedWriter.write("Content-Type: application/json" + LINE_END);
             bufferedWriter.write("Connection: close" + LINE_END);
             bufferedWriter.write("Content-Length: " + output.length() + LINE_END);
@@ -65,11 +65,19 @@ public class ResponseHandler {
         replyWithStatus(object, 409, "Conflict");
     }
 
-    public void replySuccessfulLogin(Object object) {
-        replyWithStatus(object, 200, "Successful login");
+    public void replySuccessful(Object object) {
+        replyWithStatus(object, 200, "Successful");
     }
 
     public void replyUnauthorized(Object object) {
         replyWithStatus(object, 401, "Unauthorized");
+    }
+
+    public void replyForbidden(Object object) {
+        replyWithStatus(object, 403, "Forbidden");
+    }
+
+    public void replyNotFound(Object object) {
+        replyWithStatus(object, 404, "Not Found");
     }
 }
