@@ -193,7 +193,10 @@ public class DataBase {
         ) {
             statement.setInt(1, userID);
             statement.setInt(2, packageID);
-            statement.execute();
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows == 0) {
+                System.out.println("No cards were updated for the user."); // Debugging line
+            }
 
             updateCoins(userID);
             cards = getCardsByPackageID(packageID);
@@ -207,24 +210,27 @@ public class DataBase {
         List<Card> cards = new ArrayList<>();
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
              PreparedStatement statement = _ctx.prepareStatement("""
-            SELECT "CardID", "Name", "Damage", "ElementType", "CardType" FROM "Cards"
-            WHERE "PackageID" = ? AND "UserID" IS NOT NULL;
+            SELECT "CardID", "Name", "Damage", "ElementType" FROM "Cards"
+            WHERE "PackageID" = ?;
             """)) {
             statement.setInt(1, packageID);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                String cardType = rs.getString("Name"); // This is an assumed column
                 CardName name = CardName.valueOf(rs.getString("Name"));
                 int damage = rs.getInt("Damage");
                 Element elementType = Element.valueOf(rs.getString("ElementType"));
 
                 Card card;
-                if ("Spell".equals(cardType)) {
+                if ("Spell".equals(name)) {
                     card = new SpellCard(name, damage, elementType);
                 } else {
                     card = new MonsterCard(name, damage, elementType);
                 }
                 cards.add(card);
+                System.out.println("Retrieved card: " + card.getName());
+                if(cards.isEmpty()) {
+                    System.out.println("No cards found for packageID: " + packageID); // Debugging line
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -264,6 +270,7 @@ public class DataBase {
                 return rs.getInt("PackageID");
             }
         } catch (SQLException e) {
+            System.out.println("No next available packageid could be found");
             e.printStackTrace();
         }
         return -1;

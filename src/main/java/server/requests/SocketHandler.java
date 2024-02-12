@@ -110,18 +110,7 @@ public class SocketHandler implements Runnable {
                 }
 
             } else if (httpMethodWithPath.equals("POST /transactions/packages HTTP/1.1")) {
-                int contentLength = headerReader.getContentLength();
-                ResponseModel responseModel;
-
-                if (contentLength > 0) {
-                    char[] charBuffer = new char[contentLength];
-                    bufferedReader.read(charBuffer, 0, contentLength);
-                    final CardModel cardsModel = objectMapper.readValue(new String(charBuffer), CardModel.class);
-                    responseModel = cardsController.acquirePackage(headerReader.getHeader("Authorization"));
-                } else {
-                    // Handle the case where there is no body content
-                    responseModel = cardsController.acquirePackage(headerReader.getHeader("Authorization"));
-                }
+                ResponseModel responseModel = cardsController.acquirePackage(headerReader.getHeader("Authorization"));
 
                 if (responseModel.getStatusCode() == 200) {
                     responseHandler.replySuccessful(responseModel);

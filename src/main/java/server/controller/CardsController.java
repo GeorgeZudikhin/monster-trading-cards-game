@@ -25,16 +25,19 @@ public class CardsController {
         String username = myData.returnUsernameFromToken(token);
         int coins = myData.returnCoins(username);
 
-        if (coins >= 5) {
-            int packageID = myData.getNextAvailablePackageID();
-            if (packageID > 0) {
-                List<Card> cards = myData.givePackageToUser(token, packageID);
-                return new ResponseModel("A package has been successfully bought", 200, cards);
-            } else {
-                return new ResponseModel("No card package available for buying", 404);
-            }
-        } else {
+        if(coins < 5) {
             return new ResponseModel("Not enough money for buying a card package", 403);
         }
+
+        int packageID = myData.getNextAvailablePackageID();
+        if(packageID < 0) {
+            return new ResponseModel("No card package available for buying", 404);
+        }
+
+        List<Card> cards = myData.givePackageToUser(token, packageID);
+        if(cards == null || cards.isEmpty()) {
+            System.out.println("The card list is null or empty after assigning to user."); // Debugging line
+        }
+        return new ResponseModel("A package has been successfully bought", 200, cards);
     }
 }

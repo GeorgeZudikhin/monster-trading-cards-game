@@ -82,10 +82,10 @@ public class BattleManager {
             System.out.println("Krake is immune against spell");
             printLog(playerACards, playerBCards, playerA, playerB, x, y);
             playerAWin(playerACards, playerBCards, playerA, y);
-        } else if (firstCardName == CardName.ELVE && firstCardElement == Element.FIRE && secondCardName == CardName.DRAGON) {
+        } else if (firstCardName == CardName.ELF && firstCardElement == Element.FIRE && secondCardName == CardName.DRAGON) {
             System.out.println("FireElves and Dragons are friends 4 ever");
             printLog(playerACards, playerBCards, playerA, playerB, x, y);
-        } else if (firstCardName == CardName.DRAGON && secondCardName == CardName.ELVE && secondCardElement == Element.FIRE) {
+        } else if (firstCardName == CardName.DRAGON && secondCardName == CardName.ELF && secondCardElement == Element.FIRE) {
             System.out.println("FireElves and Dragons are friends 4 ever");
             printLog(playerACards, playerBCards, playerA, playerB, x, y);
         } else if (playerACards.get(x) instanceof SpellCard && playerBCards.get(y) instanceof SpellCard) { //SpellFights are effected by elements

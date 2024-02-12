@@ -8,5 +8,5 @@ public enum CardName {
     KNIGHT,
     SPELL,
     KRAKE,
-    ELVE
+    ELF
 }
