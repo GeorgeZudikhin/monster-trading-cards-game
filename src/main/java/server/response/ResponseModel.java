@@ -8,10 +8,17 @@ import lombok.Setter;
 public class ResponseModel {
     private String message;
     private int statusCode;
+    private Object responseBody;
 
     public ResponseModel(String message, int statusCode) {
         this.message = message;
         this.statusCode = statusCode;
+    }
+
+    public ResponseModel(String message, int statusCode, Object responseBody) {
+        this.message = message;
+        this.statusCode = statusCode;
+        this.responseBody = responseBody;
     }
 }
 

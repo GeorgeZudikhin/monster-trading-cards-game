@@ -72,7 +72,7 @@ public class SocketHandler implements Runnable {
                 final UserModel userModel = objectMapper.readValue(new String(charBuffer), UserModel.class);
                 ResponseModel responseModel = userController.logUser(userModel.getUsername(), userModel.getPassword());
                 if (responseModel.getStatusCode() == 200) {
-                    responseHandler.replySuccessfulLogin(responseModel); // Successful login
+                    responseHandler.replySuccessful(responseModel); // Successful login
                 } else if (responseModel.getStatusCode() == 401) {
                     responseHandler.replyUnauthorized(responseModel); // Invalid credentials
                 }
@@ -80,25 +80,45 @@ public class SocketHandler implements Runnable {
             } else if (httpMethodWithPath.equals("POST /packages HTTP/1.1")) {
                 char[] charBuffer = new char[headerReader.getContentLength()];
                 bufferedReader.read(charBuffer, 0, headerReader.getContentLength());
-                List<CardModel> cardsModel = objectMapper.readValue(new String(charBuffer), new TypeReference<>() {
-                });
+                List<CardModel> cardsModel = objectMapper.readValue(new String(charBuffer), new TypeReference<>() {});
 
-                int n = 0;
-                for (CardModel e : cardsModel) {
-                    cardsController.generatedNewCards(cardsModel.get(n).getCardID(),
-                            cardsModel.get(n).getCardName(), cardsModel.get(n).getCardDamage(),
-                            cardsModel.get(n).getCardElement(), cardsModel.get(n).getPackageID(),
+                ResponseModel responseModel = null;
+                boolean allCardsCreated = true;
+
+                for (CardModel card : cardsModel) {
+                    responseModel = cardsController.generateNewCard(
+                            card.getCardID(),
+                            card.getCardName(),
+                            card.getCardDamage(),
+                            card.getCardElement(),
+                            card.getPackageID(),
                             headerReader.getHeader("Authorization"));
-                    n++;
+
+                    if (responseModel.getStatusCode() != 201) {
+                        allCardsCreated = false;
+                        break;
+                    }
                 }
-                responseHandler.reply("Package has been created");
+                if (allCardsCreated) {
+                    responseHandler.replyCreated(responseModel);
+                } else {
+                    if (responseModel.getStatusCode() == 401) {
+                        responseHandler.replyUnauthorized(responseModel);
+                    } else if (responseModel.getStatusCode() == 403) {
+                        responseHandler.replyForbidden(responseModel);
+                    }
+                }
 
             } else if (httpMethodWithPath.equals("POST /transactions/packages HTTP/1.1")) {
-                char[] charBuffer = new char[headerReader.getContentLength()];
-                bufferedReader.read(charBuffer, 0, headerReader.getContentLength());
-                final CardModel cardsModel = objectMapper.readValue(new String(charBuffer), CardModel.class);
-                String response = cardsController.acquirePackage(headerReader.getHeader("Authorization"), cardsModel.getPackageID());
-                responseHandler.reply(response);
+                ResponseModel responseModel = cardsController.acquirePackage(headerReader.getHeader("Authorization"));
+
+                if (responseModel.getStatusCode() == 200) {
+                    responseHandler.replySuccessful(responseModel);
+                } else if (responseModel.getStatusCode() == 403) {
+                    responseHandler.replyForbidden(responseModel);
+                } else if (responseModel.getStatusCode() == 404) {
+                    responseHandler.replyNotFound(responseModel);
+                }
 
             } else if (httpMethodWithPath.equals("GET /cards HTTP/1.1")) {
                 Object response = userController.returnAllUserCards(headerReader.getHeader("Authorization"));
