@@ -1,0 +1,78 @@
+after creating docker postgresql Database with user "postgres" and password "postgres":
+
+1) Create Tables
+
+	
+create table "Cards"
+(
+    "CardID"      text    not null
+    constraint cards_pk
+    primary key,
+    "Name"        text    not null,
+    "Damage"      integer not null,
+    "UserID"      integer
+    constraint cards_user__fk
+    references "User",
+    "Locked"      integer default 0,
+    "InDeck"      integer default 0,
+    "ElementType" text,
+    "PackageID"   integer
+);
+
+alter table "Cards"
+    owner to postgres;
+
+create unique index cards_id_uindex
+    on "Cards" ("CardID");
+
+
+create table "User"
+(
+    "UserID"   integer default nextval('"User_Id_seq"'::regclass) not null
+        constraint user_pk
+            primary key,
+    "Username" text                                               not null,
+    "Password" text                                               not null,
+    "Elo"      integer default 100,
+    "Coins"    integer default 20,
+    "Token"    text,
+    "Bio"      text,
+    "Image"    text,
+    "Wins"     integer,
+    "Losses"   integer,
+    "Ready"    integer default 0
+);
+
+alter table "User"
+    owner to swe1user;
+
+create unique index user_username_uindex
+    on "User" ("Username");
+
+create unique index user_token_uindex
+    on "User" ("Token");
+
+
+create table "Store"
+(
+    "TradeID"         serial
+        constraint store_pk_2
+            primary key
+        constraint store_pk
+            unique,
+    "UserID"          integer
+        constraint store_user__fk
+            references "User",
+    "CardID"          text
+        constraint store_cards__fk
+            references "Cards",
+    "DesiredCardType" text,
+    "DesiredElement"  text,
+    "DesiredDamage"   integer
+);
+
+alter table "Store"
+    owner to postgres;
+
+create unique index store_tradeid_uindex
+    on "Store" ("TradeID");
