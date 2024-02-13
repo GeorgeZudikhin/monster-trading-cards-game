@@ -85,12 +85,9 @@ public class DataBase {
         return username;
     }
 
-    public List<String> returnPlayerCards(int UserID) {
-        int damage;
-        String name;
-        String elementType;
+    public List<Card> getUserDeck(int userID) {
 
-        List<String> playerCards = new ArrayList<>();
+        List<Card> userDeck = new ArrayList<>();
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
              PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT * From "Cards"
@@ -98,68 +95,64 @@ public class DataBase {
                 AND "InDeck" = 1;
                 """)
         ) {
-            statement.setInt(1, UserID);
+            statement.setInt(1, userID);
             ResultSet rs = statement.executeQuery();
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int columnsCounter = rsmd.getColumnCount();
-
             while (rs.next()) {
-                damage = rs.getInt("Damage");
-                name = rs.getString("Name");
-                elementType = rs.getString("ElementType");
+                CardName name = CardName.valueOf(rs.getString("Name"));
+                int damage = rs.getInt("Damage");
+                Element elementType = Element.valueOf(rs.getString("ElementType"));
 
-                playerCards.add(damage
-                        + ";" + name +
-                        ";" + elementType);
-            }
-
-            return playerCards;
-
-            /*while (rs.next()) {
-                for (int i = 1; i < columnsCounter; i++) {
-                    System.out.println(rsmd.getColumnName(i) + rs.getString(i));
+                Card card;
+                if ("Spell".equals(name)) {
+                    card = new SpellCard(name, damage, elementType);
+                } else {
+                    card = new MonsterCard(name, damage, elementType);
                 }
-            }*/
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public List<String> returnAllPlayerCards(int UserID) {
-        int damage;
-        String name;
-        String elementType;
-
-        List<String> playerCards = new ArrayList<>();
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
-             PreparedStatement statement = _ctx.prepareStatement("""
-                SELECT * From "Cards"
-                WHERE "UserID" = ?;
-                """)
-        ) {
-            statement.setInt(1, UserID);
-            ResultSet rs = statement.executeQuery();
-            ResultSetMetaData rsmd = rs.getMetaData();
-
-            while (rs.next()) {
-                damage = rs.getInt("Damage");
-                name = rs.getString("Name");
-                elementType = rs.getString("ElementType");
-
-                playerCards.add("Damage: " + damage
-                        + ";" + "Cardname: " + name +
-                        ";" + "Element: " + elementType);
+                userDeck.add(card);
+                if(userDeck.isEmpty()) {
+                    System.out.println("No cards found for userID: " + userID);
+                }
             }
-
-            return playerCards;
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return userDeck;
     }
+
+//    public List<String> returnAllPlayerCards(int UserID) {
+//        int damage;
+//        String name;
+//        String elementType;
+//
+//        List<String> playerCards = new ArrayList<>();
+//        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+//             PreparedStatement statement = _ctx.prepareStatement("""
+//                SELECT * From "Cards"
+//                WHERE "UserID" = ?;
+//                """)
+//        ) {
+//            statement.setInt(1, UserID);
+//            ResultSet rs = statement.executeQuery();
+//            ResultSetMetaData rsmd = rs.getMetaData();
+//
+//            while (rs.next()) {
+//                damage = rs.getInt("Damage");
+//                name = rs.getString("Name");
+//                elementType = rs.getString("ElementType");
+//
+//                playerCards.add("Damage: " + damage
+//                        + ";" + "Cardname: " + name +
+//                        ";" + "Element: " + elementType);
+//            }
+//
+//            return playerCards;
+//
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     public void generateCards(String cardID, String cardName, int cardDamage, String cardElement, int packageID) {
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
@@ -230,6 +223,38 @@ public class DataBase {
                 System.out.println("Retrieved card: " + card.getName());
                 if(cards.isEmpty()) {
                     System.out.println("No cards found for packageID: " + packageID); // Debugging line
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cards;
+    }
+
+
+    public List<Card> getCardsByUserID(int userID) {
+        List<Card> cards = new ArrayList<>();
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
+            SELECT "CardID", "Name", "Damage", "ElementType" FROM "Cards"
+            WHERE "UserID" = ?;
+            """)) {
+            statement.setInt(1, userID);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                CardName name = CardName.valueOf(rs.getString("Name"));
+                int damage = rs.getInt("Damage");
+                Element elementType = Element.valueOf(rs.getString("ElementType"));
+
+                Card card;
+                if ("Spell".equals(name)) {
+                    card = new SpellCard(name, damage, elementType);
+                } else {
+                    card = new MonsterCard(name, damage, elementType);
+                }
+                cards.add(card);
+                if(cards.isEmpty()) {
+                    System.out.println("No cards found for userID: " + userID); // Debugging line
                 }
             }
         } catch (SQLException e) {

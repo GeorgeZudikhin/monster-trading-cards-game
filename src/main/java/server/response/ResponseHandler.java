@@ -41,7 +41,7 @@ public class ResponseHandler {
 
     public void replyWithStatus(Object object, int statusCode, String statusMessage) {
         try {
-            final String output = objectMapper.writeValueAsString(object);
+            final String output = objectMapper.writeValueAsString(object) + "\n";
             bufferedWriter.write("HTTP/1.1 " + statusCode + " " + statusMessage + LINE_END);
             bufferedWriter.write("SERVER.Server: Java Server" + LINE_END);
             bufferedWriter.write("Content-Type: application/json" + LINE_END);
@@ -55,18 +55,16 @@ public class ResponseHandler {
         }
     }
 
-    // Convenience method to reply with a 201 Created status
+    public void replySuccessful(Object object) {
+        replyWithStatus(object, 200, "Successful");
+    }
+
     public void replyCreated(Object object) {
         replyWithStatus(object, 201, "Created");
     }
 
-    // Convenience method to reply with a 409 Conflict status
-    public void replyConflict(Object object) {
-        replyWithStatus(object, 409, "Conflict");
-    }
-
-    public void replySuccessful(Object object) {
-        replyWithStatus(object, 200, "Successful");
+    public void replyNoContent(Object object) {
+        replyWithStatus(object, 204, "No Content");
     }
 
     public void replyUnauthorized(Object object) {
@@ -79,5 +77,9 @@ public class ResponseHandler {
 
     public void replyNotFound(Object object) {
         replyWithStatus(object, 404, "Not Found");
+    }
+
+    public void replyConflict(Object object) {
+        replyWithStatus(object, 409, "Conflict");
     }
 }

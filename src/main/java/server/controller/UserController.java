@@ -79,28 +79,32 @@ public class UserController {
         return scoreboard;
     }
 
-    public Object returnDeck(String token) {
-        List<String> deck;
+    public ResponseModel returnUserDeck(String token) {
+        List<Card> userDeck;
 
         int userID = myData.returnUserIDFromToken(token);
+        if(userID == 0)
+            return new ResponseModel("Access token is missing or invalid", 401);
 
+        userDeck = myData.getUserDeck(userID);
+        if (userDeck.isEmpty())
+            return new ResponseModel("The request was fine, but the user deck doesn't have any cards", 204);
 
-        deck = myData.returnPlayerCards(userID);
-
-        return deck;
+        return new ResponseModel("The deck has cards, the response contains these", 200, userDeck);
     }
 
-    public Object returnAllUserCards(String token) {
-        List<String> deck;
+    public ResponseModel returnAllUserCards(String token) {
+        List<Card> cards;
 
         int userID = myData.returnUserIDFromToken(token);
+        if(userID == 0)
+            return new ResponseModel("Access token is missing or invalid", 401);
 
-        deck = myData.returnAllPlayerCards(userID);
+        cards = myData.getCardsByUserID(userID);
+        if (cards.isEmpty())
+            return new ResponseModel("The request was fine, but the user doesn't have any cards", 204);
 
-        if (deck.isEmpty())
-            return "You have no Cards yet";
-
-        return deck;
+        return new ResponseModel("The user has cards, the response contains these", 200, cards);
     }
 
     public String updateUserProfile(String token, String newUsername, String newBio, String newImage, String httpMethodWithPath) {
@@ -118,12 +122,12 @@ public class UserController {
 
     }
 
-    public String addToDeck(String token, String ID) {
+    public String addToDeck(String token, String CardID) {
         int userID = myData.returnUserIDFromToken(token);
         if (userID == 0)
             return "Log in first";
 
-        myData.configureDeck(userID, ID);
+        myData.configureDeck(userID, CardID);
 
         return "Card added to deck";
 
@@ -132,33 +136,33 @@ public class UserController {
     public static List<Card> generateUserDeck(String username) {
         DataBase myData = new DataBase();
 
-        List<String> playerCards;
-        playerCards = myData.returnPlayerCards(myData.returnUserID(username));
-        List<Card> playerCard = new ArrayList<>();
+        List<Card> playerCards;
+        playerCards = myData.getUserDeck(myData.returnUserID(username));
+//        List<Card> playerCard = new ArrayList<>();
+//
+//        for (int i = 0; i < 4; i++) {
+//            int damage;
+//            Element cardElement;
+//            CardName cardName;
+//            SpellCard newSpellCard;
+//            MonsterCard newMonsterCard;
+//
+//            String[] splitCards = playerCards.get(i).split(";", 3);
+//            damage = Integer.parseInt(splitCards[0]);
+//            cardName = CardName.valueOf(splitCards[1]);
+//            cardElement = Element.valueOf(splitCards[2]);
+//
+//            if (cardName.equals(CardName.SPELL)) {
+//                newSpellCard = new SpellCard(cardName, damage, cardElement);
+//                playerCard.add(newSpellCard);
+//            } else {
+//                newMonsterCard = new MonsterCard(cardName, damage, cardElement);
+//                playerCard.add(newMonsterCard);
+//            }
+//
+//        }
+        System.out.println(playerCards.size());
 
-        for (int i = 0; i < 4; i++) {
-            int damage;
-            Element cardElement;
-            CardName cardName;
-            SpellCard newSpellCard;
-            MonsterCard newMonsterCard;
-
-            String[] splitCards = playerCards.get(i).split(";", 3);
-            damage = Integer.parseInt(splitCards[0]);
-            cardName = CardName.valueOf(splitCards[1]);
-            cardElement = Element.valueOf(splitCards[2]);
-
-            if (cardName.equals(CardName.SPELL)) {
-                newSpellCard = new SpellCard(cardName, damage, cardElement);
-                playerCard.add(newSpellCard);
-            } else {
-                newMonsterCard = new MonsterCard(cardName, damage, cardElement);
-                playerCard.add(newMonsterCard);
-            }
-
-        }
-        System.out.println(playerCard.size());
-
-        return playerCard;
+        return playerCards;
     }
 }

@@ -121,12 +121,26 @@ public class SocketHandler implements Runnable {
                 }
 
             } else if (httpMethodWithPath.equals("GET /cards HTTP/1.1")) {
-                Object response = userController.returnAllUserCards(headerReader.getHeader("Authorization"));
-                responseHandler.reply(response);
+                ResponseModel responseModel = userController.returnAllUserCards(headerReader.getHeader("Authorization"));
+
+                if (responseModel.getStatusCode() == 200) {
+                    responseHandler.replySuccessful(responseModel);
+                } else if (responseModel.getStatusCode() == 401) {
+                    responseHandler.replyUnauthorized(responseModel);
+                } else if (responseModel.getStatusCode() == 204) {
+                    responseHandler.replyNoContent(responseModel);
+                }
 
             } else if (httpMethodWithPath.equals("GET /deck HTTP/1.1")) {
-                Object response = userController.returnDeck(headerReader.getHeader("Authorization"));
-                responseHandler.reply(response);
+                ResponseModel responseModel = userController.returnUserDeck(headerReader.getHeader("Authorization"));
+
+                if (responseModel.getStatusCode() == 200) {
+                    responseHandler.replySuccessful(responseModel);
+                } else if (responseModel.getStatusCode() == 401) {
+                    responseHandler.replyUnauthorized(responseModel);
+                } else if (responseModel.getStatusCode() == 204) {
+                    responseHandler.replyNoContent(responseModel);
+                }
 
             } else if (httpMethodWithPath.equals("PUT /deck HTTP/1.1")) {
                 String response = "Cards have not been added to deck";
@@ -145,7 +159,7 @@ public class SocketHandler implements Runnable {
                 responseHandler.reply(response);
 
             } else if (httpMethodWithPath.equals("GET /deck?format=plain HTTP/1.1")) {
-                Object response = userController.returnDeck(headerReader.getHeader("Authorization"));
+                Object response = userController.returnUserDeck(headerReader.getHeader("Authorization"));
                 responseHandler.reply(response);
 
             } else if (httpMethodWithPath.equals("GET /stats HTTP/1.1")) {
