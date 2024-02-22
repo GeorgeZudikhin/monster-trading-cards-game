@@ -109,10 +109,12 @@ public class DataBase {
                     card = new MonsterCard(name, damage, elementType);
                 }
                 userDeck.add(card);
-                if(userDeck.isEmpty()) {
-                    System.out.println("No cards found for userID: " + userID);
-                }
             }
+
+            if(userDeck.isEmpty()) {
+                System.out.println("No cards found for userID: " + userID);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -322,7 +324,7 @@ public class DataBase {
     }
 
 
-    public void configureDeck(int userID, String ID) {
+    public void configureDeck(int userID, String cardID) {
 
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
              PreparedStatement statement = _ctx.prepareStatement("""
@@ -332,7 +334,7 @@ public class DataBase {
                 """)
         ) {
             statement.setInt(1, userID);
-            statement.setString(2, ID);
+            statement.setString(2, cardID);
 
             statement.execute();
         } catch (SQLException e) {

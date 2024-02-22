@@ -138,25 +138,28 @@ public class SocketHandler implements Runnable {
                     responseHandler.replySuccessful(responseModel);
                 } else if (responseModel.getStatusCode() == 401) {
                     responseHandler.replyUnauthorized(responseModel);
-                } else if (responseModel.getStatusCode() == 204) {
-                    responseHandler.replyNoContent(responseModel);
+                } else if (responseModel.getStatusCode() == 404) {
+                    responseHandler.replyNotFound(responseModel);
                 }
 
             } else if (httpMethodWithPath.equals("PUT /deck HTTP/1.1")) {
-                String response = "Cards have not been added to deck";
                 char[] charBuffer = new char[headerReader.getContentLength()];
                 bufferedReader.read(charBuffer, 0, headerReader.getContentLength());
-                List<UserModel> userModel = objectMapper.readValue(new String(charBuffer), new TypeReference<>() {});
-                System.out.println(userModel.size());
+                List<String> cardIDs = objectMapper.readValue(new String(charBuffer), new TypeReference<>() {});
+                ResponseModel responseModel = null;
 
-                int n = 0;
-                for (UserModel e : userModel) {
-                    if(userModel.size() < 4)
-                        break;
-                    response = userController.addToDeck(headerReader.getHeader("Authorization"), userModel.get(n).getCardID());
-                    n++;
+                if(cardIDs.size() < 4) {
+                    responseHandler.replyBadRequest(new ResponseModel("The provided deck did not include the required amount of cards", 400));
+                } else {
+                    for (String cardID : cardIDs) {
+                        responseModel = userController.addToDeck(headerReader.getHeader("Authorization"), cardID);
+                    }
+                    if (responseModel.getStatusCode() == 200) {
+                        responseHandler.replySuccessful(responseModel);
+                    } else if (responseModel.getStatusCode() == 401) {
+                        responseHandler.replyUnauthorized(responseModel);
+                    }
                 }
-                responseHandler.reply(response);
 
             } else if (httpMethodWithPath.equals("GET /deck?format=plain HTTP/1.1")) {
                 Object response = userController.returnUserDeck(headerReader.getHeader("Authorization"));

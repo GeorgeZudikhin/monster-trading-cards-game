@@ -36,7 +36,7 @@ public class CardsController {
 
         List<Card> cards = myData.givePackageToUser(token, packageID);
         if(cards == null || cards.isEmpty()) {
-            System.out.println("The card list is null or empty after assigning to user."); // Debugging line
+            System.out.println("The card list is null or empty after assigning to user.");
         }
         return new ResponseModel("A package has been successfully bought", 200, cards);
     }
