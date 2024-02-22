@@ -16,12 +16,12 @@ public class Server {
 
         // "try-with-resources"
         try (ServerSocket serverSocket = new ServerSocket(port, 5)) {
-            System.out.println("Listening on port " + port + "...");
+            System.out.println("Server listening on port " + port + "...");
             while (!serverSocket.isClosed()) {
                 final Socket clientConnection = serverSocket.accept();
 
                 final SocketHandler socketHandler = new SocketHandler(clientConnection);
-                System.out.println("New connection on port " + port + "...");
+                System.out.println("New connection from port " + port + "...");
                 executorService.submit(socketHandler);
             }
         } catch (IOException e) {

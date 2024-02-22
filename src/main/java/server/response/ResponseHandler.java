@@ -43,7 +43,7 @@ public class ResponseHandler {
         try {
             final String output = objectMapper.writeValueAsString(object) + "\n";
             bufferedWriter.write("HTTP/1.1 " + statusCode + " " + statusMessage + LINE_END);
-            bufferedWriter.write("SERVER.Server: Java Server" + LINE_END);
+            bufferedWriter.write("Server: MTCG Java Server" + LINE_END);
             bufferedWriter.write("Content-Type: application/json" + LINE_END);
             bufferedWriter.write("Connection: close" + LINE_END);
             bufferedWriter.write("Content-Length: " + output.length() + LINE_END);
@@ -65,6 +65,10 @@ public class ResponseHandler {
 
     public void replyNoContent(Object object) {
         replyWithStatus(object, 204, "No Content");
+    }
+
+    public void replyBadRequest(Object object) {
+        replyWithStatus(object, 400, "Bad Request");
     }
 
     public void replyUnauthorized(Object object) {
