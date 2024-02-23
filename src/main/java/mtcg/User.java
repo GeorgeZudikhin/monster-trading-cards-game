@@ -16,8 +16,8 @@ public class User {
     private int wins; // the total number of battles or games a user has won over time, not just within a single session
     private int winCounter; // track the number of individual rounds won by a user within a single game session
     private int losses;
-    private List<Card> deck;
     private List<Card> stack;
+    private List<Card> deck;
 
     public User(String username) {
         this.username = username;

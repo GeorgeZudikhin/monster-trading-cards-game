@@ -186,28 +186,39 @@ public class SocketHandler implements Runnable {
                 String response = userController.returnEloScore(headerReader.getHeader("Authorization"));
                 responseHandler.reply(response);
 
-            } else if (httpMethodWithPath.equals("GET /ratio HTTP/1.1")) {
-                String response = userController.returnWinLossRatio(headerReader.getHeader("Authorization"));
-                responseHandler.reply(response);
-
-            } else if (httpMethodWithPath.equals("GET /score HTTP/1.1")) {
+            } else if (httpMethodWithPath.equals("GET /scoreboard HTTP/1.1")) {
                 Object response = userController.returnGlobalScoreboard(headerReader.getHeader("Authorization"));
                 responseHandler.reply(response);
 
-            } else if (httpMethodWithPath.contains("users/")) {
-                String response;
+            } else if (httpMethodWithPath.startsWith("GET /users/") || httpMethodWithPath.startsWith("PUT /users/")) {
+                ResponseModel responseModel = null;
 
-                if (headerReader.getContentLength() == 0)
-                    response = "Please provide Data to update";
-                else {
-                    char[] charBuffer = new char[headerReader.getContentLength()];
-                    bufferedReader.read(charBuffer, 0, headerReader.getContentLength());
-                    final UserModel userModel = objectMapper.readValue(new String(charBuffer), UserModel.class);
+                String[] pathAndMethod = httpMethodWithPath.split(" ");
+                String[] pathSegments = pathAndMethod[1].split("/");
+                String requestedUsername = pathSegments[2];
+                System.out.println(requestedUsername);
 
-                    response = userController.updateUserProfile(headerReader.getHeader("Authorization"), userModel.getNewUsername(), userModel.getNewBio(), userModel.getNewImage(), httpMethodWithPath);
+                if (httpMethodWithPath.startsWith("GET /users/")) {
+                    responseModel = userController.getUserProfileByUsername(headerReader.getHeader("Authorization"), requestedUsername);
+                } else {
+                    if (headerReader.getContentLength() == 0) {
+                        responseModel = new ResponseModel("Please provide data to update", 400);
+                    } else {
+                        char[] charBuffer = new char[headerReader.getContentLength()];
+                        bufferedReader.read(charBuffer, 0, headerReader.getContentLength());
+                        final UserModel userModel = objectMapper.readValue(new String(charBuffer), UserModel.class);
+
+                        responseModel = userController.updateUserProfile(headerReader.getHeader("Authorization"), requestedUsername, userModel.getNewUsername(), userModel.getNewBio(), userModel.getNewImage());
+                    }
                 }
-                responseHandler.reply(response);
 
+                switch (responseModel.getStatusCode()) {
+                    case 200 -> responseHandler.replySuccessful(responseModel);
+                    case 400 -> responseHandler.replyBadRequest(responseModel);
+                    case 401 -> responseHandler.replyUnauthorized(responseModel);
+                    case 403 -> responseHandler.replyForbidden(responseModel);
+                    case 404 -> responseHandler.replyNotFound(responseModel);
+                }
             } else if (httpMethodWithPath.equals("POST /battles HTTP/1.1")) {
                 String response = battleController.startBattleIfTwoUsersAreReady(headerReader.getHeader("Authorization"));
                 responseHandler.reply(response);

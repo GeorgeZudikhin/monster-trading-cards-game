@@ -2,9 +2,9 @@ package server.controller;
 
 import mtcg.*;
 import database.DataBase;
+import server.models.UserModel;
 import server.response.ResponseModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserController {
@@ -107,19 +107,39 @@ public class UserController {
         return new ResponseModel("The user has cards, the response contains these", 200, cards);
     }
 
-    public String updateUserProfile(String token, String newUsername, String newBio, String newImage, String httpMethodWithPath) {
+    public ResponseModel getUserProfileByUsername(String token, String requestedUsername) {
         int userID = myData.returnUserIDFromToken(token);
-        String username = myData.returnUsernameFromToken(token);
+        if(userID == 0)
+            return new ResponseModel("Access token is missing or invalid", 401);
 
-        if (!httpMethodWithPath.contains(username))
-            return "You are not allowed to change data from this user";
-        if (userID == 0)
-            return "Log in first";
+        String tokenUsername = myData.returnUsernameFromToken(token);
+        System.out.println(tokenUsername);
+        if (!tokenUsername.equalsIgnoreCase(requestedUsername)) {
+            return new ResponseModel("You are not authorized to view this user's profile", 403);
+        }
+
+        UserModel userData = myData.getUserDataByUsername(requestedUsername);
+        if (userData == null) {
+            return new ResponseModel("User not found", 404);
+        }
+
+        return new ResponseModel("User profile retrieved successfully", 200, userData);
+    }
+
+    public ResponseModel updateUserProfile(String token, String requestedUsername, String newUsername, String newBio, String newImage) {
+        int userID = myData.returnUserIDFromToken(token);
+        if(userID == 0)
+            return new ResponseModel("Access token is missing or invalid", 401);
+
+        String tokenUsername = myData.returnUsernameFromToken(token);
+        System.out.println(tokenUsername);
+        if (!tokenUsername.equalsIgnoreCase(requestedUsername)) {
+            return new ResponseModel("You are not authorized to view this user's profile", 403);
+        }
 
         myData.updateUserData(userID, newUsername, newBio, newImage);
 
-        return "Your profile has been updated";
-
+        return new ResponseModel("Your profile has been updated", 200);
     }
 
     public ResponseModel addToDeck(String token, String cardID) {
@@ -170,4 +190,5 @@ public class UserController {
 
         return playerCards;
     }
+
 }
