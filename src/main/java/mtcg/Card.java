@@ -77,11 +77,11 @@ public abstract class Card {
 
     @Override
     public String toString() {
-        return "Card{" +
+        return "Card: " +
                 "name=" + name +
                 ", damage=" + damage +
                 ", elementType=" + elementType +
-                '}';
+                '.';
     }
 
 }

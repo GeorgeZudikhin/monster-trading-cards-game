@@ -1,6 +1,7 @@
 package database;
 
 import mtcg.*;
+import server.models.UserModel;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -724,4 +725,27 @@ public class DataBase {
         return readyPlayers;
     }
 
+    public UserModel getUserDataByUsername(String requestedUsername) {
+        UserModel user = null;
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
+            SELECT * From "User"
+            WHERE "Username" = ?;
+            """)
+        ) {
+            statement.setString(1, requestedUsername);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                user = new UserModel();
+                user.setUsername(resultSet.getString("Username"));
+                user.setNewBio(resultSet.getString("Bio"));
+                user.setNewImage(resultSet.getString("Image"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
 }
