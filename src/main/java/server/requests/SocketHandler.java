@@ -2,6 +2,7 @@ package server.requests;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import mtcg.Card;
 import server.controller.BattleController;
 import server.controller.CardsController;
 import server.controller.UserController;
@@ -19,6 +20,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SocketHandler implements Runnable {
 
@@ -131,39 +133,54 @@ public class SocketHandler implements Runnable {
                     responseHandler.replyNoContent(responseModel);
                 }
 
-            } else if (httpMethodWithPath.equals("GET /deck HTTP/1.1")) {
+            } else if (httpMethodWithPath.startsWith("GET /deck")) {
+                String[] requestParts = httpMethodWithPath.split(" ")[1].split("\\?", 2);
+                String path = requestParts[0];
+                String query = requestParts.length > 1 ? requestParts[1] : "";
+
                 ResponseModel responseModel = userController.returnUserDeck(headerReader.getHeader("Authorization"));
 
                 if (responseModel.getStatusCode() == 200) {
-                    responseHandler.replySuccessful(responseModel);
+                    if (query.contains("format=plain")) {
+                        List<Card> deck = (List<Card>) responseModel.getResponseBody();
+                        String plainResponse = deck.stream()
+                                .map(Card::toString)
+                                .collect(Collectors.joining("\n"));
+
+                        responseHandler.replyInPlainText(responseModel, plainResponse); // Ensure this method sets Content-Type to text/plain
+                    } else {
+                        responseHandler.replySuccessful(responseModel);
+                    }
                 } else if (responseModel.getStatusCode() == 401) {
                     responseHandler.replyUnauthorized(responseModel);
                 } else if (responseModel.getStatusCode() == 404) {
                     responseHandler.replyNotFound(responseModel);
                 }
-
             } else if (httpMethodWithPath.equals("PUT /deck HTTP/1.1")) {
                 char[] charBuffer = new char[headerReader.getContentLength()];
                 bufferedReader.read(charBuffer, 0, headerReader.getContentLength());
                 List<String> cardIDs = objectMapper.readValue(new String(charBuffer), new TypeReference<>() {});
                 ResponseModel responseModel = null;
+                boolean forbidden = false;
 
                 if(cardIDs.size() < 4) {
                     responseHandler.replyBadRequest(new ResponseModel("The provided deck did not include the required amount of cards", 400));
                 } else {
                     for (String cardID : cardIDs) {
                         responseModel = userController.addToDeck(headerReader.getHeader("Authorization"), cardID);
+                        if (responseModel.getStatusCode() == 403) {
+                            forbidden = true;
+                            break;
+                        }
                     }
-                    if (responseModel.getStatusCode() == 200) {
+                    if (forbidden) {
+                        responseHandler.replyForbidden(responseModel);
+                    } else if (responseModel.getStatusCode() == 200) {
                         responseHandler.replySuccessful(responseModel);
                     } else if (responseModel.getStatusCode() == 401) {
                         responseHandler.replyUnauthorized(responseModel);
                     }
                 }
-
-            } else if (httpMethodWithPath.equals("GET /deck?format=plain HTTP/1.1")) {
-                Object response = userController.returnUserDeck(headerReader.getHeader("Authorization"));
-                responseHandler.reply(response);
 
             } else if (httpMethodWithPath.equals("GET /stats HTTP/1.1")) {
                 String response = userController.returnEloScore(headerReader.getHeader("Authorization"));

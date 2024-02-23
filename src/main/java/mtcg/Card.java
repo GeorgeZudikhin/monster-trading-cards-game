@@ -74,4 +74,14 @@ public abstract class Card {
             notEffectedFight(playerACards, playerBCards, x, y);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "name=" + name +
+                ", damage=" + damage +
+                ", elementType=" + elementType +
+                '}';
+    }
+
 }

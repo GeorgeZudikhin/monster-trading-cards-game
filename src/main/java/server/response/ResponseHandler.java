@@ -39,11 +39,27 @@ public class ResponseHandler {
         }
     }
 
+    public void replyInPlainText(ResponseModel responseModel, String plainText) {
+        try {
+            bufferedWriter.write("HTTP/1.1 " + responseModel.getStatusCode() + " " + responseModel.getMessage() + LINE_END);
+            bufferedWriter.write("Server: MCTG Java Server" + LINE_END);
+            bufferedWriter.write("Content-Type: text/plain" + LINE_END);
+            bufferedWriter.write("Connection: close" + LINE_END);
+            bufferedWriter.write("Content-Length: " + plainText.length() + LINE_END);
+            bufferedWriter.write(LINE_END);
+            bufferedWriter.write(plainText + LINE_END);
+            bufferedWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void replyWithStatus(Object object, int statusCode, String statusMessage) {
         try {
             final String output = objectMapper.writeValueAsString(object) + "\n";
             bufferedWriter.write("HTTP/1.1 " + statusCode + " " + statusMessage + LINE_END);
-            bufferedWriter.write("Server: MTCG Java Server" + LINE_END);
+            bufferedWriter.write("Server: MCTG Java Server" + LINE_END);
             bufferedWriter.write("Content-Type: application/json" + LINE_END);
             bufferedWriter.write("Connection: close" + LINE_END);
             bufferedWriter.write("Content-Length: " + output.length() + LINE_END);
