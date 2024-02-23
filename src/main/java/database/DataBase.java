@@ -323,6 +323,45 @@ public class DataBase {
         return username;
     }
 
+    public boolean isCardInDeck(int userID, String cardID) {
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
+            SELECT COUNT(*) FROM "Cards"
+            WHERE "UserID" = ? AND "CardID" = ? AND "InDeck" = 1;
+            """)
+        ) {
+            statement.setInt(1, userID);
+            statement.setString(2, cardID);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Check if count is greater than 0
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public int getDeckSize(int userID) {
+        int count = 0;
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
+            SELECT COUNT(*) AS deckSize FROM "Cards"
+            WHERE "UserID" = ? AND "InDeck" = 1;
+            """)
+        ) {
+            statement.setInt(1, userID);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("deckSize");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+
 
     public void configureDeck(int userID, String cardID) {
 

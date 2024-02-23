@@ -88,7 +88,7 @@ public class UserController {
 
         userDeck = myData.getUserDeck(userID);
         if (userDeck.isEmpty())
-            return new ResponseModel("The request was fine, but the user deck doesn't have any cards", 404);
+            return new ResponseModel("The request was fine, but the user's deck doesn't have any cards", 404);
 
         return new ResponseModel("The deck has cards, the response contains these", 200, userDeck);
     }
@@ -122,12 +122,18 @@ public class UserController {
 
     }
 
-    public ResponseModel addToDeck(String token, String CardID) {
+    public ResponseModel addToDeck(String token, String cardID) {
         int userID = myData.returnUserIDFromToken(token);
         if (userID == 0)
             return new ResponseModel("Access token is missing or invalid", 401);
 
-        myData.configureDeck(userID, CardID);
+        int currentDeckSize = myData.getDeckSize(userID);
+        System.out.println("Current deck size: " + currentDeckSize);
+        if (currentDeckSize >= 4) {
+            return new ResponseModel("At least one of the provided cards does not belong to the user or is not available", 403);
+        }
+
+        myData.configureDeck(userID, cardID);
 
         return new ResponseModel("The deck has been successfully configured", 200);
     }
