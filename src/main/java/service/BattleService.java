@@ -1,7 +1,6 @@
 package service;
 
 import businessLogic.InitializeBattle;
-import database.DataBase;
 import http.ResponseModel;
 import model.StatsModel;
 import repository.BattleRepository;
@@ -10,8 +9,6 @@ import repository.UserRepository;
 import java.util.List;
 
 public class BattleService {
-    DataBase myData = new DataBase();
-
     private final UserRepository userRepository;
     private final BattleRepository battleRepository;
     public BattleService(UserRepository userRepository, BattleRepository battleRepository) {
@@ -45,21 +42,24 @@ public class BattleService {
         return new ResponseModel("The scoreboard could be retrieved successfully", 200, scoreboard);
     }
 
-    public String startBattleIfTwoUsersAreReady(String token) {
-        String username = myData.returnUsernameFromToken(token);
-        myData.readyToPlay(token, 1);
+    public ResponseModel startBattle(String authToken) {
+        int userID = userRepository.returnUserIDFromToken(authToken);
+        if(userID == 0)
+            return new ResponseModel("Access token is missing or invalid", 401);
 
-        int readyPlayer = myData.returnPlayerReady(username);
+        battleRepository.setPlayerToBeReadyToPlay(userID);
 
-        if (readyPlayer == 2) {
-            List<String> readyPlayers = myData.returnUsernamePlayerReady();
+        int amountOfPlayersReady = battleRepository.returnHowManyPlayersAreReady();
 
-            String playerA = readyPlayers.get(0);
-            String playerB = readyPlayers.get(1);
+        if (amountOfPlayersReady < 2)
+            return new ResponseModel("Player One Ready, waiting for Player Two", 403);
 
-            InitializeBattle initializeBattle = new InitializeBattle();
-            return initializeBattle.beginBattle(playerA, playerB);
-        }
-        return "Player in Lobby";
+        List<String> readyPlayers = battleRepository.returnUsernamesOfPlayersReady();
+
+        String playerA = readyPlayers.get(0);
+        String playerB = readyPlayers.get(1);
+
+        InitializeBattle initializeBattle = new InitializeBattle();
+        return initializeBattle.beginBattle(playerA, playerB);
     }
 }

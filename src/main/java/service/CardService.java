@@ -1,6 +1,5 @@
 package service;
 
-import database.DataBase;
 import businessLogic.Card;
 import repository.CardRepository;
 import repository.UserRepository;
@@ -9,7 +8,6 @@ import http.ResponseModel;
 import java.util.List;
 
 public class CardService {
-    DataBase myData = new DataBase();
 
     private final UserRepository userRepository;
     private final CardRepository cardRepository;

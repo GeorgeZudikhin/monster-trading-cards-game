@@ -1,12 +1,13 @@
 package businessLogic;
 
 public enum CardName {
-    GOBLIN,
-    DRAGON,
-    WIZZARD,
-    ORK,
+
     KNIGHT,
-    SPELL,
+    ORK,
+    ELF,
+    DRAGON,
+    GOBLIN,
+    WIZZARD,
     KRAKE,
-    ELF
+    SPELL
 }

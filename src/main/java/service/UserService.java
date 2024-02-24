@@ -10,8 +10,6 @@ import http.ResponseModel;
 import java.util.List;
 
 public class UserService {
-    DataBase myData = new DataBase();
-
     private final UserRepository userRepository;
     private final CardRepository cardRepository;
 
@@ -44,23 +42,6 @@ public class UserService {
         return new ResponseModel(authToken, 200);
     }
 
-    public String returnWinLossRatio(String authToken) {
-        float wins;
-        float losses;
-        String username = myData.returnUsernameFromToken(authToken);
-
-        if (username == null || username.isEmpty())
-            return "Authorization failed";
-
-        wins = myData.returnUserWins(username);
-        losses = myData.returnUserLosses(username);
-
-        if (losses <= 0)
-            return "Play more games to see Win/Loss Ratio";
-        else
-            return "Your Win/Loss ratio: " + wins / losses;
-    }
-
     public ResponseModel returnUserDeck(String authToken) {
         List<Card> userDeck;
 
@@ -68,7 +49,7 @@ public class UserService {
         if(userID == 0)
             return new ResponseModel("Access token is missing or invalid", 401);
 
-        userDeck = cardRepository.getUserDeckFromUserId(userID);
+        userDeck = cardRepository.getUserDeckByUserID(userID);
         if (userDeck.isEmpty())
             return new ResponseModel("The request was fine, but the user's deck doesn't have any cards", 404);
 
@@ -154,7 +135,7 @@ public class UserService {
         DataBase myData = new DataBase();
 
         List<Card> playerCards;
-        playerCards = myData.getUserDeckFromUserId(myData.returnUserIDFromUsername(username));
+        playerCards = myData.getUserDeckFromUserID(myData.returnUserIDFromUsername(username));
 //        List<Card> playerCard = new ArrayList<>();
 //
 //        for (int i = 0; i < 4; i++) {
