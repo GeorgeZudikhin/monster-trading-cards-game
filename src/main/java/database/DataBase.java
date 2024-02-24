@@ -1,7 +1,7 @@
 package database;
 
-import mtcg.*;
-import server.models.UserModel;
+import businessLogic.*;
+import models.UserModel;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataBase {
-    public boolean checkUserExists(String username) {
+    public boolean checkIfUserExists(String username) {
         boolean userExists = false;
         String compareUsername = "";
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres"); PreparedStatement statement = _ctx.prepareStatement("""
@@ -31,8 +31,8 @@ public class DataBase {
         return userExists;
     }
 
-    public int createUser(String username, String password) {
-        if (checkUserExists(username))
+    public int registerUser(String username, String password) {
+        if (checkIfUserExists(username))
             return 0;
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres"); PreparedStatement statement = _ctx.prepareStatement("""
                 INSERT INTO "User"
@@ -47,6 +47,30 @@ public class DataBase {
             e.printStackTrace();
         }
         return 1;
+    }
+
+    public boolean loginUser(String username, String password) {
+        String passwordToCheck = null;
+        boolean authorised = false;
+        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
+             PreparedStatement statement = _ctx.prepareStatement("""
+                SELECT "Password" From "User"
+                WHERE "Username" = ?;
+                """)
+        ) {
+            statement.setString(1, username);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next())
+                passwordToCheck = rs.getString("password");
+
+            if (passwordToCheck != null && passwordToCheck.equals(password)) {
+                authorised = true;
+                setUserToken(username);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return authorised;
     }
 
     public int returnUserIDFromToken(String authorizationToken) {
@@ -86,7 +110,7 @@ public class DataBase {
         return username;
     }
 
-    public List<Card> getUserDeck(int userID) {
+    public List<Card> getUserDeckFromUserId(int userID) {
 
         List<Card> userDeck = new ArrayList<>();
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
@@ -157,7 +181,7 @@ public class DataBase {
 //        return null;
 //    }
 
-    public void generateCards(String cardID, String cardName, int cardDamage, String cardElement, int packageID) {
+    public void generateCard(String cardID, String cardName, int cardDamage, String cardElement, int packageID) {
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
              PreparedStatement statement = _ctx.prepareStatement("""
                 INSERT INTO "Cards"
@@ -276,7 +300,7 @@ public class DataBase {
                 WHERE "UserID" = ?;
                 """)
         ) {
-            statement.setInt(1, returnCoins(username) - 5);
+            statement.setInt(1, returnUserCoins(username) - 5);
             statement.setInt(2, userID);
             statement.execute();
         } catch (SQLException e) {
@@ -382,7 +406,7 @@ public class DataBase {
         }
     }
 
-    public int returnUserID(String username) {
+    public int returnUserIDFromUsername(String username) {
         int UserID = 0;
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
              PreparedStatement statement = _ctx.prepareStatement("""
@@ -468,32 +492,7 @@ public class DataBase {
         }
     }
 
-    public boolean loginUser(String username, String password) {
-        String passwordToCheck = null;
-        boolean authorised = false;
-        try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
-             PreparedStatement statement = _ctx.prepareStatement("""
-                SELECT "Password" From "User"
-                WHERE "Username" = ?;
-                """)
-        ) {
-            statement.setString(1, username);
-            ResultSet rs = statement.executeQuery();
-            if (rs.next())
-                passwordToCheck = rs.getString("password");
-
-            if (passwordToCheck != null && passwordToCheck.equals(password)) {
-                authorised = true;
-                setToken(username);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return authorised;
-
-    }
-
-    public void setToken(String username) {
+    public void setUserToken(String username) {
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
              PreparedStatement statement = _ctx.prepareStatement("""
                 UPDATE "User"
@@ -510,7 +509,7 @@ public class DataBase {
         }
     }
 
-    public String getToken(String username) {
+    public String getTokenFromUsername(String username) {
         String token = null;
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
              PreparedStatement statement = _ctx.prepareStatement("""
@@ -528,7 +527,7 @@ public class DataBase {
     }
 
 
-    public boolean validateToken(String username, String token) {
+    public boolean validateTokenFromUsername(String username, String token) {
         String savedToken = "";
         boolean tokenValidation = false;
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
@@ -552,7 +551,7 @@ public class DataBase {
     }
 
 
-    public int returnWins(String username) {
+    public int returnUserWins(String username) {
         int wins = 0;
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
              PreparedStatement statement = _ctx.prepareStatement("""
@@ -571,7 +570,7 @@ public class DataBase {
         return wins;
     }
 
-    public int returnLosses(String username) {
+    public int returnUserLosses(String username) {
         int losses = 0;
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
              PreparedStatement statement = _ctx.prepareStatement("""
@@ -591,7 +590,7 @@ public class DataBase {
         return losses;
     }
 
-    public int returnCoins(String username) {
+    public int returnUserCoins(String username) {
         int coins = 0;
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres"); PreparedStatement statement = _ctx.prepareStatement("""
                 SELECT "Coins" From "User"

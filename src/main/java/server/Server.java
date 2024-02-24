@@ -1,6 +1,6 @@
 package server;
 
-import server.requests.SocketHandler;
+import http.SocketHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
