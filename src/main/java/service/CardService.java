@@ -2,8 +2,8 @@ package service;
 
 import database.DataBase;
 import businessLogic.Card;
-import repositoryInterface.CardRepository;
-import repositoryInterface.UserRepository;
+import repository.CardRepository;
+import repository.UserRepository;
 import http.ResponseModel;
 
 import java.util.List;
@@ -35,22 +35,23 @@ public class CardService {
     }
 
     public ResponseModel acquirePackage(String token) {
-        String username = myData.returnUsernameFromToken(token);
-        int coins = myData.returnUserCoins(username);
+        String username = userRepository.returnUsernameFromToken(token);
+        int coins = userRepository.returnUserCoins(username);
 
         if(coins < 5) {
             return new ResponseModel("Not enough money for buying a card package", 403);
         }
 
-        int packageID = myData.getNextAvailablePackageID();
+        int packageID = cardRepository.getNextAvailablePackageID();
         if(packageID < 0) {
             return new ResponseModel("No card package available for buying", 404);
         }
 
-        List<Card> cards = myData.givePackageToUser(token, packageID);
+        List<Card> cards = cardRepository.assignPackageToUser(token, packageID);
         if(cards == null || cards.isEmpty()) {
             System.out.println("The card list is null or empty after assigning to user.");
         }
+        System.out.println("Acquiring package from ");
         return new ResponseModel("A package has been successfully bought", 200, cards);
     }
 }

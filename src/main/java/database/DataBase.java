@@ -200,7 +200,7 @@ public class DataBase {
         }
     }
 
-    public List<Card> givePackageToUser(String token, int packageID) {
+    public List<Card> assignPackageToUser(String token, int packageID) {
         int userID = returnUserIDFromToken(token);
         List<Card> cards = null;
 
@@ -388,7 +388,7 @@ public class DataBase {
 
 
 
-    public void configureDeck(int userID, String cardID) {
+    public void setCardInDeck(int userID, String cardID) {
 
         try (Connection _ctx = DriverManager.getConnection("jdbc:postgresql://localhost:5432/mydb", "postgres", "postgres");
              PreparedStatement statement = _ctx.prepareStatement("""

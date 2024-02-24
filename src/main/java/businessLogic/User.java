@@ -23,7 +23,7 @@ public class User {
         this.username = username;
         this.coins = 20;
         this.elo = 100;
-        this.deck = new ArrayList<>();
         this.stack = new ArrayList<>();
+        this.deck = new ArrayList<>();
     }
 }

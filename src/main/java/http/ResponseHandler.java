@@ -7,7 +7,6 @@ import java.io.IOException;
 
 public class ResponseHandler {
 
-    public static final String LINE_END = "\r\n";
     private final BufferedWriter bufferedWriter;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -18,13 +17,13 @@ public class ResponseHandler {
     public void reply(Object object) {
         try {
             final String output = objectMapper.writeValueAsString(object);
-            bufferedWriter.write("HTTP/1.1 200 OK" + LINE_END);
-            bufferedWriter.write("SERVER.Server: Java Server" + LINE_END);
-            bufferedWriter.write("Content-Type: application/json" + LINE_END);
-            bufferedWriter.write("Connection: close" + LINE_END);
-            bufferedWriter.write("Content-Length: " + output.length() + LINE_END);
-            bufferedWriter.write(LINE_END);
-            bufferedWriter.write(output + LINE_END);
+            bufferedWriter.write("HTTP/1.1 200 OK" + "\r\n");
+            bufferedWriter.write("SERVER.Server: Java Server" + "\r\n");
+            bufferedWriter.write("Content-Type: application/json" + "\r\n");
+            bufferedWriter.write("Connection: close" + "\r\n");
+            bufferedWriter.write("Content-Length: " + output.length() + "\r\n");
+            bufferedWriter.write("\r\n");
+            bufferedWriter.write(output + "\r\n");
             bufferedWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,13 +40,13 @@ public class ResponseHandler {
 
     public void replyInPlainText(ResponseModel responseModel, String plainText) {
         try {
-            bufferedWriter.write("HTTP/1.1 " + responseModel.getStatusCode() + " " + responseModel.getMessage() + LINE_END);
-            bufferedWriter.write("Server: MTCG Java Server" + LINE_END);
-            bufferedWriter.write("Content-Type: text/plain" + LINE_END);
-            bufferedWriter.write("Connection: close" + LINE_END);
-            bufferedWriter.write("Content-Length: " + plainText.length() + LINE_END);
-            bufferedWriter.write(LINE_END);
-            bufferedWriter.write(plainText + LINE_END);
+            bufferedWriter.write("HTTP/1.1 " + responseModel.getStatusCode() + " " + responseModel.getMessage() + "\r\n");
+            bufferedWriter.write("Server: MTCG Java Server" + "\r\n");
+            bufferedWriter.write("Content-Type: text/plain" + "\r\n");
+            bufferedWriter.write("Connection: close" + "\r\n");
+            bufferedWriter.write("Content-Length: " + plainText.length() + "\r\n");
+            bufferedWriter.write("\r\n");
+            bufferedWriter.write(plainText + "\r\n");
             bufferedWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,13 +57,13 @@ public class ResponseHandler {
     public void replyWithStatus(Object object, int statusCode, String statusMessage) {
         try {
             final String output = objectMapper.writeValueAsString(object) + "\n";
-            bufferedWriter.write("HTTP/1.1 " + statusCode + " " + statusMessage + LINE_END);
-            bufferedWriter.write("Server: MTCG Java Server" + LINE_END);
-            bufferedWriter.write("Content-Type: application/json" + LINE_END);
-            bufferedWriter.write("Connection: close" + LINE_END);
-            bufferedWriter.write("Content-Length: " + output.length() + LINE_END);
-            bufferedWriter.write(LINE_END);
-            bufferedWriter.write(output + LINE_END);
+            bufferedWriter.write("HTTP/1.1 " + statusCode + " " + statusMessage + "\r\n");
+            bufferedWriter.write("Server: MTCG Java Server" + "\r\n");
+            bufferedWriter.write("Content-Type: application/json" + "\r\n");
+            bufferedWriter.write("Connection: close" + "\r\n");
+            bufferedWriter.write("Content-Length: " + output.length() + "\r\n");
+            bufferedWriter.write("\r\n");
+            bufferedWriter.write(output + "\r\n");
             bufferedWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
