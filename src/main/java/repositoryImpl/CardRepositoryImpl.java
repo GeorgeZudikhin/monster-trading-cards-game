@@ -26,7 +26,7 @@ public class CardRepositoryImpl implements CardRepository {
     }
 
     @Override
-    public List<Card> getUserDeckFromUserId(int userID) {
+    public List<Card> getUserDeckByUserID(int userID) {
         List<Card> userDeck = new ArrayList<>();
         final String query = "SELECT * FROM \"Cards\" WHERE \"UserID\" = ? AND \"InDeck\" = 1";
         try (Connection connection = DatabaseUtil.getConnection();

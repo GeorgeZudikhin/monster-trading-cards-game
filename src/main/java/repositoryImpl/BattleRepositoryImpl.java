@@ -75,4 +75,52 @@ public class BattleRepositoryImpl implements BattleRepository {
         }
         return scoreboard;
     }
+
+    @Override
+    public void setPlayerToBeReadyToPlay(int userID) {
+        final String query = "UPDATE \"User\" SET \"Ready\" = ? WHERE \"UserID\" = ?";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, 1);
+            statement.setInt(2, userID);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error setting ready status for userID: " + userID, e);
+        }
+    }
+
+    @Override
+    public int returnHowManyPlayersAreReady() {
+        final String query = "SELECT COUNT(*) AS \"ReadyPlayer\" FROM \"User\" WHERE \"Ready\" = 1";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("ReadyPlayer");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving ready players count", e);
+        }
+        return 0;
+    }
+
+    @Override
+    public List<String> returnUsernamesOfPlayersReady() {
+        List<String> readyPlayers = new ArrayList<>();
+        final String query = "SELECT \"Username\" FROM \"User\" WHERE \"Ready\" = 1";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String username = rs.getString("Username");
+                readyPlayers.add(username);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error retrieving ready players", e);
+        }
+        return readyPlayers;
+    }
+
+
+
 }

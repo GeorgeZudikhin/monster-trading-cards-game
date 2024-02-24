@@ -26,7 +26,7 @@ public class SocketHandler implements Runnable {
 
     private final Socket clientConnection;
     private final BufferedReader bufferedReader;
-    private final ResponseHandler responseHandler;
+    private final ResponseWriter responseWriter;
     private final HeaderReader headerReader = new HeaderReader();
     private final ObjectMapper objectMapper = new ObjectMapper();
     //UserController userController = new UserController();
@@ -39,7 +39,7 @@ public class SocketHandler implements Runnable {
     public SocketHandler(Socket clientConnection) throws IOException {
         this.clientConnection = clientConnection;
         bufferedReader = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
-        responseHandler = new ResponseHandler(new BufferedWriter(new OutputStreamWriter(clientConnection.getOutputStream())));
+        responseWriter = new ResponseWriter(new BufferedWriter(new OutputStreamWriter(clientConnection.getOutputStream())));
 
         UserRepository userRepository = UserRepositoryImpl.getInstance();
         CardRepository cardRepository = CardRepositoryImpl.getInstance(userRepository);
@@ -73,8 +73,8 @@ public class SocketHandler implements Runnable {
                 ResponseModel responseModel = userService.signUpUser(userModel.getUsername(), userModel.getPassword());
 
                 switch (responseModel.getStatusCode()) {
-                    case 201 -> responseHandler.replyCreated(responseModel);
-                    case 409 -> responseHandler.replyConflict(responseModel);
+                    case 201 -> responseWriter.replyCreated(responseModel);
+                    case 409 -> responseWriter.replyConflict(responseModel);
                 }
 
             } else if (httpMethodWithPath.equals("POST /sessions HTTP/1.1")) {
@@ -85,8 +85,8 @@ public class SocketHandler implements Runnable {
                 ResponseModel responseModel = userService.logInUser(userModel.getUsername(), userModel.getPassword());
 
                 switch (responseModel.getStatusCode()) {
-                    case 200 -> responseHandler.replySuccessful(responseModel);
-                    case 401 -> responseHandler.replyUnauthorized(responseModel);
+                    case 200 -> responseWriter.replySuccessful(responseModel);
+                    case 401 -> responseWriter.replyUnauthorized(responseModel);
                 }
 
             } else if (httpMethodWithPath.equals("POST /packages HTTP/1.1")) {
@@ -112,11 +112,11 @@ public class SocketHandler implements Runnable {
                     }
                 }
                 if (allCardsCreated) {
-                    responseHandler.replyCreated(responseModel);
+                    responseWriter.replyCreated(responseModel);
                 } else {
                     switch (responseModel.getStatusCode()) {
-                        case 401 -> responseHandler.replyUnauthorized(responseModel);
-                        case 403 -> responseHandler.replyForbidden(responseModel);
+                        case 401 -> responseWriter.replyUnauthorized(responseModel);
+                        case 403 -> responseWriter.replyForbidden(responseModel);
                     }
                 }
 
@@ -124,18 +124,18 @@ public class SocketHandler implements Runnable {
                 ResponseModel responseModel = cardService.acquirePackage(headerReader.getHeader("Authorization"));
 
                 switch (responseModel.getStatusCode()) {
-                    case 200 -> responseHandler.replySuccessful(responseModel);
-                    case 403 -> responseHandler.replyForbidden(responseModel);
-                    case 404 -> responseHandler.replyNotFound(responseModel);
+                    case 200 -> responseWriter.replySuccessful(responseModel);
+                    case 403 -> responseWriter.replyForbidden(responseModel);
+                    case 404 -> responseWriter.replyNotFound(responseModel);
                 }
 
             } else if (httpMethodWithPath.equals("GET /cards HTTP/1.1")) {
                 ResponseModel responseModel = userService.returnAllUserCards(headerReader.getHeader("Authorization"));
 
                 switch (responseModel.getStatusCode()) {
-                    case 200 -> responseHandler.replySuccessful(responseModel);
-                    case 401 -> responseHandler.replyUnauthorized(responseModel);
-                    case 204 -> responseHandler.replyNoContent(responseModel);
+                    case 200 -> responseWriter.replySuccessful(responseModel);
+                    case 401 -> responseWriter.replyUnauthorized(responseModel);
+                    case 204 -> responseWriter.replyNoContent(responseModel);
                 }
 
             } else if (httpMethodWithPath.startsWith("GET /deck")) {
@@ -152,14 +152,14 @@ public class SocketHandler implements Runnable {
                                 .map(Card::toString)
                                 .collect(Collectors.joining("\n"));
 
-                        responseHandler.replyInPlainText(responseModel, plainResponse);
+                        responseWriter.replyInPlainText(responseModel, plainResponse);
                     } else {
-                        responseHandler.replySuccessful(responseModel);
+                        responseWriter.replySuccessful(responseModel);
                     }
                 } else if (responseModel.getStatusCode() == 401) {
-                    responseHandler.replyUnauthorized(responseModel);
+                    responseWriter.replyUnauthorized(responseModel);
                 } else if (responseModel.getStatusCode() == 404) {
-                    responseHandler.replyNotFound(responseModel);
+                    responseWriter.replyNotFound(responseModel);
                 }
             } else if (httpMethodWithPath.equals("PUT /deck HTTP/1.1")) {
                 char[] charBuffer = new char[headerReader.getContentLength()];
@@ -169,7 +169,7 @@ public class SocketHandler implements Runnable {
                 boolean forbidden = false;
 
                 if(cardIDs.size() < 4) {
-                    responseHandler.replyBadRequest(new ResponseModel("The provided deck did not include the required amount of cards", 400));
+                    responseWriter.replyBadRequest(new ResponseModel("The provided deck did not include the required amount of cards", 400));
                 } else {
                     for (String cardID : cardIDs) {
                         responseModel = userService.addCardToDeck(headerReader.getHeader("Authorization"), cardID);
@@ -179,16 +179,16 @@ public class SocketHandler implements Runnable {
                         }
                     }
                     if (forbidden) {
-                        responseHandler.replyForbidden(responseModel);
+                        responseWriter.replyForbidden(responseModel);
                     } else if (responseModel.getStatusCode() == 200) {
-                        responseHandler.replySuccessful(responseModel);
+                        responseWriter.replySuccessful(responseModel);
                     } else if (responseModel.getStatusCode() == 401) {
-                        responseHandler.replyUnauthorized(responseModel);
+                        responseWriter.replyUnauthorized(responseModel);
                     }
                 }
 
             } else if (httpMethodWithPath.startsWith("GET /users/") || httpMethodWithPath.startsWith("PUT /users/")) {
-                ResponseModel responseModel = null;
+                ResponseModel responseModel;
 
                 String[] pathAndMethod = httpMethodWithPath.split(" ");
                 String[] pathSegments = pathAndMethod[1].split("/");
@@ -210,39 +210,45 @@ public class SocketHandler implements Runnable {
                 }
 
                 switch (responseModel.getStatusCode()) {
-                    case 200 -> responseHandler.replySuccessful(responseModel);
-                    case 400 -> responseHandler.replyBadRequest(responseModel);
-                    case 401 -> responseHandler.replyUnauthorized(responseModel);
-                    case 403 -> responseHandler.replyForbidden(responseModel);
-                    case 404 -> responseHandler.replyNotFound(responseModel);
+                    case 200 -> responseWriter.replySuccessful(responseModel);
+                    case 400 -> responseWriter.replyBadRequest(responseModel);
+                    case 401 -> responseWriter.replyUnauthorized(responseModel);
+                    case 403 -> responseWriter.replyForbidden(responseModel);
+                    case 404 -> responseWriter.replyNotFound(responseModel);
                 }
             } else if (httpMethodWithPath.equals("GET /stats HTTP/1.1")) {
                 ResponseModel responseModel = battleService.returnUserStats(headerReader.getHeader("Authorization"));
 
                 switch (responseModel.getStatusCode()) {
-                    case 200 -> responseHandler.replySuccessful(responseModel);
-                    case 401 -> responseHandler.replyUnauthorized(responseModel);
-                    case 404 -> responseHandler.replyNotFound(responseModel);
+                    case 200 -> responseWriter.replySuccessful(responseModel);
+                    case 401 -> responseWriter.replyUnauthorized(responseModel);
+                    case 404 -> responseWriter.replyNotFound(responseModel);
                 }
 
             } else if (httpMethodWithPath.equals("GET /scoreboard HTTP/1.1")) {
                 ResponseModel responseModel = battleService.returnScoreboard(headerReader.getHeader("Authorization"));
 
                 switch (responseModel.getStatusCode()) {
-                    case 200 -> responseHandler.replySuccessful(responseModel);
-                    case 401 -> responseHandler.replyUnauthorized(responseModel);
-                    case 404 -> responseHandler.replyNotFound(responseModel);
+                    case 200 -> responseWriter.replySuccessful(responseModel);
+                    case 401 -> responseWriter.replyUnauthorized(responseModel);
+                    case 404 -> responseWriter.replyNotFound(responseModel);
                 }
 
             } else if (httpMethodWithPath.equals("POST /battles HTTP/1.1")) {
-                String response = battleService.startBattleIfTwoUsersAreReady(headerReader.getHeader("Authorization"));
-                responseHandler.reply(response);
+                ResponseModel responseModel = battleService.startBattle(headerReader.getHeader("Authorization"));
 
-            } else if (httpMethodWithPath.contains("tradings")) {
-                String response = "Tradings is not available";
-                responseHandler.reply(response);
+                switch (responseModel.getStatusCode()) {
+                    case 200 -> responseWriter.replySuccessful(responseModel);
+                    case 401 -> responseWriter.replyUnauthorized(responseModel);
+                    case 403 -> responseWriter.replyForbidden(responseModel);
+                }
+
             }
-            responseHandler.reply();
+//            else if (httpMethodWithPath.contains("tradings")) {
+//                String response = "Tradings is not available";
+//                responseHandler.reply(response);
+//            }
+            responseWriter.closeConnection();
 
         } catch (Exception e) {
             System.err.println(e);

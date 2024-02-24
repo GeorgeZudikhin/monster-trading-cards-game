@@ -1,7 +1,7 @@
 package businessLogic;
 
 public enum Element {
-    FIRE,
+    NORMAL,
     WATER,
-    NORMAL
+    FIRE
 }

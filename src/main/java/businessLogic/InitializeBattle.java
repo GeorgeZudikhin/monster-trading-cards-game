@@ -1,13 +1,14 @@
 package businessLogic;
 
 import database.DataBase;
+import http.ResponseModel;
 import service.UserService;
 
 import java.util.List;
 
 public class InitializeBattle {
 
-    public String beginBattle(String playerAName, String playerBName) {
+    public ResponseModel beginBattle(String playerAName, String playerBName) {
         DataBase myData = new DataBase();
         //User
         User playerA = new User(playerAName);
@@ -43,15 +44,16 @@ public class InitializeBattle {
             myData.countLosses(playerBName, playerB.getLosses() + 1);
             myData.updateElo(playerA.getUsername(), playerA.getElo() + 3);
             myData.updateElo(playerB.getUsername(), playerB.getElo() - 5);
-            return (playerA.getUsername() + " " + "is the winner of the Game");
+            return new ResponseModel(playerA.getUsername() + " " + "has won the game!", 200);
+            //return (playerA.getUsername() + " " + "is the winner of the Game");
         } else if (playerA.getWinCounter() < playerB.getWinCounter()) {
             myData.countLosses(playerAName, playerA.getLosses() + 1);
             myData.countWins(playerBName, playerB.getWins() + 1);
             myData.updateElo(playerA.getUsername(), playerA.getElo() - 5);
             myData.updateElo(playerB.getUsername(), playerB.getElo() + 3);
-            return playerB.getUsername() + " " + "is the winner of the Game";
+            return new ResponseModel(playerB.getUsername() + " " + "has won the game!", 200);
         } else {
-            return "Draw";
+            return new ResponseModel("Draw!", 200);
         }
     }
 }
