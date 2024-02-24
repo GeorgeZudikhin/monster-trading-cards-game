@@ -4,7 +4,7 @@ import java.sql.*;
 
 import database.DatabaseUtil;
 import repository.UserRepository;
-import models.UserModel;
+import model.UserModel;
 
 public class UserRepositoryImpl implements UserRepository {
     private static UserRepositoryImpl userRepository;
@@ -195,6 +195,8 @@ public class UserRepositoryImpl implements UserRepository {
                 if (rs.next()) {
                     UserModel user = new UserModel();
                     user.setUsername(rs.getString("Username"));
+                    user.setPassword(rs.getString("Password"));
+                    user.setAuthorization(rs.getString("Token"));
                     user.setNewBio(rs.getString("Bio"));
                     user.setNewImage(rs.getString("Image"));
                     return user;

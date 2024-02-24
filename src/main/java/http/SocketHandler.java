@@ -3,15 +3,13 @@ package http;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import businessLogic.Card;
-import repositoryImpl.CardRepositoryImpl;
-import repositoryImpl.UserRepositoryImpl;
-import repository.CardRepository;
-import repository.UserRepository;
+import repository.*;
+import repositoryImpl.*;
 import service.BattleService;
 import service.CardService;
 import service.UserService;
-import models.CardModel;
-import models.UserModel;
+import model.CardModel;
+import model.UserModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -35,7 +33,8 @@ public class SocketHandler implements Runnable {
     private final UserService userService;
     //CardService cardService = new CardService();
     private final CardService cardService;
-    BattleService battleService = new BattleService();
+    //BattleService battleService = new BattleService();
+    private final BattleService battleService;
 
     public SocketHandler(Socket clientConnection) throws IOException {
         this.clientConnection = clientConnection;
@@ -44,8 +43,10 @@ public class SocketHandler implements Runnable {
 
         UserRepository userRepository = UserRepositoryImpl.getInstance();
         CardRepository cardRepository = CardRepositoryImpl.getInstance(userRepository);
+        BattleRepository battleRepository = BattleRepositoryImpl.getInstance();
         this.userService = new UserService(userRepository, cardRepository);
         this.cardService = new CardService(userRepository, cardRepository);
+        this.battleService = new BattleService(userRepository, battleRepository);
     }
 
     @Override
@@ -186,14 +187,6 @@ public class SocketHandler implements Runnable {
                     }
                 }
 
-            } else if (httpMethodWithPath.equals("GET /stats HTTP/1.1")) {
-                String response = userService.returnEloScore(headerReader.getHeader("Authorization"));
-                responseHandler.reply(response);
-
-            } else if (httpMethodWithPath.equals("GET /scoreboard HTTP/1.1")) {
-                Object response = userService.returnGlobalScoreboard(headerReader.getHeader("Authorization"));
-                responseHandler.reply(response);
-
             } else if (httpMethodWithPath.startsWith("GET /users/") || httpMethodWithPath.startsWith("PUT /users/")) {
                 ResponseModel responseModel = null;
 
@@ -223,6 +216,24 @@ public class SocketHandler implements Runnable {
                     case 403 -> responseHandler.replyForbidden(responseModel);
                     case 404 -> responseHandler.replyNotFound(responseModel);
                 }
+            } else if (httpMethodWithPath.equals("GET /stats HTTP/1.1")) {
+                ResponseModel responseModel = battleService.returnUserStats(headerReader.getHeader("Authorization"));
+
+                switch (responseModel.getStatusCode()) {
+                    case 200 -> responseHandler.replySuccessful(responseModel);
+                    case 401 -> responseHandler.replyUnauthorized(responseModel);
+                    case 404 -> responseHandler.replyNotFound(responseModel);
+                }
+
+            } else if (httpMethodWithPath.equals("GET /scoreboard HTTP/1.1")) {
+                ResponseModel responseModel = battleService.returnScoreboard(headerReader.getHeader("Authorization"));
+
+                switch (responseModel.getStatusCode()) {
+                    case 200 -> responseHandler.replySuccessful(responseModel);
+                    case 401 -> responseHandler.replyUnauthorized(responseModel);
+                    case 404 -> responseHandler.replyNotFound(responseModel);
+                }
+
             } else if (httpMethodWithPath.equals("POST /battles HTTP/1.1")) {
                 String response = battleService.startBattleIfTwoUsersAreReady(headerReader.getHeader("Authorization"));
                 responseHandler.reply(response);

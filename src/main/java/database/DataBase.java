@@ -1,7 +1,7 @@
 package database;
 
 import businessLogic.*;
-import models.UserModel;
+import model.UserModel;
 
 import java.sql.*;
 import java.util.ArrayList;

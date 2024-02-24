@@ -2,11 +2,48 @@ package service;
 
 import businessLogic.InitializeBattle;
 import database.DataBase;
+import http.ResponseModel;
+import model.StatsModel;
+import repository.BattleRepository;
+import repository.UserRepository;
 
 import java.util.List;
 
 public class BattleService {
     DataBase myData = new DataBase();
+
+    private final UserRepository userRepository;
+    private final BattleRepository battleRepository;
+    public BattleService(UserRepository userRepository, BattleRepository battleRepository) {
+        this.userRepository = userRepository;
+        this.battleRepository = battleRepository;
+    }
+
+    public ResponseModel returnUserStats(String authToken) {
+        int userID = userRepository.returnUserIDFromToken(authToken);
+        if(userID == 0)
+            return new ResponseModel("Access token is missing or invalid", 401);
+
+        String username = userRepository.returnUsernameFromToken(authToken);
+
+        StatsModel stats = battleRepository.returnUserStats(username);
+        if(stats == null)
+            return new ResponseModel("No stats could be retrieved", 404);
+
+        return new ResponseModel("The stats could be retrieved successfully", 200, stats);
+    }
+
+    public ResponseModel returnScoreboard(String authToken) {
+        int userID = userRepository.returnUserIDFromToken(authToken);
+        if(userID == 0)
+            return new ResponseModel("Access token is missing or invalid", 401);
+
+        List<StatsModel> scoreboard = battleRepository.returnScoreboard();
+        if(scoreboard == null)
+            return new ResponseModel("No scoreboard could be retrieved", 404);
+
+        return new ResponseModel("The scoreboard could be retrieved successfully", 200, scoreboard);
+    }
 
     public String startBattleIfTwoUsersAreReady(String token) {
         String username = myData.returnUsernameFromToken(token);

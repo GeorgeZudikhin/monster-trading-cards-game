@@ -4,7 +4,7 @@ import businessLogic.*;
 import database.DataBase;
 import repository.CardRepository;
 import repository.UserRepository;
-import models.UserModel;
+import model.UserModel;
 import http.ResponseModel;
 
 import java.util.List;
@@ -59,31 +59,6 @@ public class UserService {
             return "Play more games to see Win/Loss Ratio";
         else
             return "Your Win/Loss ratio: " + wins / losses;
-    }
-
-    public String returnEloScore(String authToken) {
-        int eloScore;
-        String username = userRepository.returnUsernameFromToken(authToken);
-
-        if (username == null || username.isEmpty())
-            return "Authorization failed";
-
-        eloScore = myData.returnElo(username);
-
-        return "Your Elo: " + Math.max(eloScore, 0);
-    }
-
-    public Object returnGlobalScoreboard(String authToken) {
-        List<String> scoreboard;
-
-        String username = userRepository.returnUsernameFromToken(authToken);
-
-        if (username == null || username.isEmpty())
-            return "Authorization failed";
-
-        scoreboard = myData.returnScoreboard();
-
-        return scoreboard;
     }
 
     public ResponseModel returnUserDeck(String authToken) {
