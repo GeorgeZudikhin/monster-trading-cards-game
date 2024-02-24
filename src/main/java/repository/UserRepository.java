@@ -1,6 +1,6 @@
 package repository;
 
-import models.UserModel;
+import model.UserModel;
 
 public interface UserRepository {
     boolean checkIfUserExists(String username);
