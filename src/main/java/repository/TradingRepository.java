@@ -1,4 +1,4 @@
 package repository;
 
-public class TradingRepository {
+public interface TradingRepository {
 }

@@ -1,4 +1,4 @@
 package repository;
 
-public class BattleRepository {
+public interface BattleRepository {
 }
