@@ -3,12 +3,15 @@ package http;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import gameElements.Card;
+import model.TradingDealModel;
 import repository.*;
 import repository.repositoryImpl.BattleRepositoryImpl;
 import repository.repositoryImpl.CardRepositoryImpl;
+import repository.repositoryImpl.TradingRepositoryImpl;
 import repository.repositoryImpl.UserRepositoryImpl;
 import service.BattleService;
 import service.CardService;
+import service.TradingService;
 import service.UserService;
 import model.CardModel;
 import model.UserModel;
@@ -34,6 +37,7 @@ public class SocketHandler implements Runnable {
     private final UserService userService;
     private final CardService cardService;
     private final BattleService battleService;
+    private final TradingService tradingService;
 
     public SocketHandler(Socket clientConnection) throws IOException {
         this.clientConnection = clientConnection;
@@ -43,9 +47,11 @@ public class SocketHandler implements Runnable {
         UserRepository userRepository = UserRepositoryImpl.getInstance();
         CardRepository cardRepository = CardRepositoryImpl.getInstance(userRepository);
         BattleRepository battleRepository = BattleRepositoryImpl.getInstance();
+        TradingRepository tradingRepository = TradingRepositoryImpl.getInstance();
         this.userService = new UserService(userRepository, cardRepository);
         this.cardService = new CardService(userRepository, cardRepository);
         this.battleService = new BattleService(userRepository, cardRepository, battleRepository);
+        this.tradingService = new TradingService(tradingRepository, userRepository);
     }
 
     @Override
@@ -242,11 +248,35 @@ public class SocketHandler implements Runnable {
                 }
 
             } else if (httpMethodWithPath.equals("GET /tradings HTTP/1.1")) {
-                // Handle fetching trading deals
+                ResponseModel responseModel = tradingService.getTradingDeals(headerParser.getHeader("Authorization"));
+
+                switch (responseModel.getStatusCode()) {
+                    case 200 -> responseWriter.replySuccessful(responseModel);
+                    case 401 -> responseWriter.replyUnauthorized(responseModel);
+                    case 404 -> responseWriter.replyNotFound(responseModel);
+                }
             } else if (httpMethodWithPath.equals("POST /tradings HTTP/1.1")) {
-                // Handle creating a new trading deal
+                char[] charBuffer = new char[headerParser.getContentLength()];
+                bufferedReader.read(charBuffer, 0, headerParser.getContentLength());
+                final TradingDealModel tradingDeal = objectMapper.readValue(new String(charBuffer), TradingDealModel.class);
+                ResponseModel responseModel = tradingService.createTradingDeal(headerParser.getHeader("Authorization"), tradingDeal);
+
+                switch (responseModel.getStatusCode()) {
+                    case 201 -> responseWriter.replyCreated(responseModel);
+                    case 401 -> responseWriter.replyUnauthorized(responseModel);
+                    case 409 -> responseWriter.replyConflict(responseModel);
+                }
             } else if (httpMethodWithPath.startsWith("DELETE /tradings/")) {
-                // Handle deleting a trading deal
+                String[] pathAndMethod = httpMethodWithPath.split(" ");
+                String[] pathSegments = pathAndMethod[1].split("/");
+                String dealID = pathSegments[2];
+                System.out.println(dealID);
+
+                ResponseModel responseModel = tradingService.deleteTradingDeal(headerParser.getHeader("Authorization"), dealID);
+                switch (responseModel.getStatusCode()) {
+                    case 200 -> responseWriter.replySuccessful(responseModel);
+                    case 401 -> responseWriter.replyUnauthorized(responseModel);
+                }
             }
             responseWriter.closeConnection();
 
