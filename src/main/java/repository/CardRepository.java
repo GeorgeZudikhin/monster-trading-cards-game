@@ -1,6 +1,6 @@
 package repository;
 
-import businessLogic.Card;
+import gameElements.Card;
 
 import java.util.List;
 

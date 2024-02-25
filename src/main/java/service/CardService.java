@@ -1,6 +1,6 @@
 package service;
 
-import businessLogic.Card;
+import gameElements.Card;
 import repository.CardRepository;
 import repository.UserRepository;
 import http.ResponseModel;
@@ -32,8 +32,8 @@ public class CardService {
         }
     }
 
-    public ResponseModel acquirePackage(String token) {
-        String username = userRepository.returnUsernameFromToken(token);
+    public ResponseModel acquirePackage(String authToken) {
+        String username = userRepository.returnUsernameFromToken(authToken);
         int coins = userRepository.returnUserCoins(username);
 
         if(coins < 5) {
@@ -45,7 +45,7 @@ public class CardService {
             return new ResponseModel("No card package available for buying", 404);
         }
 
-        List<Card> cards = cardRepository.assignPackageToUser(token, packageID);
+        List<Card> cards = cardRepository.assignPackageToUser(authToken, packageID);
         if(cards == null || cards.isEmpty()) {
             System.out.println("The card list is null or empty after assigning to user.");
         }

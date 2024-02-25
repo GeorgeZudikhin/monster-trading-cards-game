@@ -10,4 +10,5 @@ public interface BattleRepository {
     void setPlayerToBeReadyToPlay(int userID);
     int returnHowManyPlayersAreReady();
     List<String> returnUsernamesOfPlayersReady();
+    void resetUserReadyStatus();
 }
