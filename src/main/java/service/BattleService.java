@@ -1,6 +1,6 @@
 package service;
 
-import gameLogic.BattleInitializer;
+import gameManager.BattleInitializer;
 import http.ResponseModel;
 import model.StatsModel;
 import repository.BattleRepository;
