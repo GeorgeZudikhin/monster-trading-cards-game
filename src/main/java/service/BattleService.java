@@ -1,18 +1,21 @@
 package service;
 
-import businessLogic.InitializeBattle;
+import gameLogic.BattleInitializer;
 import http.ResponseModel;
 import model.StatsModel;
 import repository.BattleRepository;
+import repository.CardRepository;
 import repository.UserRepository;
 
 import java.util.List;
 
 public class BattleService {
     private final UserRepository userRepository;
+    private final CardRepository cardRepository;
     private final BattleRepository battleRepository;
-    public BattleService(UserRepository userRepository, BattleRepository battleRepository) {
+    public BattleService(UserRepository userRepository, CardRepository cardRepository, BattleRepository battleRepository) {
         this.userRepository = userRepository;
+        this.cardRepository = cardRepository;
         this.battleRepository = battleRepository;
     }
 
@@ -59,7 +62,9 @@ public class BattleService {
         String playerA = readyPlayers.get(0);
         String playerB = readyPlayers.get(1);
 
-        InitializeBattle initializeBattle = new InitializeBattle();
-        return initializeBattle.beginBattle(playerA, playerB);
+        battleRepository.resetUserReadyStatus();
+
+        BattleInitializer battleInitializer = new BattleInitializer(cardRepository, userRepository);
+        return battleInitializer.beginBattle(playerA, playerB);
     }
 }

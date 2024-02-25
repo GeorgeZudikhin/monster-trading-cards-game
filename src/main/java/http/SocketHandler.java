@@ -2,9 +2,11 @@ package http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import businessLogic.Card;
+import gameElements.Card;
 import repository.*;
-import repositoryImpl.*;
+import repository.repositoryImpl.BattleRepositoryImpl;
+import repository.repositoryImpl.CardRepositoryImpl;
+import repository.repositoryImpl.UserRepositoryImpl;
 import service.BattleService;
 import service.CardService;
 import service.UserService;
@@ -27,13 +29,10 @@ public class SocketHandler implements Runnable {
     private final Socket clientConnection;
     private final BufferedReader bufferedReader;
     private final ResponseWriter responseWriter;
-    private final HeaderReader headerReader = new HeaderReader();
+    private final HeaderParser headerParser = new HeaderParser();
     private final ObjectMapper objectMapper = new ObjectMapper();
-    //UserController userController = new UserController();
     private final UserService userService;
-    //CardService cardService = new CardService();
     private final CardService cardService;
-    //BattleService battleService = new BattleService();
     private final BattleService battleService;
 
     public SocketHandler(Socket clientConnection) throws IOException {
@@ -46,29 +45,28 @@ public class SocketHandler implements Runnable {
         BattleRepository battleRepository = BattleRepositoryImpl.getInstance();
         this.userService = new UserService(userRepository, cardRepository);
         this.cardService = new CardService(userRepository, cardRepository);
-        this.battleService = new BattleService(userRepository, battleRepository);
+        this.battleService = new BattleService(userRepository, cardRepository, battleRepository);
     }
 
     @Override
     public void run() {
         try {
             final String httpMethodWithPath = bufferedReader.readLine();
-            System.out.println(httpMethodWithPath);
 
             while (bufferedReader.ready()) {
                 final String input = bufferedReader.readLine();
                 if ("".equals(input)) {
                     break;
                 }
-                headerReader.ingest(input);
+                headerParser.ingest(input);
             }
 
-            headerReader.print();
-            System.out.println("In thread: " + Thread.currentThread().getName());
+            headerParser.print();
+            System.out.println("Thread: " + Thread.currentThread().getName());
 
             if (httpMethodWithPath.equals("POST /users HTTP/1.1")) {
-                char[] charBuffer = new char[headerReader.getContentLength()];
-                bufferedReader.read(charBuffer, 0, headerReader.getContentLength());
+                char[] charBuffer = new char[headerParser.getContentLength()];
+                bufferedReader.read(charBuffer, 0, headerParser.getContentLength());
                 final UserModel userModel = objectMapper.readValue(new String(charBuffer), UserModel.class);
                 ResponseModel responseModel = userService.signUpUser(userModel.getUsername(), userModel.getPassword());
 
@@ -78,8 +76,8 @@ public class SocketHandler implements Runnable {
                 }
 
             } else if (httpMethodWithPath.equals("POST /sessions HTTP/1.1")) {
-                char[] charBuffer = new char[headerReader.getContentLength()];
-                bufferedReader.read(charBuffer, 0, headerReader.getContentLength());
+                char[] charBuffer = new char[headerParser.getContentLength()];
+                bufferedReader.read(charBuffer, 0, headerParser.getContentLength());
 
                 final UserModel userModel = objectMapper.readValue(new String(charBuffer), UserModel.class);
                 ResponseModel responseModel = userService.logInUser(userModel.getUsername(), userModel.getPassword());
@@ -90,8 +88,8 @@ public class SocketHandler implements Runnable {
                 }
 
             } else if (httpMethodWithPath.equals("POST /packages HTTP/1.1")) {
-                char[] charBuffer = new char[headerReader.getContentLength()];
-                bufferedReader.read(charBuffer, 0, headerReader.getContentLength());
+                char[] charBuffer = new char[headerParser.getContentLength()];
+                bufferedReader.read(charBuffer, 0, headerParser.getContentLength());
                 List<CardModel> cardsModel = objectMapper.readValue(new String(charBuffer), new TypeReference<>() {});
 
                 ResponseModel responseModel = null;
@@ -104,7 +102,7 @@ public class SocketHandler implements Runnable {
                             card.getCardDamage(),
                             card.getCardElement(),
                             card.getPackageID(),
-                            headerReader.getHeader("Authorization"));
+                            headerParser.getHeader("Authorization"));
 
                     if (responseModel.getStatusCode() != 201) {
                         allCardsCreated = false;
@@ -121,7 +119,7 @@ public class SocketHandler implements Runnable {
                 }
 
             } else if (httpMethodWithPath.equals("POST /transactions/packages HTTP/1.1")) {
-                ResponseModel responseModel = cardService.acquirePackage(headerReader.getHeader("Authorization"));
+                ResponseModel responseModel = cardService.acquirePackage(headerParser.getHeader("Authorization"));
 
                 switch (responseModel.getStatusCode()) {
                     case 200 -> responseWriter.replySuccessful(responseModel);
@@ -130,7 +128,7 @@ public class SocketHandler implements Runnable {
                 }
 
             } else if (httpMethodWithPath.equals("GET /cards HTTP/1.1")) {
-                ResponseModel responseModel = userService.returnAllUserCards(headerReader.getHeader("Authorization"));
+                ResponseModel responseModel = userService.returnAllUserCards(headerParser.getHeader("Authorization"));
 
                 switch (responseModel.getStatusCode()) {
                     case 200 -> responseWriter.replySuccessful(responseModel);
@@ -143,7 +141,7 @@ public class SocketHandler implements Runnable {
                 String path = requestParts[0];
                 String query = requestParts.length > 1 ? requestParts[1] : "";
 
-                ResponseModel responseModel = userService.returnUserDeck(headerReader.getHeader("Authorization"));
+                ResponseModel responseModel = userService.returnUserDeck(headerParser.getHeader("Authorization"));
 
                 if (responseModel.getStatusCode() == 200) {
                     if (query.contains("format=plain")) {
@@ -162,8 +160,8 @@ public class SocketHandler implements Runnable {
                     responseWriter.replyNotFound(responseModel);
                 }
             } else if (httpMethodWithPath.equals("PUT /deck HTTP/1.1")) {
-                char[] charBuffer = new char[headerReader.getContentLength()];
-                bufferedReader.read(charBuffer, 0, headerReader.getContentLength());
+                char[] charBuffer = new char[headerParser.getContentLength()];
+                bufferedReader.read(charBuffer, 0, headerParser.getContentLength());
                 List<String> cardIDs = objectMapper.readValue(new String(charBuffer), new TypeReference<>() {});
                 ResponseModel responseModel = null;
                 boolean forbidden = false;
@@ -172,7 +170,7 @@ public class SocketHandler implements Runnable {
                     responseWriter.replyBadRequest(new ResponseModel("The provided deck did not include the required amount of cards", 400));
                 } else {
                     for (String cardID : cardIDs) {
-                        responseModel = userService.addCardToDeck(headerReader.getHeader("Authorization"), cardID);
+                        responseModel = userService.addCardToDeck(headerParser.getHeader("Authorization"), cardID);
                         if (responseModel.getStatusCode() == 403) {
                             forbidden = true;
                             break;
@@ -196,16 +194,16 @@ public class SocketHandler implements Runnable {
                 System.out.println(requestedUsername);
 
                 if (httpMethodWithPath.startsWith("GET /users/")) {
-                    responseModel = userService.getUserProfileByUsername(headerReader.getHeader("Authorization"), requestedUsername);
+                    responseModel = userService.getUserProfileByUsername(headerParser.getHeader("Authorization"), requestedUsername);
                 } else {
-                    if (headerReader.getContentLength() == 0) {
+                    if (headerParser.getContentLength() == 0) {
                         responseModel = new ResponseModel("User not found", 400);
                     } else {
-                        char[] charBuffer = new char[headerReader.getContentLength()];
-                        bufferedReader.read(charBuffer, 0, headerReader.getContentLength());
+                        char[] charBuffer = new char[headerParser.getContentLength()];
+                        bufferedReader.read(charBuffer, 0, headerParser.getContentLength());
                         final UserModel userModel = objectMapper.readValue(new String(charBuffer), UserModel.class);
 
-                        responseModel = userService.updateUserProfile(headerReader.getHeader("Authorization"), requestedUsername, userModel.getNewUsername(), userModel.getNewBio(), userModel.getNewImage());
+                        responseModel = userService.updateUserProfile(headerParser.getHeader("Authorization"), requestedUsername, userModel.getNewUsername(), userModel.getNewBio(), userModel.getNewImage());
                     }
                 }
 
@@ -217,7 +215,7 @@ public class SocketHandler implements Runnable {
                     case 404 -> responseWriter.replyNotFound(responseModel);
                 }
             } else if (httpMethodWithPath.equals("GET /stats HTTP/1.1")) {
-                ResponseModel responseModel = battleService.returnUserStats(headerReader.getHeader("Authorization"));
+                ResponseModel responseModel = battleService.returnUserStats(headerParser.getHeader("Authorization"));
 
                 switch (responseModel.getStatusCode()) {
                     case 200 -> responseWriter.replySuccessful(responseModel);
@@ -226,7 +224,7 @@ public class SocketHandler implements Runnable {
                 }
 
             } else if (httpMethodWithPath.equals("GET /scoreboard HTTP/1.1")) {
-                ResponseModel responseModel = battleService.returnScoreboard(headerReader.getHeader("Authorization"));
+                ResponseModel responseModel = battleService.returnScoreboard(headerParser.getHeader("Authorization"));
 
                 switch (responseModel.getStatusCode()) {
                     case 200 -> responseWriter.replySuccessful(responseModel);
@@ -235,7 +233,7 @@ public class SocketHandler implements Runnable {
                 }
 
             } else if (httpMethodWithPath.equals("POST /battles HTTP/1.1")) {
-                ResponseModel responseModel = battleService.startBattle(headerReader.getHeader("Authorization"));
+                ResponseModel responseModel = battleService.startBattle(headerParser.getHeader("Authorization"));
 
                 switch (responseModel.getStatusCode()) {
                     case 200 -> responseWriter.replySuccessful(responseModel);
@@ -243,11 +241,13 @@ public class SocketHandler implements Runnable {
                     case 403 -> responseWriter.replyForbidden(responseModel);
                 }
 
+            } else if (httpMethodWithPath.equals("GET /tradings HTTP/1.1")) {
+                // Handle fetching trading deals
+            } else if (httpMethodWithPath.equals("POST /tradings HTTP/1.1")) {
+                // Handle creating a new trading deal
+            } else if (httpMethodWithPath.startsWith("DELETE /tradings/")) {
+                // Handle deleting a trading deal
             }
-//            else if (httpMethodWithPath.contains("tradings")) {
-//                String response = "Tradings is not available";
-//                responseHandler.reply(response);
-//            }
             responseWriter.closeConnection();
 
         } catch (Exception e) {

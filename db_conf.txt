@@ -1,8 +1,11 @@
-after creating docker postgresql Database with user "postgres" and password "postgres":
+1. Create a PostgreSQL database from docker image.
 
-1) Create Tables
+2. Set user: postgres
+   Set password: postgres
 
-	
+3. Create tables:
+
+
 create table "Cards"
 (
     "CardID"      text    not null

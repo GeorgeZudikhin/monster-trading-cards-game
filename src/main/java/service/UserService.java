@@ -1,7 +1,6 @@
 package service;
 
-import businessLogic.*;
-import database.DataBase;
+import gameElements.Card;
 import repository.CardRepository;
 import repository.UserRepository;
 import model.UserModel;
@@ -23,7 +22,6 @@ public class UserService {
             return new ResponseModel("User already exists", 409);
 
         userRepository.registerUser(username, password);
-        System.out.println("I have just registered a user using a userRepository!");
         return new ResponseModel("User successfully registered", 201);
     }
 
@@ -35,9 +33,6 @@ public class UserService {
         String authToken = userRepository.returnTokenFromUsername(username);
         if (authToken == null)
             return new ResponseModel("Error retrieving token", 500);
-
-
-        System.out.println("I have just logged in a user using a userRepository!");
 
         return new ResponseModel(authToken, 200);
     }
@@ -52,8 +47,6 @@ public class UserService {
         userDeck = cardRepository.getUserDeckByUserID(userID);
         if (userDeck.isEmpty())
             return new ResponseModel("The request was fine, but the user's deck doesn't have any cards", 404);
-
-        System.out.println("Just retrieved user deck from cardRepository!");
 
         return new ResponseModel("The deck has cards, the response contains these", 200, userDeck);
     }
@@ -129,39 +122,6 @@ public class UserService {
         System.out.println("Card has just been set in deck via cardRepository!");
 
         return new ResponseModel("The deck has been successfully configured", 200);
-    }
-
-    public static List<Card> generateUserDeck(String username) {
-        DataBase myData = new DataBase();
-
-        List<Card> playerCards;
-        playerCards = myData.getUserDeckFromUserID(myData.returnUserIDFromUsername(username));
-//        List<Card> playerCard = new ArrayList<>();
-//
-//        for (int i = 0; i < 4; i++) {
-//            int damage;
-//            Element cardElement;
-//            CardName cardName;
-//            SpellCard newSpellCard;
-//            MonsterCard newMonsterCard;
-//
-//            String[] splitCards = playerCards.get(i).split(";", 3);
-//            damage = Integer.parseInt(splitCards[0]);
-//            cardName = CardName.valueOf(splitCards[1]);
-//            cardElement = Element.valueOf(splitCards[2]);
-//
-//            if (cardName.equals(CardName.SPELL)) {
-//                newSpellCard = new SpellCard(cardName, damage, cardElement);
-//                playerCard.add(newSpellCard);
-//            } else {
-//                newMonsterCard = new MonsterCard(cardName, damage, cardElement);
-//                playerCard.add(newMonsterCard);
-//            }
-//
-//        }
-        System.out.println(playerCards.size());
-
-        return playerCards;
     }
 
 }
