@@ -88,6 +88,7 @@ public class ResponseWriter {
     public void replyConflict(Object object) {
         replyWithStatus(object, 409, "Conflict");
     }
+    public void replyInternalServerError(Object object) {replyWithStatus(object, 500, "Internal Server Error"); }
 
     public void closeConnection() {
         try {

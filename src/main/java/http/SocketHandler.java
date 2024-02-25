@@ -291,16 +291,16 @@ public class SocketHandler implements Runnable {
                     case 403 -> responseWriter.replyForbidden(responseModel);
                     case 404 -> responseWriter.replyNotFound(responseModel);
                 }
+            } else if (httpMethodWithPath.equals("POST /gamble HTTP/1.1")) {
+                ResponseModel responseModel = cardService.gambleCard(headerParser.getHeader("Authorization"));
+
+                switch (responseModel.getStatusCode()) {
+                    case 200 -> responseWriter.replySuccessful(responseModel);
+                    case 204 -> responseWriter.replyNoContent(responseModel);
+                    case 401 -> responseWriter.replyUnauthorized(responseModel);
+                    case 500 -> responseWriter.replyInternalServerError(responseModel);
+                }
             }
-//            else if (httpMethodWithPath.equals("POST /gamble HTTP/1.1")) {
-//                ResponseModel responseModel = cardService.gambleCard(headerParser.getHeader("Authorization"));
-//
-//                switch (responseModel.getStatusCode()) {
-//                    case 200 -> responseWriter.replySuccessful(responseModel);
-//                    case 204 -> responseWriter.replyNoContent(responseModel);
-//                    case 401 -> responseWriter.replyUnauthorized(responseModel);
-//                }
-//            }
 
             responseWriter.closeConnection();
 
