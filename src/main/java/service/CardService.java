@@ -6,6 +6,7 @@ import repository.UserRepository;
 import http.ResponseModel;
 
 import java.util.List;
+import java.util.Random;
 
 public class CardService {
 
@@ -53,15 +54,37 @@ public class CardService {
         return new ResponseModel("A package has been successfully bought", 200, cards);
     }
 
-//    public ResponseModel gambleCard(String authToken) {
-//        int userID = userRepository.returnUserIDFromToken(authToken);
-//        if(userID == 0)
-//            return new ResponseModel("Access token is missing or invalid", 401);
-//
-//        List<Card> deck = cardRepository.getUserDeckByUserID(userID);
-//        if (deck.isEmpty())
-//            return new ResponseModel("The request was fine, but the user's deck is empty", 204);
-//
-//        rand
-//    }
+    public ResponseModel gambleCard(String authToken) {
+        int userID = userRepository.returnUserIDFromToken(authToken);
+        if(userID == 0)
+            return new ResponseModel("Access token is missing or invalid", 401);
+
+        List<Card> deck = cardRepository.getUserDeckByUserID(userID);
+        if (deck.isEmpty())
+            return new ResponseModel("The request was fine, but the user's deck is empty", 204);
+
+        Random random = new Random();
+        Card selectedCard = deck.get(random.nextInt(deck.size()));
+        boolean isGamblingSuccessful;
+
+        // 50/50 chance to double or halve the card's damage
+        if (random.nextBoolean()) {
+            selectedCard.setDamage(selectedCard.getDamage() * 2); // Double the damage
+            isGamblingSuccessful = true;
+        } else {
+            selectedCard.setDamage(selectedCard.getDamage() / 2); // Halve the damage
+            isGamblingSuccessful = false;
+        }
+
+        // Update the card in the database
+        boolean updateSuccess = cardRepository.updateCardDamage(selectedCard.getId(), selectedCard.getDamage());
+        if (!updateSuccess) {
+            return new ResponseModel("Failed to update the card's damage", 500);
+        }
+
+        if(isGamblingSuccessful)
+            return new ResponseModel("Gambling was successful! Your card's damage was doubled!", 200, selectedCard);
+
+        return new ResponseModel("Oops, gambling was not successful! Your card's damage was halved!", 200, selectedCard);
+    }
 }

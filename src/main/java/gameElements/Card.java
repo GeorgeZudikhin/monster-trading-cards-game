@@ -9,12 +9,14 @@ import java.util.List;
 @Setter
 @Getter
 public abstract class Card {
+    String id;
     private CardName name;
     private double damage;
     private double tmpElementsDamage;
     private ElementType elementType;
 
-    public Card(CardName name, int damage, ElementType elementType) {
+    public Card(String id, CardName name, int damage, ElementType elementType) {
+        this.id = id;
         this.name = name;
         this.damage = damage;
         this.elementType = elementType;
@@ -23,7 +25,8 @@ public abstract class Card {
     @Override
     public String toString() {
         return "Card: " +
-                "name=" + name +
+                "id=" + id +
+                ", name=" + name +
                 ", damage=" + damage +
                 ", elementType=" + elementType +
                 '.';

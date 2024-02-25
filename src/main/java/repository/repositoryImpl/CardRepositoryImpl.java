@@ -34,15 +34,16 @@ public class CardRepositoryImpl implements CardRepository {
             statement.setInt(1, userID);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
+                    String id = resultSet.getString("CardID");
                     CardName cardName = CardName.valueOf(resultSet.getString("Name"));
                     int damage = resultSet.getInt("Damage");
                     ElementType elementType = ElementType.valueOf(resultSet.getString("ElementType"));
 
                     Card card;
                     if ("Spell".equals(cardName.toString())) {
-                        card = new SpellCard(cardName, damage, elementType);
+                        card = new SpellCard(id, cardName, damage, elementType);
                     } else {
-                        card = new MonsterCard(cardName, damage, elementType);
+                        card = new MonsterCard(id, cardName, damage, elementType);
                     }
                     userDeck.add(card);
                 }
@@ -110,15 +111,16 @@ public class CardRepositoryImpl implements CardRepository {
             statement.setInt(1, packageID);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
+                    String id = resultSet.getString("CardID");
                     CardName name = CardName.valueOf(resultSet.getString("Name"));
                     int damage = resultSet.getInt("Damage");
                     ElementType elementType = ElementType.valueOf(resultSet.getString("ElementType"));
 
                     Card card;
                     if ("Spell".equals(name.toString())) {
-                        card = new SpellCard(name, damage, elementType);
+                        card = new SpellCard(id, name, damage, elementType);
                     } else {
-                        card = new MonsterCard(name, damage, elementType);
+                        card = new MonsterCard(id, name, damage, elementType);
                     }
                     cards.add(card);
                 }
@@ -138,15 +140,16 @@ public class CardRepositoryImpl implements CardRepository {
             statement.setInt(1, userID);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
+                    String id = resultSet.getString("CardID");
                     CardName name = CardName.valueOf(resultSet.getString("Name"));
                     int damage = resultSet.getInt("Damage");
                     ElementType elementType = ElementType.valueOf(resultSet.getString("ElementType"));
 
                     Card card;
                     if ("Spell".equals(name.toString())) {
-                        card = new SpellCard(name, damage, elementType);
+                        card = new SpellCard(id, name, damage, elementType);
                     } else {
-                        card = new MonsterCard(name, damage, elementType);
+                        card = new MonsterCard(id, name, damage, elementType);
                     }
                     cards.add(card);
                 }
@@ -224,6 +227,16 @@ public class CardRepositoryImpl implements CardRepository {
         return false;
     }
 
-
-
+    public boolean updateCardDamage(String cardID, double newDamage) {
+        final String query = "UPDATE \"Card\" SET \"Damage\" = ? WHERE \"CardID\" = ?";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setDouble(1, newDamage);
+            statement.setString(2, cardID);
+            int updatedRows = statement.executeUpdate();
+            return updatedRows > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating card's damage", e);
+        }
+    }
 }
