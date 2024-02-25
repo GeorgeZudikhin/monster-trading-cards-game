@@ -5,14 +5,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import gameElements.Card;
 import model.TradingDealModel;
 import repository.*;
-import repository.repositoryImpl.BattleRepositoryImpl;
-import repository.repositoryImpl.CardRepositoryImpl;
-import repository.repositoryImpl.TradingRepositoryImpl;
-import repository.repositoryImpl.UserRepositoryImpl;
-import service.BattleService;
-import service.CardService;
-import service.TradingService;
-import service.UserService;
+import repository.repositoryImpl.*;
+import service.*;
 import model.CardModel;
 import model.UserModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,7 +45,7 @@ public class SocketHandler implements Runnable {
         this.userService = new UserService(userRepository, cardRepository);
         this.cardService = new CardService(userRepository, cardRepository);
         this.battleService = new BattleService(userRepository, cardRepository, battleRepository);
-        this.tradingService = new TradingService(tradingRepository, userRepository);
+        this.tradingService = new TradingService(tradingRepository, userRepository, cardRepository);
     }
 
     @Override
@@ -277,7 +271,37 @@ public class SocketHandler implements Runnable {
                     case 200 -> responseWriter.replySuccessful(responseModel);
                     case 401 -> responseWriter.replyUnauthorized(responseModel);
                 }
+            } else if (httpMethodWithPath.matches("POST /tradings/.+")) {
+                String[] pathAndMethod = httpMethodWithPath.split(" ");
+                String[] pathSegments = pathAndMethod[1].split("/");
+                String dealID = pathSegments[2];
+                System.out.println("Deal ID: " + dealID);
+
+                char[] charBuffer = new char[headerParser.getContentLength()];
+                bufferedReader.read(charBuffer, 0, headerParser.getContentLength());
+                final String cardID = objectMapper.readValue(new String(charBuffer), String.class);
+                System.out.println("Card ID: " + cardID);
+
+                ResponseModel responseModel = tradingService.acceptTradingDeal(headerParser.getHeader("Authorization"), dealID, cardID);
+
+                switch (responseModel.getStatusCode()) {
+                    case 200 -> responseWriter.replySuccessful(responseModel);
+                    case 400 -> responseWriter.replyBadRequest(responseModel);
+                    case 401 -> responseWriter.replyUnauthorized(responseModel);
+                    case 403 -> responseWriter.replyForbidden(responseModel);
+                    case 404 -> responseWriter.replyNotFound(responseModel);
+                }
             }
+//            else if (httpMethodWithPath.equals("POST /gamble HTTP/1.1")) {
+//                ResponseModel responseModel = cardService.gambleCard(headerParser.getHeader("Authorization"));
+//
+//                switch (responseModel.getStatusCode()) {
+//                    case 200 -> responseWriter.replySuccessful(responseModel);
+//                    case 204 -> responseWriter.replyNoContent(responseModel);
+//                    case 401 -> responseWriter.replyUnauthorized(responseModel);
+//                }
+//            }
+
             responseWriter.closeConnection();
 
         } catch (Exception e) {

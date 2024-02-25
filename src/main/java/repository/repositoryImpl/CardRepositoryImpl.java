@@ -187,5 +187,43 @@ public class CardRepositoryImpl implements CardRepository {
         }
     }
 
+    @Override
+    public boolean updateCardOwnership(String cardId, int newOwnerId) {
+        final String query = "UPDATE \"Card\" SET \"UserID\" = ? WHERE \"CardID\" = ?";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, newOwnerId);
+            statement.setString(2, cardId);
+            int updatedRows = statement.executeUpdate();
+            return updatedRows > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating card ownership", e);
+        }
+    }
+
+    @Override
+    public boolean isCardEligibleForTrading(String cardId, String requiredCardType, int minDamage) {
+        String query;
+        if ("SPELL".equals(requiredCardType)) {
+            query = "SELECT COUNT(*) FROM \"Card\" WHERE \"CardID\" = ? AND \"InDeck\" = 0 AND \"Damage\" >= ? AND \"Name\" = 'SPELL'";
+        } else {
+            query = "SELECT COUNT(*) FROM \"Card\" WHERE \"CardID\" = ? AND \"InDeck\" = 0 AND \"Damage\" >= ? AND \"Name\" != 'SPELL'";
+        }
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, cardId);
+            statement.setInt(2, minDamage);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error checking if card is eligible for trading", e);
+        }
+        return false;
+    }
+
+
 
 }

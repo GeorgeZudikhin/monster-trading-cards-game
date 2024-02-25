@@ -19,4 +19,6 @@ public class TradingDealModel {
     private String type;
     @JsonProperty(value = "MinimumDamage")
     private int minimumDamage;
+    @JsonProperty(value = "UserID")
+    private int userId;
 }

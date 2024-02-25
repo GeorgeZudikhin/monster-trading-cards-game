@@ -2,6 +2,7 @@ package service;
 
 import http.ResponseModel;
 import model.TradingDealModel;
+import repository.CardRepository;
 import repository.TradingRepository;
 import repository.UserRepository;
 
@@ -10,10 +11,12 @@ import java.util.List;
 public class TradingService {
     private final TradingRepository tradingRepository;
     private final UserRepository userRepository;
+    private final CardRepository cardRepository;
 
-    public TradingService(TradingRepository tradingRepository, UserRepository userRepository) {
+    public TradingService(TradingRepository tradingRepository, UserRepository userRepository, CardRepository cardRepository) {
         this.tradingRepository = tradingRepository;
         this.userRepository = userRepository;
+        this.cardRepository = cardRepository;
     }
 
     public ResponseModel createTradingDeal(String authToken, TradingDealModel tradingDeal) {
@@ -40,10 +43,34 @@ public class TradingService {
         return new ResponseModel("The trading deals could be retrieved successfully", 200, tradingDeals);
     }
 
-//    public ResponseModel acceptTradingDeal(String authToken, String dealID, String cardID) {
-//        // Logic for one user to accept another user's trading deal
-//    }
-//
+    public ResponseModel acceptTradingDeal(String authToken, String dealId, String cardId) {
+        int userId = userRepository.returnUserIDFromToken(authToken);
+        if (userId == 0)
+            return new ResponseModel("Invalid authentication token", 401);
+
+        TradingDealModel deal = tradingRepository.getTradingDealById(dealId);
+        if (deal == null)
+            return new ResponseModel("The provided deal not found", 404);
+
+        if (deal.getUserId() == userId)
+            return new ResponseModel("Cannot trade with yourself", 400);
+
+        System.out.println("CardID: " + cardId);
+        System.out.println("Card Type: " + deal.getType());
+
+        if (!cardRepository.isCardEligibleForTrading(cardId, deal.getType(), deal.getMinimumDamage()))
+            return new ResponseModel("Offered card does not meet the deal requirements", 400);
+
+        System.out.println("Card is eligible");
+
+        boolean ownershipUpdated = cardRepository.updateCardOwnership(deal.getCardToTrade(), userId);
+        if (!ownershipUpdated)
+            return new ResponseModel("Failed to update card ownership", 500);
+
+        tradingRepository.deleteTradingDeal(dealId);
+        return new ResponseModel("Trade accepted successfully", 200);
+    }
+
     public ResponseModel deleteTradingDeal(String authToken, String dealID) {
         int userID = userRepository.returnUserIDFromToken(authToken);
         if(userID == 0)

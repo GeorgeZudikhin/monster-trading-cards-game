@@ -86,4 +86,27 @@ public class TradingRepositoryImpl implements TradingRepository {
             throw new RuntimeException("Error deleting trading deal", e);
         }
     }
+
+    @Override
+    public TradingDealModel getTradingDealById(String dealId) {
+        final String query = "SELECT * FROM \"TradingDeal\" WHERE \"Id\" = ?";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, dealId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return TradingDealModel.builder()
+                            .Id(resultSet.getString("Id"))
+                            .cardToTrade(resultSet.getString("CardToTrade"))
+                            .type(resultSet.getString("Type"))
+                            .minimumDamage(resultSet.getInt("MinimumDamage"))
+                            .userId(resultSet.getInt("UserID"))
+                            .build();
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching trading deal by ID", e);
+        }
+        return null;
+    }
 }

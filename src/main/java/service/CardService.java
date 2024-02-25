@@ -52,4 +52,16 @@ public class CardService {
         System.out.println("Acquiring package from ");
         return new ResponseModel("A package has been successfully bought", 200, cards);
     }
+
+//    public ResponseModel gambleCard(String authToken) {
+//        int userID = userRepository.returnUserIDFromToken(authToken);
+//        if(userID == 0)
+//            return new ResponseModel("Access token is missing or invalid", 401);
+//
+//        List<Card> deck = cardRepository.getUserDeckByUserID(userID);
+//        if (deck.isEmpty())
+//            return new ResponseModel("The request was fine, but the user's deck is empty", 204);
+//
+//        rand
+//    }
 }

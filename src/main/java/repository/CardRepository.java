@@ -13,4 +13,6 @@ public interface CardRepository {
     List<Card> getCardsByPackageID(int packageID);
     int getCurrentDeckSize(int userID);
     void setCardInDeck(int userID, String cardID);
+    boolean updateCardOwnership(String cardId, int newOwnerId);
+    boolean isCardEligibleForTrading(String cardId, String requiredType, int minDamage);
 }

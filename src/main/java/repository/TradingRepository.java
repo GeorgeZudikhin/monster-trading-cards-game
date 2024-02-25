@@ -10,4 +10,5 @@ public interface TradingRepository {
     void deleteTradingDeal(String dealID);
 
     boolean checkIfTradingDealExists(String tradingDealId);
+    TradingDealModel getTradingDealById(String dealId);
 }
