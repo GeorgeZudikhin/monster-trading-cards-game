@@ -1,6 +1,6 @@
 package service;
 
-import gameManager.BattleInitializer;
+import gameManager.BattleInitiator;
 import http.ResponseModel;
 import model.StatsModel;
 import repository.BattleRepository;
@@ -64,7 +64,7 @@ public class BattleService {
 
         battleRepository.resetUserReadyStatus();
 
-        BattleInitializer battleInitializer = new BattleInitializer(cardRepository, userRepository);
-        return battleInitializer.beginBattle(playerA, playerB);
+        BattleInitiator battleInitiator = new BattleInitiator(cardRepository, userRepository);
+        return battleInitiator.initializeBattle(playerA, playerB);
     }
 }

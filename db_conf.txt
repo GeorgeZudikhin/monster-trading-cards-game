@@ -5,77 +5,50 @@
 
 3. Create tables:
 
-
-create table "Cards"
-(
-    "CardID"      text    not null
-    constraint cards_pk
-    primary key,
-    "Name"        text    not null,
-    "Damage"      integer not null,
-    "UserID"      integer
-    constraint cards_user__fk
-    references "User",
-    "Locked"      integer default 0,
-    "InDeck"      integer default 0,
-    "ElementType" text,
-    "PackageID"   integer
+CREATE TABLE "Card" (
+    "CardID" TEXT PRIMARY KEY,
+    "Name" TEXT NOT NULL,
+    "Damage" INTEGER NOT NULL,
+    "UserID" INTEGER REFERENCES "User"("UserID"),
+    "IsLocked" INTEGER DEFAULT 0,
+    "InDeck" INTEGER DEFAULT 0,
+    "ElementType" TEXT,
+    "PackageID" INTEGER
 );
 
-alter table "Cards"
-    owner to postgres;
-
-create unique index cards_id_uindex
-    on "Cards" ("CardID");
+CREATE UNIQUE INDEX cards_id_uindex ON "Card" ("CardID");
 
 
-create table "User"
-(
-    "UserID"   integer default nextval('"User_Id_seq"'::regclass) not null
-        constraint user_pk
-            primary key,
-    "Username" text                                               not null,
-    "Password" text                                               not null,
-    "Elo"      integer default 100,
-    "Coins"    integer default 20,
-    "Token"    text,
-    "Bio"      text,
-    "Image"    text,
-    "Wins"     integer,
-    "Losses"   integer,
-    "Ready"    integer default 0
+CREATE TABLE "User" (
+    "UserID" INTEGER DEFAULT nextval('"User_Id_seq"'::regclass) PRIMARY KEY,
+    "Username" TEXT NOT NULL,
+    "Password" TEXT NOT NULL,
+    "Elo" INTEGER DEFAULT 100,
+    "Coins" INTEGER DEFAULT 20,
+    "Token" TEXT,
+    "Bio" TEXT,
+    "Image" TEXT,
+    "Wins" INTEGER,
+    "Losses" INTEGER,
+    "Ready" INTEGER DEFAULT 0
 );
 
-alter table "User"
-    owner to swe1user;
-
-create unique index user_username_uindex
-    on "User" ("Username");
-
-create unique index user_token_uindex
-    on "User" ("Token");
+CREATE UNIQUE INDEX user_username_uindex ON "User" ("Username");
+CREATE UNIQUE INDEX user_token_uindex ON "User" ("Token");
 
 
-create table "Store"
-(
-    "TradeID"         serial
-        constraint store_pk_2
-            primary key
-        constraint store_pk
-            unique,
-    "UserID"          integer
-        constraint store_user__fk
-            references "User",
-    "CardID"          text
-        constraint store_cards__fk
-            references "Cards",
-    "DesiredCardType" text,
-    "DesiredElement"  text,
-    "DesiredDamage"   integer
+CREATE TABLE "TradingDeal" (
+    "Id" text PRIMARY KEY,
+    "CardToTrade" text NOT NULL,
+    "Type" TEXT NOT NULL,
+    "MinimumDamage" INTEGER DEFAULT 0,
+    "UserID" INTEGER NOT NULL,
+    CONSTRAINT "fk_user"
+        FOREIGN KEY ("UserID")
+        REFERENCES "User"("UserID"),
+    CONSTRAINT "fk_card_to_trade"
+        FOREIGN KEY ("CardToTrade")
+        REFERENCES "Card"("CardID")
+        ON DELETE CASCADE
 );
 
-alter table "Store"
-    owner to postgres;
-
-create unique index store_tradeid_uindex
-    on "Store" ("TradeID");

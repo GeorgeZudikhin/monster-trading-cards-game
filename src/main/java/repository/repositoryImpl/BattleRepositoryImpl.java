@@ -10,11 +10,14 @@ import repository.BattleRepository;
 
 public class BattleRepositoryImpl implements BattleRepository {
     private static BattleRepositoryImpl battleRepository;
-    private BattleRepositoryImpl() {}
+    private final DatabaseUtil databaseUtil;
+    private BattleRepositoryImpl(DatabaseUtil databaseUtil) {
+        this.databaseUtil = databaseUtil;
+    }
 
-    public static synchronized BattleRepositoryImpl getInstance() {
+    public static synchronized BattleRepositoryImpl getInstance(DatabaseUtil databaseUtil) {
         if (battleRepository == null) {
-            battleRepository = new BattleRepositoryImpl();
+            battleRepository = new BattleRepositoryImpl(databaseUtil);
         }
         return battleRepository;
     }
@@ -22,7 +25,7 @@ public class BattleRepositoryImpl implements BattleRepository {
     @Override
     public StatsModel returnUserStats(String username) {
         final String query = "SELECT * FROM \"User\" WHERE \"Username\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -49,7 +52,7 @@ public class BattleRepositoryImpl implements BattleRepository {
     public List<StatsModel> returnScoreboard() {
         List<StatsModel> scoreboard = new ArrayList<>();
         final String query = "SELECT \"Username\", \"Elo\", \"Wins\", \"Losses\" FROM \"User\" ORDER BY \"Elo\" DESC";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             int counter = 1;
@@ -72,7 +75,7 @@ public class BattleRepositoryImpl implements BattleRepository {
     @Override
     public void setPlayerToBeReadyToPlay(int userID) {
         final String query = "UPDATE \"User\" SET \"IsReady\" = ? WHERE \"UserID\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, 1);
             statement.setInt(2, userID);
@@ -85,7 +88,7 @@ public class BattleRepositoryImpl implements BattleRepository {
     @Override
     public int returnHowManyPlayersAreReady() {
         final String query = "SELECT COUNT(*) AS \"ReadyPlayer\" FROM \"User\" WHERE \"IsReady\" = 1";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -101,7 +104,7 @@ public class BattleRepositoryImpl implements BattleRepository {
     public List<String> returnUsernamesOfPlayersReady() {
         List<String> readyPlayers = new ArrayList<>();
         final String query = "SELECT \"Username\" FROM \"User\" WHERE \"IsReady\" = 1";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
@@ -117,7 +120,7 @@ public class BattleRepositoryImpl implements BattleRepository {
     @Override
     public void resetUserReadyStatus() {
         final String query = "UPDATE \"User\" SET \"IsReady\" = 0 WHERE \"IsReady\" = 1";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.executeUpdate();
         } catch (SQLException e) {
