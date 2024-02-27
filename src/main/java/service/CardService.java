@@ -3,7 +3,7 @@ package service;
 import gameElements.Card;
 import repository.CardRepository;
 import repository.UserRepository;
-import http.ResponseModel;
+import http.response.ResponseModel;
 
 import java.util.List;
 import java.util.Random;

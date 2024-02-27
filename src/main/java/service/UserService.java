@@ -4,7 +4,7 @@ import gameElements.Card;
 import repository.CardRepository;
 import repository.UserRepository;
 import model.UserModel;
-import http.ResponseModel;
+import http.response.ResponseModel;
 
 import java.util.List;
 

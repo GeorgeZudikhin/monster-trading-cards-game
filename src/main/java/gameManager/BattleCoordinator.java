@@ -10,19 +10,19 @@ public class BattleCoordinator {
     private static final int firstCard = 0;
 
     public static void startGame(User playerOne, List<Card> playerOneCards, User playerTwo, List<Card> playerTwoCards) {
-        for (int roundCounter = 1; roundCounter <= MAX_ROUNDS; roundCounter++) {
-            if (playerOneCards.isEmpty() || playerTwoCards.isEmpty()) {
-                System.out.println("#################################");
-                System.out.println("End!");
-                break;
-            } else if (roundCounter == MAX_ROUNDS) {
-                System.out.println("End result: Draw");
-                break;
-            }
+        int roundCounter = 1;
+        while (!playerOneCards.isEmpty() && !playerTwoCards.isEmpty() && roundCounter <= MAX_ROUNDS) {
             System.out.println("********************************");
             System.out.println("Round #" + roundCounter);
             Card.shuffleCards(playerOneCards, playerTwoCards);
             checkWinner(playerOne, playerOneCards, playerTwo, playerTwoCards);
+            roundCounter++;
+        }
+        if (playerOneCards.isEmpty() || playerTwoCards.isEmpty()) {
+            System.out.println("#################################");
+            System.out.println("End!");
+        } else {
+            System.out.println("End result: Draw");
         }
     }
 
@@ -109,7 +109,7 @@ public class BattleCoordinator {
                 System.out.println("draw");
             }
         } else {
-            System.out.println("Mixed Fight"); //Elements effect also mixed fights like spellfight
+            System.out.println("Mixed Fight");
             Card.elementsCardFight(playerOneCards, playerTwoCards);
             printLog(playerOne, playerOneCards, playerTwo, playerTwoCards);
             if (playerOneCards.get(firstCard).getTmpElementsDamage() > playerTwoCards.get(firstCard).getTmpElementsDamage()) {

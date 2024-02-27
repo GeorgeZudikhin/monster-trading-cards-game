@@ -1,15 +1,20 @@
 package service;
 
 import gameManager.BattleInitiator;
-import http.ResponseModel;
+import http.response.ResponseModel;
 import model.StatsModel;
 import repository.BattleRepository;
 import repository.CardRepository;
 import repository.UserRepository;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class BattleService {
+    private final Lock lock = new ReentrantLock();
+    private final CountDownLatch battleLatch = new CountDownLatch(1);
     private final UserRepository userRepository;
     private final CardRepository cardRepository;
     private final BattleRepository battleRepository;
@@ -65,6 +70,12 @@ public class BattleService {
         battleRepository.resetUserReadyStatus();
 
         BattleInitiator battleInitiator = new BattleInitiator(cardRepository, userRepository);
+
+        battleLatch.countDown();
         return battleInitiator.initializeBattle(playerA, playerB);
+    }
+
+    public void waitForBattleCompletion() throws InterruptedException {
+        battleLatch.await();
     }
 }
