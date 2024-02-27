@@ -8,12 +8,15 @@ import model.UserModel;
 
 public class UserRepositoryImpl implements UserRepository {
     private static UserRepositoryImpl userRepository;
+    private final DatabaseUtil databaseUtil;
 
-    private UserRepositoryImpl() {}
+    private UserRepositoryImpl(DatabaseUtil databaseUtil) {
+        this.databaseUtil = databaseUtil;
+    }
 
-    public static synchronized UserRepositoryImpl getInstance() {
+    public static synchronized UserRepositoryImpl getInstance(DatabaseUtil databaseUtil) {
         if (userRepository == null) {
-            userRepository = new UserRepositoryImpl();
+            userRepository = new UserRepositoryImpl(databaseUtil);
         }
         return userRepository;
     }
@@ -21,7 +24,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean checkIfUserExists(String username) {
         final String query = "SELECT COUNT(*) FROM \"User\" WHERE \"Username\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -38,7 +41,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void registerUser(String username, String password) {
         final String query = "INSERT INTO \"User\" (\"Username\", \"Password\") VALUES (?, ?)";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             statement.setString(2, password);
@@ -51,7 +54,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean loginUser(String username, String requestPassword) {
         final String query = "SELECT \"Password\" FROM \"User\" WHERE \"Username\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
@@ -71,7 +74,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public int returnUserIDFromToken(String token) {
         final String query = "SELECT \"UserID\" FROM \"User\" WHERE \"Token\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, token);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -88,7 +91,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public String returnUsernameFromID(int userID) {
         final String query = "SELECT \"Username\" FROM \"User\" WHERE \"UserID\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userID);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -105,7 +108,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public int returnUserIDFromUsername(String username) {
         final String query = "SELECT \"UserID\" FROM \"User\" WHERE \"Username\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -123,7 +126,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public String returnUsernameFromToken(String token) {
         final String query = "SELECT \"Username\" FROM \"User\" WHERE \"Token\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, token);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -140,7 +143,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public String returnTokenFromUsername(String username) {
         final String query = "SELECT \"Token\" FROM \"User\" WHERE \"Username\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -157,7 +160,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void setUserToken(String username) {
         final String query = "UPDATE \"User\" SET \"Token\" = ? WHERE \"Username\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, "Bearer " + username + "-mtcgToken");
             statement.setString(2, username);
@@ -170,7 +173,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean validateTokenFromUsername(String username, String token) {
         final String query = "SELECT \"Token\" FROM \"User\" WHERE \"Username\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -188,7 +191,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public UserModel returnUserDataByUsername(String requestedUsername) {
         final String query = "SELECT * FROM \"User\" WHERE \"Username\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, requestedUsername);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -196,7 +199,6 @@ public class UserRepositoryImpl implements UserRepository {
                     UserModel user = new UserModel();
                     user.setUsername(resultSet.getString("Username"));
                     user.setPassword(resultSet.getString("Password"));
-                    user.setAuthorization(resultSet.getString("Token"));
                     user.setNewBio(resultSet.getString("Bio"));
                     user.setNewImage(resultSet.getString("Image"));
                     return user;
@@ -211,7 +213,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void updateUserData(int userID, String newUsername, String newBio, String newImage) {
         final String query = "UPDATE \"User\" SET \"Username\" = ?, \"Bio\" = ?, \"Image\" = ? WHERE \"UserID\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, newUsername);
             statement.setString(2, newBio);
@@ -226,7 +228,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public int returnUserCoins(String username) {
         final String query = "SELECT \"Coins\" FROM \"User\" WHERE \"Username\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
@@ -242,7 +244,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void updateUserCoins(int userID) {
         final String query = "UPDATE \"User\" SET \"Coins\" = \"Coins\" - 5 WHERE \"UserID\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userID);
             statement.executeUpdate();
@@ -270,7 +272,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private int executeQueryForSingleIntResult(String query, String parameter) {
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, parameter);
             ResultSet resultSet = statement.executeQuery();
@@ -302,7 +304,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     private void executeUpdate(String query, int value, String username) {
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, value);
             statement.setString(2, username);

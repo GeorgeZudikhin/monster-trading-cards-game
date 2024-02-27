@@ -8,7 +8,7 @@ public class HeaderParser {
     public static final String HEADER_NAME_VALUE_SEPARATOR = ":";
     private Map<String, String> headers = new HashMap<>();
 
-    public void ingest(String headerLine) {
+    public void parseHeader(String headerLine) {
         final String[] split = headerLine.split(HEADER_NAME_VALUE_SEPARATOR, 2);
         headers.put(split[0], split[1].trim());
     }

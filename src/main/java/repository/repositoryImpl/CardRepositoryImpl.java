@@ -14,13 +14,16 @@ public class CardRepositoryImpl implements CardRepository {
     private static CardRepositoryImpl cardRepository;
     private final UserRepository userRepository;
 
-    private CardRepositoryImpl(UserRepository userRepository) {
+    private final DatabaseUtil databaseUtil;
+
+    private CardRepositoryImpl(DatabaseUtil databaseUtil, UserRepository userRepository) {
+        this.databaseUtil = databaseUtil;
         this.userRepository = userRepository;
     }
 
-    public static synchronized CardRepositoryImpl getInstance(UserRepository userRepository) {
+    public static synchronized CardRepositoryImpl getInstance(DatabaseUtil databaseUtil, UserRepository userRepository) {
         if (cardRepository == null) {
-            cardRepository = new CardRepositoryImpl(userRepository);
+            cardRepository = new CardRepositoryImpl(databaseUtil, userRepository);
         }
         return cardRepository;
     }
@@ -29,7 +32,7 @@ public class CardRepositoryImpl implements CardRepository {
     public List<Card> getUserDeckByUserID(int userID) {
         List<Card> userDeck = new ArrayList<>();
         final String query = "SELECT * FROM \"Card\" WHERE \"UserID\" = ? AND \"InDeck\" = 1";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userID);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -57,7 +60,7 @@ public class CardRepositoryImpl implements CardRepository {
     @Override
     public void generateCard(String cardID, String cardName, int cardDamage, String cardElement, int packageID) {
         final String query = "INSERT INTO \"Card\" (\"CardID\", \"Name\", \"Damage\", \"ElementType\", \"PackageID\") VALUES (?, ?, ?, ?, ?)";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, cardID);
             statement.setString(2, cardName);
@@ -73,7 +76,7 @@ public class CardRepositoryImpl implements CardRepository {
     @Override
     public int getNextAvailablePackageID() {
         final String query = "SELECT \"PackageID\" FROM \"Card\" WHERE \"UserID\" IS NULL GROUP BY \"PackageID\" ORDER BY \"PackageID\" LIMIT 1";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -89,7 +92,7 @@ public class CardRepositoryImpl implements CardRepository {
     public List<Card> assignPackageToUser(String token, int packageID) {
         int userID = userRepository.returnUserIDFromToken(token);
         final String query = "UPDATE \"Card\" SET \"UserID\" = ? WHERE \"PackageID\" = ? AND \"UserID\" IS NULL";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userID);
             statement.setInt(2, packageID);
@@ -106,7 +109,7 @@ public class CardRepositoryImpl implements CardRepository {
     public List<Card> getCardsByPackageID(int packageID) {
         List<Card> cards = new ArrayList<>();
         final String query = "SELECT \"CardID\", \"Name\", \"Damage\", \"ElementType\" FROM \"Card\" WHERE \"PackageID\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, packageID);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -135,7 +138,7 @@ public class CardRepositoryImpl implements CardRepository {
     public List<Card> getAllUserCardsByUserID(int userID) {
         List<Card> cards = new ArrayList<>();
         final String query = "SELECT \"CardID\", \"Name\", \"Damage\", \"ElementType\" FROM \"Card\" WHERE \"UserID\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userID);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -164,7 +167,7 @@ public class CardRepositoryImpl implements CardRepository {
     public int getCurrentDeckSize(int userID) {
         int count = 0;
         final String query = "SELECT COUNT(*) AS deckSize FROM \"Card\" WHERE \"UserID\" = ? AND \"InDeck\" = 1";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userID);
             ResultSet resultSet = statement.executeQuery();
@@ -180,7 +183,7 @@ public class CardRepositoryImpl implements CardRepository {
     @Override
     public void setCardInDeck(int userID, String cardID) {
         final String query = "UPDATE \"Card\" SET \"InDeck\" = 1 WHERE \"UserID\" = ? AND \"CardID\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userID);
             statement.setString(2, cardID);
@@ -193,7 +196,7 @@ public class CardRepositoryImpl implements CardRepository {
     @Override
     public boolean updateCardOwnership(String cardId, int newOwnerId) {
         final String query = "UPDATE \"Card\" SET \"UserID\" = ? WHERE \"CardID\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, newOwnerId);
             statement.setString(2, cardId);
@@ -212,7 +215,7 @@ public class CardRepositoryImpl implements CardRepository {
         } else {
             query = "SELECT COUNT(*) FROM \"Card\" WHERE \"CardID\" = ? AND \"InDeck\" = 0 AND \"Damage\" >= ? AND \"Name\" != 'SPELL'";
         }
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, cardId);
             statement.setInt(2, minDamage);
@@ -229,7 +232,7 @@ public class CardRepositoryImpl implements CardRepository {
 
     public boolean updateCardDamage(String cardID, double newDamage) {
         final String query = "UPDATE \"Card\" SET \"Damage\" = ? WHERE \"CardID\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setDouble(1, newDamage);
             statement.setString(2, cardID);

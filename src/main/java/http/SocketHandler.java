@@ -2,6 +2,7 @@ package http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import database.DatabaseUtil;
 import gameElements.Card;
 import model.TradingDealModel;
 import repository.*;
@@ -10,7 +11,6 @@ import service.*;
 import model.CardModel;
 import model.UserModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -38,10 +38,12 @@ public class SocketHandler implements Runnable {
         bufferedReader = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
         responseWriter = new ResponseWriter(new BufferedWriter(new OutputStreamWriter(clientConnection.getOutputStream())));
 
-        UserRepository userRepository = UserRepositoryImpl.getInstance();
-        CardRepository cardRepository = CardRepositoryImpl.getInstance(userRepository);
-        BattleRepository battleRepository = BattleRepositoryImpl.getInstance();
-        TradingRepository tradingRepository = TradingRepositoryImpl.getInstance();
+        DatabaseUtil databaseUtil = new DatabaseUtil();
+
+        UserRepository userRepository = UserRepositoryImpl.getInstance(databaseUtil);
+        CardRepository cardRepository = CardRepositoryImpl.getInstance(databaseUtil, userRepository);
+        BattleRepository battleRepository = BattleRepositoryImpl.getInstance(databaseUtil);
+        TradingRepository tradingRepository = TradingRepositoryImpl.getInstance(databaseUtil);
         this.userService = new UserService(userRepository, cardRepository);
         this.cardService = new CardService(userRepository, cardRepository);
         this.battleService = new BattleService(userRepository, cardRepository, battleRepository);
@@ -51,22 +53,22 @@ public class SocketHandler implements Runnable {
     @Override
     public void run() {
         try {
-            final String httpMethodWithPath = bufferedReader.readLine();
+            final String httpPath = bufferedReader.readLine();
+            final int offset = 0;
 
             while (bufferedReader.ready()) {
                 final String input = bufferedReader.readLine();
                 if ("".equals(input)) {
                     break;
                 }
-                headerParser.ingest(input);
+                headerParser.parseHeader(input);
             }
 
-            headerParser.print();
             System.out.println("Thread: " + Thread.currentThread().getName());
 
-            if (httpMethodWithPath.equals("POST /users HTTP/1.1")) {
+            if (httpPath.startsWith("POST /users")) {
                 char[] charBuffer = new char[headerParser.getContentLength()];
-                bufferedReader.read(charBuffer, 0, headerParser.getContentLength());
+                bufferedReader.read(charBuffer, offset, headerParser.getContentLength());
                 final UserModel userModel = objectMapper.readValue(new String(charBuffer), UserModel.class);
                 ResponseModel responseModel = userService.signUpUser(userModel.getUsername(), userModel.getPassword());
 
@@ -75,9 +77,9 @@ public class SocketHandler implements Runnable {
                     case 409 -> responseWriter.replyConflict(responseModel);
                 }
 
-            } else if (httpMethodWithPath.equals("POST /sessions HTTP/1.1")) {
+            } else if (httpPath.startsWith("POST /sessions")) {
                 char[] charBuffer = new char[headerParser.getContentLength()];
-                bufferedReader.read(charBuffer, 0, headerParser.getContentLength());
+                bufferedReader.read(charBuffer, offset, headerParser.getContentLength());
 
                 final UserModel userModel = objectMapper.readValue(new String(charBuffer), UserModel.class);
                 ResponseModel responseModel = userService.logInUser(userModel.getUsername(), userModel.getPassword());
@@ -87,9 +89,9 @@ public class SocketHandler implements Runnable {
                     case 401 -> responseWriter.replyUnauthorized(responseModel);
                 }
 
-            } else if (httpMethodWithPath.equals("POST /packages HTTP/1.1")) {
+            } else if (httpPath.startsWith("POST /packages")) {
                 char[] charBuffer = new char[headerParser.getContentLength()];
-                bufferedReader.read(charBuffer, 0, headerParser.getContentLength());
+                bufferedReader.read(charBuffer, offset, headerParser.getContentLength());
                 List<CardModel> cardsModel = objectMapper.readValue(new String(charBuffer), new TypeReference<>() {});
 
                 ResponseModel responseModel = null;
@@ -118,7 +120,7 @@ public class SocketHandler implements Runnable {
                     }
                 }
 
-            } else if (httpMethodWithPath.equals("POST /transactions/packages HTTP/1.1")) {
+            } else if (httpPath.startsWith("POST /transactions/packages")) {
                 ResponseModel responseModel = cardService.acquirePackage(headerParser.getHeader("Authorization"));
 
                 switch (responseModel.getStatusCode()) {
@@ -127,7 +129,7 @@ public class SocketHandler implements Runnable {
                     case 404 -> responseWriter.replyNotFound(responseModel);
                 }
 
-            } else if (httpMethodWithPath.equals("GET /cards HTTP/1.1")) {
+            } else if (httpPath.startsWith("GET /cards")) {
                 ResponseModel responseModel = userService.returnAllUserCards(headerParser.getHeader("Authorization"));
 
                 switch (responseModel.getStatusCode()) {
@@ -136,9 +138,8 @@ public class SocketHandler implements Runnable {
                     case 204 -> responseWriter.replyNoContent(responseModel);
                 }
 
-            } else if (httpMethodWithPath.startsWith("GET /deck")) {
-                String[] requestParts = httpMethodWithPath.split(" ")[1].split("\\?", 2);
-                String path = requestParts[0];
+            } else if (httpPath.startsWith("GET /deck")) {
+                String[] requestParts = httpPath.split(" ")[1].split("\\?", 2);
                 String query = requestParts.length > 1 ? requestParts[1] : "";
 
                 ResponseModel responseModel = userService.returnUserDeck(headerParser.getHeader("Authorization"));
@@ -159,9 +160,9 @@ public class SocketHandler implements Runnable {
                 } else if (responseModel.getStatusCode() == 404) {
                     responseWriter.replyNotFound(responseModel);
                 }
-            } else if (httpMethodWithPath.equals("PUT /deck HTTP/1.1")) {
+            } else if (httpPath.startsWith("PUT /deck")) {
                 char[] charBuffer = new char[headerParser.getContentLength()];
-                bufferedReader.read(charBuffer, 0, headerParser.getContentLength());
+                bufferedReader.read(charBuffer, offset, headerParser.getContentLength());
                 List<String> cardIDs = objectMapper.readValue(new String(charBuffer), new TypeReference<>() {});
                 ResponseModel responseModel = null;
                 boolean forbidden = false;
@@ -185,22 +186,22 @@ public class SocketHandler implements Runnable {
                     }
                 }
 
-            } else if (httpMethodWithPath.startsWith("GET /users/") || httpMethodWithPath.startsWith("PUT /users/")) {
+            } else if (httpPath.startsWith("GET /users/") || httpPath.startsWith("PUT /users/")) {
                 ResponseModel responseModel;
 
-                String[] pathAndMethod = httpMethodWithPath.split(" ");
+                String[] pathAndMethod = httpPath.split(" ");
                 String[] pathSegments = pathAndMethod[1].split("/");
                 String requestedUsername = pathSegments[2];
                 System.out.println(requestedUsername);
 
-                if (httpMethodWithPath.startsWith("GET /users/")) {
+                if (httpPath.startsWith("GET /users/")) {
                     responseModel = userService.getUserProfileByUsername(headerParser.getHeader("Authorization"), requestedUsername);
                 } else {
                     if (headerParser.getContentLength() == 0) {
                         responseModel = new ResponseModel("User not found", 400);
                     } else {
                         char[] charBuffer = new char[headerParser.getContentLength()];
-                        bufferedReader.read(charBuffer, 0, headerParser.getContentLength());
+                        bufferedReader.read(charBuffer, offset, headerParser.getContentLength());
                         final UserModel userModel = objectMapper.readValue(new String(charBuffer), UserModel.class);
 
                         responseModel = userService.updateUserProfile(headerParser.getHeader("Authorization"), requestedUsername, userModel.getNewUsername(), userModel.getNewBio(), userModel.getNewImage());
@@ -214,7 +215,7 @@ public class SocketHandler implements Runnable {
                     case 403 -> responseWriter.replyForbidden(responseModel);
                     case 404 -> responseWriter.replyNotFound(responseModel);
                 }
-            } else if (httpMethodWithPath.equals("GET /stats HTTP/1.1")) {
+            } else if (httpPath.startsWith("GET /stats")) {
                 ResponseModel responseModel = battleService.returnUserStats(headerParser.getHeader("Authorization"));
 
                 switch (responseModel.getStatusCode()) {
@@ -223,7 +224,7 @@ public class SocketHandler implements Runnable {
                     case 404 -> responseWriter.replyNotFound(responseModel);
                 }
 
-            } else if (httpMethodWithPath.equals("GET /scoreboard HTTP/1.1")) {
+            } else if (httpPath.startsWith("GET /scoreboard")) {
                 ResponseModel responseModel = battleService.returnScoreboard(headerParser.getHeader("Authorization"));
 
                 switch (responseModel.getStatusCode()) {
@@ -232,7 +233,7 @@ public class SocketHandler implements Runnable {
                     case 404 -> responseWriter.replyNotFound(responseModel);
                 }
 
-            } else if (httpMethodWithPath.equals("POST /battles HTTP/1.1")) {
+            } else if (httpPath.startsWith("POST /battles")) {
                 ResponseModel responseModel = battleService.startBattle(headerParser.getHeader("Authorization"));
 
                 switch (responseModel.getStatusCode()) {
@@ -241,7 +242,7 @@ public class SocketHandler implements Runnable {
                     case 403 -> responseWriter.replyForbidden(responseModel);
                 }
 
-            } else if (httpMethodWithPath.equals("GET /tradings HTTP/1.1")) {
+            } else if (httpPath.startsWith("GET /tradings")) {
                 ResponseModel responseModel = tradingService.getTradingDeals(headerParser.getHeader("Authorization"));
 
                 switch (responseModel.getStatusCode()) {
@@ -249,9 +250,9 @@ public class SocketHandler implements Runnable {
                     case 401 -> responseWriter.replyUnauthorized(responseModel);
                     case 404 -> responseWriter.replyNotFound(responseModel);
                 }
-            } else if (httpMethodWithPath.equals("POST /tradings HTTP/1.1")) {
+            } else if (httpPath.equals("POST /tradings HTTP/1.1")) {
                 char[] charBuffer = new char[headerParser.getContentLength()];
-                bufferedReader.read(charBuffer, 0, headerParser.getContentLength());
+                bufferedReader.read(charBuffer, offset, headerParser.getContentLength());
                 final TradingDealModel tradingDeal = objectMapper.readValue(new String(charBuffer), TradingDealModel.class);
                 ResponseModel responseModel = tradingService.createTradingDeal(headerParser.getHeader("Authorization"), tradingDeal);
 
@@ -260,8 +261,8 @@ public class SocketHandler implements Runnable {
                     case 401 -> responseWriter.replyUnauthorized(responseModel);
                     case 409 -> responseWriter.replyConflict(responseModel);
                 }
-            } else if (httpMethodWithPath.startsWith("DELETE /tradings/")) {
-                String[] pathAndMethod = httpMethodWithPath.split(" ");
+            } else if (httpPath.startsWith("DELETE /tradings/")) {
+                String[] pathAndMethod = httpPath.split(" ");
                 String[] pathSegments = pathAndMethod[1].split("/");
                 String dealID = pathSegments[2];
                 System.out.println(dealID);
@@ -271,14 +272,14 @@ public class SocketHandler implements Runnable {
                     case 200 -> responseWriter.replySuccessful(responseModel);
                     case 401 -> responseWriter.replyUnauthorized(responseModel);
                 }
-            } else if (httpMethodWithPath.matches("POST /tradings/.+")) {
-                String[] pathAndMethod = httpMethodWithPath.split(" ");
+            } else if (httpPath.matches("POST /tradings/.+")) {
+                String[] pathAndMethod = httpPath.split(" ");
                 String[] pathSegments = pathAndMethod[1].split("/");
                 String dealID = pathSegments[2];
                 System.out.println("Deal ID: " + dealID);
 
                 char[] charBuffer = new char[headerParser.getContentLength()];
-                bufferedReader.read(charBuffer, 0, headerParser.getContentLength());
+                bufferedReader.read(charBuffer, offset, headerParser.getContentLength());
                 final String cardID = objectMapper.readValue(new String(charBuffer), String.class);
                 System.out.println("Card ID: " + cardID);
 
@@ -291,7 +292,7 @@ public class SocketHandler implements Runnable {
                     case 403 -> responseWriter.replyForbidden(responseModel);
                     case 404 -> responseWriter.replyNotFound(responseModel);
                 }
-            } else if (httpMethodWithPath.equals("POST /gamble HTTP/1.1")) {
+            } else if (httpPath.startsWith("POST /gamble")) {
                 ResponseModel responseModel = cardService.gambleCard(headerParser.getHeader("Authorization"));
 
                 switch (responseModel.getStatusCode()) {
@@ -301,9 +302,7 @@ public class SocketHandler implements Runnable {
                     case 500 -> responseWriter.replyInternalServerError(responseModel);
                 }
             }
-
             responseWriter.closeConnection();
-
         } catch (Exception e) {
             System.err.println(e);
         }

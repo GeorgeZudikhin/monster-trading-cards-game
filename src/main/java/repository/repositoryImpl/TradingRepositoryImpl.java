@@ -11,12 +11,15 @@ import java.util.List;
 
 public class TradingRepositoryImpl implements TradingRepository {
     private static TradingRepositoryImpl tradingRepository;
+    private final DatabaseUtil databaseUtil;
 
-    private TradingRepositoryImpl() {}
+    private TradingRepositoryImpl(DatabaseUtil databaseUtil) {
+        this.databaseUtil = databaseUtil;
+    }
 
-    public static synchronized TradingRepositoryImpl getInstance() {
+    public static synchronized TradingRepositoryImpl getInstance(DatabaseUtil databaseUtil) {
         if (tradingRepository == null) {
-            tradingRepository = new TradingRepositoryImpl();
+            tradingRepository = new TradingRepositoryImpl(databaseUtil);
         }
         return tradingRepository;
     }
@@ -24,7 +27,7 @@ public class TradingRepositoryImpl implements TradingRepository {
     @Override
     public void createTradingDeal(int userID, TradingDealModel tradingDeal) {
         final String query = "INSERT INTO \"TradingDeal\" (\"Id\", \"CardToTrade\", \"Type\", \"MinimumDamage\", \"UserID\") VALUES (?, ?, ?, ?, ?)";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, tradingDeal.getId());
             statement.setString(2, tradingDeal.getCardToTrade());
@@ -39,7 +42,7 @@ public class TradingRepositoryImpl implements TradingRepository {
 
     public boolean checkIfTradingDealExists(String tradingDealId) {
         final String query = "SELECT COUNT(*) FROM \"TradingDeal\" WHERE \"Id\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, tradingDealId);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -57,7 +60,7 @@ public class TradingRepositoryImpl implements TradingRepository {
     public List<TradingDealModel> getAllTradingDeals() {
         List<TradingDealModel> deals = new ArrayList<>();
         final String query = "SELECT \"Id\", \"CardToTrade\", \"Type\", \"MinimumDamage\" FROM \"TradingDeal\"";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
@@ -78,7 +81,7 @@ public class TradingRepositoryImpl implements TradingRepository {
     @Override
     public void deleteTradingDeal(String dealID) {
         final String query = "DELETE FROM \"TradingDeal\" WHERE \"Id\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, dealID);
             statement.executeUpdate();
@@ -90,7 +93,7 @@ public class TradingRepositoryImpl implements TradingRepository {
     @Override
     public TradingDealModel getTradingDealById(String dealId) {
         final String query = "SELECT * FROM \"TradingDeal\" WHERE \"Id\" = ?";
-        try (Connection connection = DatabaseUtil.getConnection();
+        try (Connection connection = databaseUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, dealId);
             try (ResultSet resultSet = statement.executeQuery()) {
