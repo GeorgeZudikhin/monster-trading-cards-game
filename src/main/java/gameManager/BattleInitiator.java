@@ -2,7 +2,7 @@ package gameManager;
 
 import gameElements.Card;
 import gameElements.User;
-import http.ResponseModel;
+import http.response.ResponseModel;
 import repository.CardRepository;
 import repository.UserRepository;
 
