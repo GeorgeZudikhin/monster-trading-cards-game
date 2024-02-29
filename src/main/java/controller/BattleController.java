@@ -43,6 +43,7 @@ public class BattleController extends BaseController {
             case 200 -> responseWriter.replySuccessful(responseModel);
             case 401 -> responseWriter.replyUnauthorized(responseModel);
             case 403 -> responseWriter.replyForbidden(responseModel);
+            case 503 -> responseWriter.replyServiceUnavailable(responseModel);
         }
     }
 

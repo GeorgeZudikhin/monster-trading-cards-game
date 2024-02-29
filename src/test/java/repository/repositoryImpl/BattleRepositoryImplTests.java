@@ -103,7 +103,7 @@ class BattleRepositoryImplTests {
 
     @Test
     void testReturnUsernamesOfPlayersReady() throws SQLException {
-        when(resultSet.next()).thenReturn(true, true, false); // Simulate two players ready
+        when(resultSet.next()).thenReturn(true, true, false);
         when(resultSet.getString("Username")).thenReturn("player1", "player2");
 
         List<String> readyPlayers = battleRepository.returnUsernamesOfPlayersReady();

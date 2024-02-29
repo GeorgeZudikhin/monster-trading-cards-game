@@ -90,6 +90,7 @@ public class ResponseWriter {
     }
 
     public void replyInternalServerError(Object object) {replyWithStatus(object, 500, "Internal Server Error"); }
+    public void replyServiceUnavailable(Object object) {replyWithStatus(object, 503, "Service Unavailable"); }
 
     public void closeConnection() {
         try {

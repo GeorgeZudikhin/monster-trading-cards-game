@@ -1,5 +1,6 @@
 package service;
 
+import gameManager.BattleCoordinator;
 import gameManager.BattleInitiator;
 import http.response.ResponseModel;
 import model.StatsModel;
@@ -8,13 +9,8 @@ import repository.CardRepository;
 import repository.UserRepository;
 
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class BattleService {
-    private final Lock lock = new ReentrantLock();
-    private final CountDownLatch battleLatch = new CountDownLatch(1);
     private final UserRepository userRepository;
     private final CardRepository cardRepository;
     private final BattleRepository battleRepository;
@@ -50,7 +46,7 @@ public class BattleService {
         return new ResponseModel("The scoreboard could be retrieved successfully", 200, scoreboard);
     }
 
-    public ResponseModel startBattle(String authToken) {
+    public synchronized ResponseModel startBattle(String authToken) {
         int userID = userRepository.returnUserIDFromToken(authToken);
         if(userID == 0)
             return new ResponseModel("Access token is missing or invalid", 401);
@@ -62,20 +58,20 @@ public class BattleService {
         if (amountOfPlayersReady < 2)
             return new ResponseModel("Player One Ready, waiting for Player Two", 403);
 
-        List<String> readyPlayers = battleRepository.returnUsernamesOfPlayersReady();
+        if (!BattleCoordinator.tryAcquireBattle())
+            return new ResponseModel("One player cannot start a battle", 503);
 
-        String playerA = readyPlayers.get(0);
-        String playerB = readyPlayers.get(1);
+        try {
+            List<String> readyPlayers = battleRepository.returnUsernamesOfPlayersReady();
 
-        battleRepository.resetUserReadyStatus();
+            String playerA = readyPlayers.get(0);
+            String playerB = readyPlayers.get(1);
 
-        BattleInitiator battleInitiator = new BattleInitiator(cardRepository, userRepository);
-
-        battleLatch.countDown();
-        return battleInitiator.initializeBattle(playerA, playerB);
-    }
-
-    public void waitForBattleCompletion() throws InterruptedException {
-        battleLatch.await();
+            BattleInitiator battleInitiator = new BattleInitiator(userRepository, cardRepository, battleRepository);
+            return battleInitiator.initializeBattle(playerA, playerB);
+        } finally {
+            BattleCoordinator.releaseBattle();
+            battleRepository.resetUserReadyStatus();
+        }
     }
 }

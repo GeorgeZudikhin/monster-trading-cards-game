@@ -23,10 +23,6 @@ public class RequestRouter {
     private final CardController cardController;
     private final BattleController battleController;
     private final TradingController tradingController;
-    private final UserService userService;
-    private final CardService cardService;
-    private final BattleService battleService;
-    private final TradingService tradingService;
 
     public RequestRouter(ResponseWriter responseWriter, HeaderParser headerParser) {
         DatabaseUtil databaseUtil = new DatabaseUtil();
@@ -35,11 +31,11 @@ public class RequestRouter {
         CardRepository cardRepository = CardRepositoryImpl.getInstance(databaseUtil, userRepository);
         BattleRepository battleRepository = BattleRepositoryImpl.getInstance(databaseUtil);
         TradingRepository tradingRepository = TradingRepositoryImpl.getInstance(databaseUtil);
-        this.userService = new UserService(userRepository, cardRepository);
-        this.cardService = new CardService(userRepository, cardRepository);
-        this.battleService = new BattleService(userRepository, cardRepository, battleRepository);
-        this.tradingService = new TradingService(tradingRepository, userRepository, cardRepository);
 
+        UserService userService = new UserService(userRepository, cardRepository);
+        CardService cardService = new CardService(userRepository, cardRepository);
+        BattleService battleService = new BattleService(userRepository, cardRepository, battleRepository);
+        TradingService tradingService = new TradingService(tradingRepository, userRepository, cardRepository);
 
         this.userController = new UserController(userService, responseWriter, headerParser);
         this.cardController = new CardController(cardService, userService, responseWriter, headerParser);
