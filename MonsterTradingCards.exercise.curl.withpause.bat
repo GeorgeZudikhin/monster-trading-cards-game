@@ -332,7 +332,7 @@ echo.
 
 pause
 
-echo gamble
+echo 22) gamble
 echo.
 curl -i -X POST http://localhost:10001/gamble --header "Content-Type: application/json" --header "Authorization: Bearer altenhof-mtcgToken"
 echo.
