@@ -11,9 +11,9 @@ public class RoundWinnerDecider {
     public RoundWinnerDecider(BattleLogger battleLog) {
         this.battleLog = battleLog;
     }
-    public boolean needToConsiderCardSpecialties(User playerOne, List<Card> playerOneCards, User playerTwo, List<Card> playerTwoCards) {
-        CardType playerOneCardType = playerOneCards.get(firstCard).getName();
-        CardType playerTwoCardType = playerTwoCards.get(firstCard).getName();
+    public synchronized boolean needToConsiderCardSpecialties(User playerOne, List<Card> playerOneCards, User playerTwo, List<Card> playerTwoCards) {
+        CardType playerOneCardType = playerOneCards.get(firstCard).getType();
+        CardType playerTwoCardType = playerTwoCards.get(firstCard).getType();
         CardElement firstCardCardElement = playerOneCards.get(firstCard).getCardElement();
         CardElement secondCardCardElement = playerTwoCards.get(firstCard).getCardElement();
 

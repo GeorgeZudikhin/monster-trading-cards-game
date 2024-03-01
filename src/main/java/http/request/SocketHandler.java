@@ -12,7 +12,6 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class SocketHandler implements Runnable {
-
     private final BufferedReader bufferedReader;
     private final ResponseWriter responseWriter;
     protected static final Logger logger = LogManager.getLogger();
@@ -33,7 +32,7 @@ public class SocketHandler implements Runnable {
                 requestBody = RequestUtility.readRequestBody(bufferedReader, headerParser.getContentLength());
             }
 
-            System.out.println("Current thread: " + Thread.currentThread().getName());
+            logger.info("Current thread: " + Thread.currentThread().getName());
             RequestRouter requestRouter = new RequestRouter(responseWriter, headerParser);
             requestRouter.routeRequest(httpPath, requestBody);
             responseWriter.closeConnection();

@@ -15,6 +15,5 @@ public interface CardRepository {
     void setCardInDeck(int userID, String cardID);
     boolean updateCardOwnership(String cardId, int newOwnerId);
     boolean isCardEligibleForTrading(String cardId, String requiredType, int minDamage);
-
     boolean updateCardDamage(String cardID, double damage);
 }

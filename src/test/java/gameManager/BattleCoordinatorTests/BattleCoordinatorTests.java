@@ -41,8 +41,8 @@ public class BattleCoordinatorTests {
         playerOne = new User("PlayerOne");
         playerTwo = new User("PlayerTwo");
 
-        Card playerOneCard = new MonsterCard("1", CardType.DRAGON, 50, CardElement.FIRE);
-        Card playerTwoCard = new MonsterCard("2", CardType.GOBLIN, 30, CardElement.NORMAL);
+        Card playerOneCard = new MonsterCard("1", CardType.DRAGON, CardElement.FIRE, 50);
+        Card playerTwoCard = new MonsterCard("2", CardType.GOBLIN, CardElement.NORMAL, 30);
 
         playerOneCards = new ArrayList<>(List.of(playerOneCard));
         playerTwoCards = new ArrayList<>(List.of(playerTwoCard));
@@ -59,8 +59,8 @@ public class BattleCoordinatorTests {
 
     @Test
     public void testPlayerOneWinsRound() {
-        Card playerOneCard = new MonsterCard("1", CardType.DRAGON, 50, CardElement.FIRE);
-        Card playerTwoCard = new MonsterCard("2", CardType.GOBLIN, 20, CardElement.NORMAL);
+        Card playerOneCard = new MonsterCard("1", CardType.DRAGON, CardElement.FIRE, 50);
+        Card playerTwoCard = new MonsterCard("2", CardType.GOBLIN, CardElement.NORMAL, 20);
 
         playerOneCards.set(0, playerOneCard);
         playerTwoCards.set(0, playerTwoCard);
@@ -73,8 +73,8 @@ public class BattleCoordinatorTests {
 
     @Test
     public void testPlayerTwoWinsRound() {
-        Card playerOneCard = new MonsterCard("1", CardType.GOBLIN, 20, CardElement.NORMAL);
-        Card playerTwoCard = new MonsterCard("2", CardType.DRAGON, 50, CardElement.FIRE);
+        Card playerOneCard = new MonsterCard("1", CardType.GOBLIN, CardElement.NORMAL, 20);
+        Card playerTwoCard = new MonsterCard("2", CardType.DRAGON, CardElement.FIRE, 50);
 
         playerOneCards.set(0, playerOneCard);
         playerTwoCards.set(0, playerTwoCard);
@@ -87,8 +87,8 @@ public class BattleCoordinatorTests {
 
     @Test
     public void testDrawRound() {
-        Card playerOneCard = new MonsterCard("1", CardType.DRAGON, 30, CardElement.FIRE);
-        Card playerTwoCard = new MonsterCard("2", CardType.DRAGON, 30, CardElement.FIRE);
+        Card playerOneCard = new MonsterCard("1", CardType.DRAGON, CardElement.FIRE, 30);
+        Card playerTwoCard = new MonsterCard("2", CardType.DRAGON, CardElement.FIRE, 30);
 
         playerOneCards.set(0, playerOneCard);
         playerTwoCards.set(0, playerTwoCard);
@@ -101,8 +101,8 @@ public class BattleCoordinatorTests {
 
     @Test
     public void testCardTransferOnWin() {
-        Card playerOneCard = new MonsterCard("1", CardType.DRAGON, 50, CardElement.FIRE);
-        Card playerTwoCard = new MonsterCard("2", CardType.GOBLIN, 20, CardElement.NORMAL);
+        Card playerOneCard = new MonsterCard("1", CardType.DRAGON, CardElement.FIRE, 50);
+        Card playerTwoCard = new MonsterCard("2", CardType.GOBLIN, CardElement.NORMAL, 20);
 
         playerOneCards.set(0, playerOneCard);
         playerTwoCards.set(0, playerTwoCard);

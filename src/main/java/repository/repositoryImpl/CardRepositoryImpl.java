@@ -13,7 +13,6 @@ import java.util.List;
 public class CardRepositoryImpl implements CardRepository {
     private static CardRepositoryImpl cardRepository;
     private final UserRepository userRepository;
-
     private final DatabaseUtil databaseUtil;
 
     private CardRepositoryImpl(DatabaseUtil databaseUtil, UserRepository userRepository) {
@@ -44,9 +43,9 @@ public class CardRepositoryImpl implements CardRepository {
 
                     Card card;
                     if ("SPELL".equals(cardType.toString())) {
-                        card = new SpellCard(id, cardType, damage, cardElement);
+                        card = new SpellCard(id, cardType, cardElement, damage);
                     } else {
-                        card = new MonsterCard(id, cardType, damage, cardElement);
+                        card = new MonsterCard(id, cardType, cardElement, damage);
                     }
                     userDeck.add(card);
                 }
@@ -121,9 +120,9 @@ public class CardRepositoryImpl implements CardRepository {
 
                     Card card;
                     if ("SPELL".equals(name.toString())) {
-                        card = new SpellCard(id, name, damage, cardElement);
+                        card = new SpellCard(id, name, cardElement, damage);
                     } else {
-                        card = new MonsterCard(id, name, damage, cardElement);
+                        card = new MonsterCard(id, name, cardElement, damage);
                     }
                     cards.add(card);
                 }
@@ -150,9 +149,9 @@ public class CardRepositoryImpl implements CardRepository {
 
                     Card card;
                     if ("SPELL".equals(name.toString())) {
-                        card = new SpellCard(id, name, damage, cardElement);
+                        card = new SpellCard(id, name, cardElement, damage);
                     } else {
-                        card = new MonsterCard(id, name, damage, cardElement);
+                        card = new MonsterCard(id, name, cardElement, damage);
                     }
                     cards.add(card);
                 }

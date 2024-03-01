@@ -23,7 +23,6 @@ public class CardService {
             return new ResponseModel("Access token is missing or invalid", 401);
 
         boolean validation = userRepository.validateTokenFromUsername("admin", authorizationToken);
-        System.out.println("Validated from userRepository!");
         if (validation) {
             cardRepository.generateCard(cardID, cardName, cardDamage, cardElement, packageID);
             return new ResponseModel("Package and cards successfully created", 201);

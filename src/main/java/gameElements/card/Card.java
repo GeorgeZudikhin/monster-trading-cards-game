@@ -9,14 +9,14 @@ import lombok.ToString;
 @ToString
 public abstract class Card {
     String id;
-    private CardType name;
+    private CardType type;
+    private CardElement cardElement;
     private double damage;
     private double tmpDamage;
-    private CardElement cardElement;
 
-    public Card(String id, CardType name, int damage, CardElement cardElement) {
+    public Card(String id, CardType type, CardElement cardElement, int damage) {
         this.id = id;
-        this.name = name;
+        this.type = type;
         this.damage = damage;
         this.tmpDamage = damage;
         this.cardElement = cardElement;
