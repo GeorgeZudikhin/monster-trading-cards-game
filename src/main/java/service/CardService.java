@@ -1,6 +1,6 @@
 package service;
 
-import gameElements.Card;
+import gameElements.card.Card;
 import repository.CardRepository;
 import repository.UserRepository;
 import http.response.ResponseModel;
@@ -26,7 +26,6 @@ public class CardService {
         System.out.println("Validated from userRepository!");
         if (validation) {
             cardRepository.generateCard(cardID, cardName, cardDamage, cardElement, packageID);
-            System.out.println("Generated from cardRepository!");
             return new ResponseModel("Package and cards successfully created", 201);
         } else {
             return new ResponseModel("Provided user is not admin", 403);
@@ -47,10 +46,6 @@ public class CardService {
         }
 
         List<Card> cards = cardRepository.assignPackageToUser(authToken, packageID);
-        if(cards == null || cards.isEmpty()) {
-            System.out.println("The card list is null or empty after assigning to user.");
-        }
-        System.out.println("Acquiring package from ");
         return new ResponseModel("A package has been successfully bought", 200, cards);
     }
 

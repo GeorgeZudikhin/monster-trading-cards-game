@@ -3,7 +3,7 @@ package repository.repositoryImpl;
 import java.sql.*;
 
 import database.DatabaseUtil;
-import gameElements.*;
+import gameElements.card.*;
 import repository.CardRepository;
 import repository.UserRepository;
 
@@ -38,15 +38,15 @@ public class CardRepositoryImpl implements CardRepository {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     String id = resultSet.getString("CardID");
-                    CardName cardName = CardName.valueOf(resultSet.getString("Name"));
+                    CardType cardType = CardType.valueOf(resultSet.getString("Name"));
                     int damage = resultSet.getInt("Damage");
-                    ElementType elementType = ElementType.valueOf(resultSet.getString("ElementType"));
+                    CardElement cardElement = CardElement.valueOf(resultSet.getString("ElementType"));
 
                     Card card;
-                    if ("Spell".equals(cardName.toString())) {
-                        card = new SpellCard(id, cardName, damage, elementType);
+                    if ("SPELL".equals(cardType.toString())) {
+                        card = new SpellCard(id, cardType, damage, cardElement);
                     } else {
-                        card = new MonsterCard(id, cardName, damage, elementType);
+                        card = new MonsterCard(id, cardType, damage, cardElement);
                     }
                     userDeck.add(card);
                 }
@@ -115,15 +115,15 @@ public class CardRepositoryImpl implements CardRepository {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     String id = resultSet.getString("CardID");
-                    CardName name = CardName.valueOf(resultSet.getString("Name"));
+                    CardType name = CardType.valueOf(resultSet.getString("Name"));
                     int damage = resultSet.getInt("Damage");
-                    ElementType elementType = ElementType.valueOf(resultSet.getString("ElementType"));
+                    CardElement cardElement = CardElement.valueOf(resultSet.getString("ElementType"));
 
                     Card card;
-                    if ("Spell".equals(name.toString())) {
-                        card = new SpellCard(id, name, damage, elementType);
+                    if ("SPELL".equals(name.toString())) {
+                        card = new SpellCard(id, name, damage, cardElement);
                     } else {
-                        card = new MonsterCard(id, name, damage, elementType);
+                        card = new MonsterCard(id, name, damage, cardElement);
                     }
                     cards.add(card);
                 }
@@ -144,15 +144,15 @@ public class CardRepositoryImpl implements CardRepository {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     String id = resultSet.getString("CardID");
-                    CardName name = CardName.valueOf(resultSet.getString("Name"));
+                    CardType name = CardType.valueOf(resultSet.getString("Name"));
                     int damage = resultSet.getInt("Damage");
-                    ElementType elementType = ElementType.valueOf(resultSet.getString("ElementType"));
+                    CardElement cardElement = CardElement.valueOf(resultSet.getString("ElementType"));
 
                     Card card;
-                    if ("Spell".equals(name.toString())) {
-                        card = new SpellCard(id, name, damage, elementType);
+                    if ("SPELL".equals(name.toString())) {
+                        card = new SpellCard(id, name, damage, cardElement);
                     } else {
-                        card = new MonsterCard(id, name, damage, elementType);
+                        card = new MonsterCard(id, name, damage, cardElement);
                     }
                     cards.add(card);
                 }

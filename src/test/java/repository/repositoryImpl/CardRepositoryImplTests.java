@@ -1,7 +1,7 @@
 package repository.repositoryImpl;
 
 import database.DatabaseUtil;
-import gameElements.Card;
+import gameElements.card.Card;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,8 +26,6 @@ import static org.mockito.Mockito.*;
 class CardRepositoryImplTests {
     @Mock
     private DatabaseUtil databaseUtil;
-    @Mock
-    private UserRepository userRepository;
     @Mock
     private Connection connection;
     @Mock

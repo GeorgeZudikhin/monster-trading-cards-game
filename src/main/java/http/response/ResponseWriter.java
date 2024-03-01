@@ -1,6 +1,8 @@
 package http.response;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -13,6 +15,7 @@ public class ResponseWriter {
 
     private final BufferedWriter bufferedWriter;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    protected static final Logger logger = LogManager.getLogger();
 
     public ResponseWriter(BufferedWriter bufferedWriter) {
         this.bufferedWriter = bufferedWriter;
@@ -37,7 +40,7 @@ public class ResponseWriter {
             bufferedWriter.write(jsonResponse + "\r\n");
             bufferedWriter.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Failed to write HTTP response: " + e.getMessage(), e);
         }
     }
 
@@ -53,7 +56,15 @@ public class ResponseWriter {
             bufferedWriter.write(plainTextResponse + "\r\n");
             bufferedWriter.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Failed to write HTTP response in plain text: " + e.getMessage(), e);
+        }
+    }
+
+    public void closeConnection() {
+        try {
+            bufferedWriter.close();
+        } catch (IOException e) {
+            logger.error("Failed to close client connection: " + e.getMessage(), e);
         }
     }
 
@@ -91,12 +102,4 @@ public class ResponseWriter {
 
     public void replyInternalServerError(Object object) {replyWithStatus(object, 500, "Internal Server Error"); }
     public void replyServiceUnavailable(Object object) {replyWithStatus(object, 503, "Service Unavailable"); }
-
-    public void closeConnection() {
-        try {
-            bufferedWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

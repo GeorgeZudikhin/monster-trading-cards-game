@@ -1,6 +1,6 @@
 package service;
 
-import gameElements.Card;
+import gameElements.card.Card;
 import repository.CardRepository;
 import repository.UserRepository;
 import model.UserModel;

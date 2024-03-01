@@ -1,10 +1,8 @@
 package gameManager;
 
-import gameElements.Card;
-import gameElements.User;
+import gameElements.card.Card;
+import gameElements.user.User;
 import http.response.ResponseModel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import repository.BattleRepository;
 import repository.CardRepository;
 import repository.UserRepository;
@@ -15,7 +13,7 @@ public class BattleInitiator {
     private final UserRepository userRepository;
     private final CardRepository cardRepository;
     private final BattleRepository battleRepository;
-    protected static final Logger logger = LogManager.getLogger();
+    private final BattleLogger battleLog = new BattleLogger();
 
     public BattleInitiator(UserRepository userRepository, CardRepository cardRepository, BattleRepository battleRepository) {
         this.userRepository = userRepository;
@@ -32,30 +30,25 @@ public class BattleInitiator {
 
         initializePlayer(playerOne, playerOneCards);
         initializePlayer(playerTwo, playerTwoCards);
-        BattleCoordinator battleCoordinator = new BattleCoordinator(playerOne, playerOneCards, playerTwo, playerTwoCards);
+        BattleCoordinator battleCoordinator = new BattleCoordinator(playerOne, playerOneCards, playerTwo, playerTwoCards, battleLog);
 
-        battleCoordinator.startGame();
-        logger.info("##############################################");
-        logger.info(playerOne.getUsername() + " has won " + playerOne.getWinCounter() + " round in this battle!");
-        logger.info(playerTwo.getUsername() + " has won " + playerTwo.getWinCounter() + " round in this battle!");
-        logger.info("##############################################");
+        battleCoordinator.startBattle();
+
+        battleLog.printAmountOfRoundsWon(playerOne);
+        battleLog.printAmountOfRoundsWon(playerTwo);
+
         battleRepository.resetUserReadyStatus();
-        if (playerOne.getWinCounter() > playerTwo.getWinCounter()) {
-            userRepository.setUserWinsByUsername(playerOneUsername, playerOne.getWins() + 1);
-            userRepository.setUserLossesByUsername(playerTwoUsername, playerTwo.getLosses() + 1);
-            userRepository.updateUserEloByUsername(playerOne.getUsername(), playerOne.getElo() + 3);
-            userRepository.updateUserEloByUsername(playerTwo.getUsername(), playerTwo.getElo() - 5);
-            System.out.println(playerOne.getUsername() + " has won the game!");
+
+        if (playerOne.getRoundWins() > playerTwo.getRoundWins()) {
+            updateUserStatsAfterBattle(playerOne, playerTwo);
+            battleLog.printBattleWinner(playerOne);
             return new ResponseModel(playerOne.getUsername() + " has won the game!", 200);
-        } else if (playerOne.getWinCounter() < playerTwo.getWinCounter()) {
-            userRepository.setUserLossesByUsername(playerOneUsername, playerOne.getLosses() + 1);
-            userRepository.setUserWinsByUsername(playerTwoUsername, playerTwo.getWins() + 1);
-            userRepository.updateUserEloByUsername(playerOne.getUsername(), playerOne.getElo() - 5);
-            userRepository.updateUserEloByUsername(playerTwo.getUsername(), playerTwo.getElo() + 3);
-            System.out.println(playerTwo.getUsername() + " has won the game!");
+        } else if (playerTwo.getRoundWins() > playerOne.getRoundWins()) {
+            updateUserStatsAfterBattle(playerTwo, playerOne);
+            battleLog.printBattleWinner(playerTwo);
             return new ResponseModel(playerTwo.getUsername() + " has won the game!", 200);
         } else {
-            System.out.println("The game has ended in draw!");
+            battleLog.printBattleResultDraw();
             return new ResponseModel("Draw!", 200);
         }
     }
@@ -63,8 +56,15 @@ public class BattleInitiator {
     private void initializePlayer(User player, List<Card> playerCards) {
         player.setCoins(userRepository.returnUserCoins(player.getUsername()));
         player.setElo(userRepository.getUserEloByUsername(player.getUsername()));
-        player.setWins(userRepository.getUserWinsByUsername(player.getUsername()));
-        player.setLosses(userRepository.getUserLossesByUsername(player.getUsername()));
+        player.setBattleWins(userRepository.getUserWinsByUsername(player.getUsername()));
+        player.setBattleLosses(userRepository.getUserLossesByUsername(player.getUsername()));
         player.setDeck(playerCards);
+    }
+
+    private void updateUserStatsAfterBattle(User winner, User loser) {
+        userRepository.setUserWinsByUsername(winner.getUsername(), winner.getBattleWins() + 1);
+        userRepository.setUserLossesByUsername(loser.getUsername(), loser.getBattleLosses() + 1);
+        userRepository.updateUserEloByUsername(winner.getUsername(), winner.getElo() + 3);
+        userRepository.updateUserEloByUsername(loser.getUsername(), loser.getElo() - 5);
     }
 }

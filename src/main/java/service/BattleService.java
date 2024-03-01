@@ -1,7 +1,7 @@
 package service;
 
-import gameManager.BattleCoordinator;
 import gameManager.BattleInitiator;
+import gameManager.BattleLockManager;
 import http.response.ResponseModel;
 import model.StatsModel;
 import repository.BattleRepository;
@@ -58,7 +58,7 @@ public class BattleService {
         if (amountOfPlayersReady < 2)
             return new ResponseModel("Player One Ready, waiting for Player Two", 403);
 
-        if (!BattleCoordinator.tryAcquireBattle())
+        if (!BattleLockManager.tryAcquireBattle())
             return new ResponseModel("One player cannot start a battle", 503);
 
         try {
@@ -70,7 +70,7 @@ public class BattleService {
             BattleInitiator battleInitiator = new BattleInitiator(userRepository, cardRepository, battleRepository);
             return battleInitiator.initializeBattle(playerA, playerB);
         } finally {
-            BattleCoordinator.releaseBattle();
+            BattleLockManager.releaseBattle();
             battleRepository.resetUserReadyStatus();
         }
     }

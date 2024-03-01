@@ -89,23 +89,6 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public String returnUsernameFromID(int userID) {
-        final String query = "SELECT \"Username\" FROM \"User\" WHERE \"UserID\" = ?";
-        try (Connection connection = databaseUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, userID);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getString("Username");
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error retrieving username from ID", e);
-        }
-        return null;
-    }
-
-    @Override
     public int returnUserIDFromUsername(String username) {
         final String query = "SELECT \"UserID\" FROM \"User\" WHERE \"Username\" = ?";
         try (Connection connection = databaseUtil.getConnection();
