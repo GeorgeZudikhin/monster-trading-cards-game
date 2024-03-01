@@ -62,8 +62,6 @@ public class UserService {
         if (cards.isEmpty())
             return new ResponseModel("The request was fine, but the user doesn't have any cards", 204);
 
-        System.out.println("Returning all user cards with the help of cardRepository!");
-
         return new ResponseModel("The user has cards, the response contains these", 200, cards);
     }
 
@@ -83,8 +81,6 @@ public class UserService {
             return new ResponseModel("User not found", 404);
         }
 
-        System.out.println("User profile retrieved via userRepository!");
-
         return new ResponseModel("User profile retrieved successfully", 200, userData);
     }
 
@@ -101,8 +97,6 @@ public class UserService {
 
         userRepository.updateUserData(userID, newUsername, newBio, newImage);
 
-        System.out.println("User profile updated via user repository!");
-
         return new ResponseModel("Your profile has been updated", 200);
     }
 
@@ -112,16 +106,12 @@ public class UserService {
             return new ResponseModel("Access token is missing or invalid", 401);
 
         int currentDeckSize = cardRepository.getCurrentDeckSize(userID);
-        System.out.println("Current deck size: " + currentDeckSize);
         if (currentDeckSize >= 4) {
             return new ResponseModel("At least one of the provided cards does not belong to the user or is not available", 403);
         }
 
         cardRepository.setCardInDeck(userID, cardID);
 
-        System.out.println("Card has just been set in deck via cardRepository!");
-
         return new ResponseModel("The deck has been successfully configured", 200);
     }
-
 }
