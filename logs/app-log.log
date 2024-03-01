@@ -3140,3 +3140,412 @@
 2024-03-01 05:58:47 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck has won 5 round in this battle!
 2024-03-01 05:58:47 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer has won 1 round in this battle!
 2024-03-01 05:58:47 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck has won the game!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №1 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 50.0 VS 50.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Draw!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №2 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=20.0] VS Altenhofer with WATERSPELL[DMG=22.0] --DMG AFTER SPECIALTIES--> 20.0 VS 22.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №3 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with WATERSPELL[DMG=20.0] --DMG AFTER SPECIALTIES--> 100.0 VS 10.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №4 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=28.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 28.0 VS 50.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №5 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERGOBLIN[DMG=10.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 5.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №6 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=20.0] VS Altenhofer with NORMALSPELL[DMG=45.0] --DMG AFTER SPECIALTIES--> 10.0 VS 90.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №7 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALKNIGHT[DMG=20.0] --DMG AFTER SPECIALTIES--> 100.0 VS 20.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №8 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 100.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Draw!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №9 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - The armor of Knights is so heavy that WaterSpells make them drown them instantly
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALKNIGHT[DMG=20.0] VS Altenhofer with WATERSPELL[DMG=20.0] --DMG AFTER SPECIALTIES--> 20.0 VS 10.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №10 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=45.0] --DMG AFTER SPECIALTIES--> 100.0 VS 90.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №11 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with WATERSPELL[DMG=22.0] --DMG AFTER SPECIALTIES--> 100.0 VS 11.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №12 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 100.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Draw!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №13 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=45.0] VS Altenhofer with NORMALKNIGHT[DMG=20.0] --DMG AFTER SPECIALTIES--> 90.0 VS 20.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №14 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=45.0] VS Altenhofer with WATERGOBLIN[DMG=10.0] --DMG AFTER SPECIALTIES--> 90.0 VS 5.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №15 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - The armor of Knights is so heavy that WaterSpells make them drown them instantly
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALKNIGHT[DMG=20.0] VS Altenhofer with WATERSPELL[DMG=20.0] --DMG AFTER SPECIALTIES--> 20.0 VS 10.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №16 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=28.0] --DMG AFTER SPECIALTIES--> 100.0 VS 28.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №17 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with WATERSPELL[DMG=20.0] --DMG AFTER SPECIALTIES--> 100.0 VS 10.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №18 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 100.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Draw!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №19 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERGOBLIN[DMG=10.0] VS Altenhofer with NORMALKNIGHT[DMG=20.0] --DMG AFTER SPECIALTIES--> 5.0 VS 20.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №20 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALKNIGHT[DMG=20.0] --DMG AFTER SPECIALTIES--> 100.0 VS 20.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №21 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=28.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 28.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №22 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=22.0] VS Altenhofer with WATERGOBLIN[DMG=10.0] --DMG AFTER SPECIALTIES--> 11.0 VS 5.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №23 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=22.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 11.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №24 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALKNIGHT[DMG=20.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 20.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №25 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALKNIGHT[DMG=20.0] --DMG AFTER SPECIALTIES--> 100.0 VS 20.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №26 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=28.0] --DMG AFTER SPECIALTIES--> 100.0 VS 28.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №27 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=45.0] VS Altenhofer with WATERSPELL[DMG=22.0] --DMG AFTER SPECIALTIES--> 90.0 VS 11.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №28 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=22.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 11.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №29 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with WATERSPELL[DMG=22.0] --DMG AFTER SPECIALTIES--> 100.0 VS 11.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №30 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=28.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 28.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №31 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=20.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 10.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №32 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=22.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 11.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №33 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 100.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Draw!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №34 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALKNIGHT[DMG=20.0] VS Altenhofer with NORMALSPELL[DMG=28.0] --DMG AFTER SPECIALTIES--> 20.0 VS 28.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №35 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=28.0] --DMG AFTER SPECIALTIES--> 100.0 VS 28.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №36 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 100.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Draw!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №37 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=45.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 90.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №38 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERGOBLIN[DMG=10.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 5.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №39 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=28.0] VS Altenhofer with NORMALSPELL[DMG=45.0] --DMG AFTER SPECIALTIES--> 28.0 VS 90.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №40 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with WATERSPELL[DMG=20.0] --DMG AFTER SPECIALTIES--> 100.0 VS 10.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №41 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=28.0] --DMG AFTER SPECIALTIES--> 100.0 VS 28.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №42 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=20.0] VS Altenhofer with NORMALSPELL[DMG=45.0] --DMG AFTER SPECIALTIES--> 10.0 VS 90.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №43 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=28.0] VS Altenhofer with WATERGOBLIN[DMG=10.0] --DMG AFTER SPECIALTIES--> 56.0 VS 5.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №44 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=28.0] VS Altenhofer with NORMALKNIGHT[DMG=20.0] --DMG AFTER SPECIALTIES--> 56.0 VS 20.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №45 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERGOBLIN[DMG=10.0] VS Altenhofer with NORMALSPELL[DMG=45.0] --DMG AFTER SPECIALTIES--> 5.0 VS 90.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №46 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - The armor of Knights is so heavy that WaterSpells make them drown them instantly
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALKNIGHT[DMG=20.0] VS Altenhofer with WATERSPELL[DMG=22.0] --DMG AFTER SPECIALTIES--> 20.0 VS 11.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №47 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=28.0] VS Altenhofer with WATERSPELL[DMG=20.0] --DMG AFTER SPECIALTIES--> 56.0 VS 10.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №48 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=20.0] VS Altenhofer with NORMALSPELL[DMG=45.0] --DMG AFTER SPECIALTIES--> 10.0 VS 90.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №49 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=28.0] VS Altenhofer with NORMALSPELL[DMG=45.0] --DMG AFTER SPECIALTIES--> 56.0 VS 90.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №50 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALKNIGHT[DMG=20.0] --DMG AFTER SPECIALTIES--> 100.0 VS 20.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №51 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 100.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Draw!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №52 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALKNIGHT[DMG=20.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 20.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №53 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=45.0] --DMG AFTER SPECIALTIES--> 100.0 VS 90.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №54 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=45.0] VS Altenhofer with WATERSPELL[DMG=22.0] --DMG AFTER SPECIALTIES--> 90.0 VS 11.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №55 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALKNIGHT[DMG=20.0] --DMG AFTER SPECIALTIES--> 100.0 VS 20.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №56 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=45.0] VS Altenhofer with WATERGOBLIN[DMG=10.0] --DMG AFTER SPECIALTIES--> 90.0 VS 5.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №57 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALKNIGHT[DMG=20.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 20.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №58 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with WATERSPELL[DMG=20.0] --DMG AFTER SPECIALTIES--> 100.0 VS 10.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №59 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - The armor of Knights is so heavy that WaterSpells make them drown them instantly
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=20.0] VS Altenhofer with NORMALKNIGHT[DMG=20.0] --DMG AFTER SPECIALTIES--> 10.0 VS 20.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №60 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=22.0] VS Altenhofer with NORMALSPELL[DMG=28.0] --DMG AFTER SPECIALTIES--> 11.0 VS 56.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №61 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERGOBLIN[DMG=10.0] VS Altenhofer with NORMALSPELL[DMG=28.0] --DMG AFTER SPECIALTIES--> 5.0 VS 56.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №62 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=20.0] VS Altenhofer with WATERSPELL[DMG=22.0] --DMG AFTER SPECIALTIES--> 10.0 VS 11.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №63 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=45.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 90.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №64 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALKNIGHT[DMG=20.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 20.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №65 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with WATERSPELL[DMG=22.0] --DMG AFTER SPECIALTIES--> 100.0 VS 11.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №66 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 100.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Draw!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №67 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 100.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Draw!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №68 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=22.0] VS Altenhofer with NORMALSPELL[DMG=28.0] --DMG AFTER SPECIALTIES--> 11.0 VS 56.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №69 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=28.0] --DMG AFTER SPECIALTIES--> 100.0 VS 56.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №70 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALKNIGHT[DMG=20.0] --DMG AFTER SPECIALTIES--> 100.0 VS 20.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №71 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=28.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 56.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №72 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=28.0] --DMG AFTER SPECIALTIES--> 100.0 VS 56.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №73 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=45.0] --DMG AFTER SPECIALTIES--> 100.0 VS 90.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №74 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=45.0] VS Altenhofer with WATERSPELL[DMG=20.0] --DMG AFTER SPECIALTIES--> 90.0 VS 10.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №75 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALKNIGHT[DMG=20.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 20.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №76 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=28.0] VS Altenhofer with NORMALKNIGHT[DMG=20.0] --DMG AFTER SPECIALTIES--> 56.0 VS 20.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №77 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=28.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 56.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №78 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=20.0] VS Altenhofer with WATERSPELL[DMG=22.0] --DMG AFTER SPECIALTIES--> 10.0 VS 11.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №79 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - The armor of Knights is so heavy that WaterSpells make them drown them instantly
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALKNIGHT[DMG=20.0] VS Altenhofer with WATERSPELL[DMG=22.0] --DMG AFTER SPECIALTIES--> 20.0 VS 11.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №80 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=45.0] VS Altenhofer with WATERSPELL[DMG=22.0] --DMG AFTER SPECIALTIES--> 90.0 VS 11.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №81 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=45.0] VS Altenhofer with NORMALKNIGHT[DMG=20.0] --DMG AFTER SPECIALTIES--> 90.0 VS 20.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №82 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=22.0] VS Altenhofer with WATERSPELL[DMG=20.0] --DMG AFTER SPECIALTIES--> 11.0 VS 10.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №83 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=45.0] VS Altenhofer with NORMALSPELL[DMG=28.0] --DMG AFTER SPECIALTIES--> 90.0 VS 56.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №84 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=22.0] VS Altenhofer with WATERGOBLIN[DMG=10.0] --DMG AFTER SPECIALTIES--> 11.0 VS 5.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №85 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=22.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 11.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №86 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=45.0] VS Altenhofer with WATERSPELL[DMG=22.0] --DMG AFTER SPECIALTIES--> 90.0 VS 11.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №87 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=28.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 56.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №88 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=28.0] --DMG AFTER SPECIALTIES--> 100.0 VS 56.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №89 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 100.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Draw!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №90 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERGOBLIN[DMG=10.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 5.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №91 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALKNIGHT[DMG=20.0] VS Altenhofer with WATERGOBLIN[DMG=10.0] --DMG AFTER SPECIALTIES--> 20.0 VS 5.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №92 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=22.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 11.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №93 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=20.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 10.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №94 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=28.0] VS Altenhofer with WATERSPELL[DMG=22.0] --DMG AFTER SPECIALTIES--> 56.0 VS 11.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №95 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERGOBLIN[DMG=10.0] VS Altenhofer with WATERSPELL[DMG=20.0] --DMG AFTER SPECIALTIES--> 5.0 VS 10.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №96 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALSPELL[DMG=45.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 90.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №97 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALDRAGON[DMG=50.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 100.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Draw!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №98 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=22.0] VS Altenhofer with WATERSPELL[DMG=20.0] --DMG AFTER SPECIALTIES--> 11.0 VS 10.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №99 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with WATERSPELL[DMG=20.0] VS Altenhofer with NORMALSPELL[DMG=50.0] --DMG AFTER SPECIALTIES--> 10.0 VS 100.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - -------------------------------
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Round №100 in Thread: pool-2-thread-10
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck with NORMALKNIGHT[DMG=20.0] VS Altenhofer with NORMALSPELL[DMG=45.0] --DMG AFTER SPECIALTIES--> 20.0 VS 90.0
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer wins the round!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - End!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Kienboeck has won 44 round in this battle!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer has won 45 round in this battle!
+2024-03-01 06:28:11 [pool-2-thread-10] INFO  gameManager.BattleLogger - Altenhofer has won the game!

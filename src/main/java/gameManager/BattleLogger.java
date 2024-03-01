@@ -37,17 +37,11 @@ public class BattleLogger {
 
     public void printRoundOutcome(User playerOne, List<Card> playerOneCards, User playerTwo, List<Card> playerTwoCards) {
         int firstCard = 0;
-        logger.info(playerOne.getUsername() +
-                ": "
-                + playerOneCards.get(firstCard).getCardElement() + playerOneCards.get(firstCard).getName()
-                + "(" + playerOneCards.get(firstCard).getDamage() + ")"
-                + " vs "
-                + playerTwo.getUsername()
-                + ": "
+        logger.info(playerOne.getUsername() + " with " + playerOneCards.get(firstCard).getCardElement() + playerOneCards.get(firstCard).getName()
+                + "[DMG=" + playerOneCards.get(firstCard).getDamage() + "] VS " + playerTwo.getUsername() + " with "
                 + playerTwoCards.get(firstCard).getCardElement() + playerTwoCards.get(firstCard).getName()
-                + "(" + playerTwoCards.get(firstCard).getDamage() + ")"
-                + " => "
-                + playerOneCards.get(firstCard).getTmpDamage() + " vs " + playerTwoCards.get(firstCard).getTmpDamage());
+                + "[DMG=" + playerTwoCards.get(firstCard).getDamage() + "]" + " --DMG AFTER SPECIALTIES--> "
+                + playerOneCards.get(firstCard).getTmpDamage() + " VS " + playerTwoCards.get(firstCard).getTmpDamage());
     }
 
     public void printBattleResultDraw() {
