@@ -1,7 +1,7 @@
 package controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import gameElements.Card;
+import gameElements.card.Card;
 import http.request.HeaderParser;
 import http.response.ResponseModel;
 import http.response.ResponseWriter;

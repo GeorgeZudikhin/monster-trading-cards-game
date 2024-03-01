@@ -1,6 +1,6 @@
 package repository;
 
-import gameElements.Card;
+import gameElements.card.Card;
 
 import java.util.List;
 

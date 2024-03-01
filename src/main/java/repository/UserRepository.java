@@ -8,7 +8,6 @@ public interface UserRepository {
     boolean loginUser(String username, String requestPassword);
     int returnUserIDFromToken(String token);
     String returnUsernameFromToken(String authorizationToken);
-    String returnUsernameFromID(int userID);
     int returnUserIDFromUsername(String username);
     void setUserToken(String username);
     String returnTokenFromUsername(String username);

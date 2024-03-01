@@ -1,6 +1,8 @@
 package server;
 
 import http.request.SocketHandler;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -9,13 +11,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
+    protected static final Logger logger = LogManager.getLogger();
     public static void main(String[] args) {
         int port = 10001;
+        int numberOfThreads = 10;
+        int backlog = 5;
 
-        final ExecutorService executorService = Executors.newFixedThreadPool(10);
+        final ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
 
         // "try-with-resources"
-        try (ServerSocket serverSocket = new ServerSocket(port, 5)) {
+        try (ServerSocket serverSocket = new ServerSocket(port, backlog)) {
             System.out.println("Server listening...");
             while (!serverSocket.isClosed()) {
                 final Socket clientConnection = serverSocket.accept();
@@ -25,7 +30,7 @@ public class Server {
                 executorService.submit(socketHandler);
             }
         } catch (IOException e) {
-            System.err.println("Server exception: " + e.getMessage());
+            logger.error("Server exception: " + e.getMessage(), e);
         } finally {
             executorService.shutdown();
         }

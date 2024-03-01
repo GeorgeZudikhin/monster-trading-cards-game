@@ -55,13 +55,8 @@ public class TradingService {
         if (deal.getUserId() == userId)
             return new ResponseModel("Cannot trade with yourself", 400);
 
-        System.out.println("CardID: " + cardId);
-        System.out.println("Card Type: " + deal.getType());
-
         if (!cardRepository.isCardEligibleForTrading(cardId, deal.getType(), deal.getMinimumDamage()))
             return new ResponseModel("Offered card does not meet the deal requirements", 400);
-
-        System.out.println("Card is eligible");
 
         boolean ownershipUpdated = cardRepository.updateCardOwnership(deal.getCardToTrade(), userId);
         if (!ownershipUpdated)
