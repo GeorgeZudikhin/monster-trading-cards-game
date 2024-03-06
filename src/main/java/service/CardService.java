@@ -63,10 +63,10 @@ public class CardService {
 
         // 50/50 chance to double or halve the card's damage
         if (random.nextBoolean()) {
-            selectedCard.setDamage(selectedCard.getDamage() * 2); // Double the damage
+            selectedCard.setDamage(selectedCard.getDamage() * 2);
             isGamblingSuccessful = true;
         } else {
-            selectedCard.setDamage(selectedCard.getDamage() / 2); // Halve the damage
+            selectedCard.setDamage(selectedCard.getDamage() / 2);
             isGamblingSuccessful = false;
         }
 
