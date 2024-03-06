@@ -27,6 +27,9 @@ public class BattleCoordinator {
         int roundCounter = 1;
         final int MAX_ROUNDS = 100;
         while (!playerOneCards.isEmpty() && !playerTwoCards.isEmpty() && roundCounter <= MAX_ROUNDS) {
+            resetTemporaryDamage(playerOneCards);
+            resetTemporaryDamage(playerTwoCards);
+
             battleLog.printRoundStart(roundCounter, Thread.currentThread());
             cardShuffler.shuffleCards(playerOneCards, playerTwoCards);
             roundCounter++;
@@ -37,5 +40,11 @@ public class BattleCoordinator {
             roundWinnerDecider.handleCommonRoundFight(playerOne, playerOneCards, playerTwo, playerTwoCards);
         }
         battleLog.printBattleEnd();
+    }
+
+    private void resetTemporaryDamage(List<Card> cards) {
+        for (Card card : cards) {
+            card.setTmpDamage(card.getDamage());
+        }
     }
 }

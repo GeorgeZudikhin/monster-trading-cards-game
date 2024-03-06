@@ -29,7 +29,6 @@ import static org.mockito.Mockito.*;
 public class BattleCoordinatorTests {
     @Mock
     private BattleLogger mockBattleLogger;
-
     private User playerOne;
     private User playerTwo;
     private List<Card> playerOneCards;
